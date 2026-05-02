@@ -23,6 +23,9 @@ class PesertaMagang extends Model
         'cv',
         'surat_rekomendasi',
         'status_magang',
+        'is_sk_sent',
+        'is_evaluasi_sent',
+        'is_sertifikat_sent',
     ];
 
     /**
