@@ -19,9 +19,5 @@ class DatabaseSeeder extends Seeder
             TimKerjaSeeder::class,
             PesertaMagangSeeder::class,
         ]);
-
-        $this->call([
-            TimKerjaSeeder::class,
-        ]);
     }
 }
