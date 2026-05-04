@@ -357,12 +357,12 @@
                     <label>Tingkat Pendidikan <span class="required">*</span></label>
                     <div class="radio-group">
                         <div class="radio-option">
-                            <input type="radio" name="tingkat_pendidikan" value="Universitas" id="univ" {{ old('tingkat_pendidikan') == 'Universitas' ? 'checked' : '' }} required>
+                            <input type="radio" name="tingkat_pendidikan" value="Universitas" id="univ" {{ old('tingkat_pendidikan') == 'Universitas' ? 'checked' : '' }} required onchange="toggleFormLabels()">
                             <label for="univ"><i class="fas fa-university"></i> Universitas</label>
                         </div>
                         <div class="radio-option">
-                            <input type="radio" name="tingkat_pendidikan" value="SMK" id="smk" {{ old('tingkat_pendidikan') == 'SMK' ? 'checked' : '' }}>
-                            <label for="smk"><i class="fas fa-school"></i> SMK</label>
+                            <input type="radio" name="tingkat_pendidikan" value="SLTA" id="slta" {{ old('tingkat_pendidikan') == 'SLTA' ? 'checked' : '' }} onchange="toggleFormLabels()">
+                            <label for="slta"><i class="fas fa-school"></i> SLTA</label>
                         </div>
                     </div>
                     @error('tingkat_pendidikan') <div class="form-error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div> @enderror
@@ -370,13 +370,20 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Nama Institusi <span class="required">*</span></label>
-                        <input type="text" name="nama_institusi" class="form-input @error('nama_institusi') is-invalid @enderror" value="{{ old('nama_institusi') }}" placeholder="Nama kampus / sekolah" required>
+                        <label id="label-institusi">Nama Institusi <span class="required">*</span></label>
+                        <input type="text" name="nama_institusi" id="input-institusi" class="form-input @error('nama_institusi') is-invalid @enderror" value="{{ old('nama_institusi') }}" placeholder="Nama kampus / sekolah" required>
                     </div>
                     <div class="form-group">
-                        <label>Jurusan / Program Studi <span class="required">*</span></label>
-                        <input type="text" name="jurusan" class="form-input @error('jurusan') is-invalid @enderror" value="{{ old('jurusan') }}" placeholder="Contoh: Teknik Informatika" required>
+                        <label id="label-jurusan">Jurusan / Program Studi <span class="required">*</span></label>
+                        <input type="text" name="jurusan" id="input-jurusan" class="form-input @error('jurusan') is-invalid @enderror" value="{{ old('jurusan') }}" placeholder="Contoh: Teknik Informatika" required>
                     </div>
+                </div>
+
+                {{-- NIM / NIS (dynamic) --}}
+                <div class="form-group">
+                    <label id="label-nim-nis">NIM / NIS <span class="required">*</span></label>
+                    <input type="text" name="nim_nis" id="input-nim-nis" class="form-input @error('nim_nis') is-invalid @enderror" value="{{ old('nim_nis') }}" placeholder="Masukkan nomor induk" required>
+                    @error('nim_nis') <div class="form-error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div> @enderror
                 </div>
 
                 <div class="form-row">
@@ -444,6 +451,19 @@
                     Pilih 2 tim kerja yang berbeda sebagai prioritas penempatan Anda.
                 </div>
 
+                {{-- Surat Permohonan Magang (wajib, urutan pertama) --}}
+                <div class="form-group">
+                    <label>Surat Permohonan Magang <span class="required">*</span></label>
+                    <div class="file-upload">
+                        <input type="file" name="surat_rekomendasi" accept="application/pdf" id="rekom-input" required>
+                        <i class="fas fa-cloud-upload-alt" style="display: block;"></i>
+                        <div class="file-text" id="rekom-label">Klik atau seret file ke sini</div>
+                        <div class="file-hint">Format .pdf, maksimal 2MB — <strong>Wajib dilampirkan</strong></div>
+                    </div>
+                    @error('surat_rekomendasi') <div class="form-error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div> @enderror
+                </div>
+
+                {{-- Curriculum Vitae (opsional, urutan kedua) --}}
                 <div class="form-group">
                     <label>Curriculum Vitae (CV) <span class="optional">— Opsional</span></label>
                     <div class="file-upload">
@@ -455,15 +475,16 @@
                     @error('cv') <div class="form-error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div> @enderror
                 </div>
 
+                {{-- Pas Foto --}}
                 <div class="form-group">
-                    <label>Surat Rekomendasi Institusi <span class="required">*</span></label>
+                    <label>Pas Foto <span class="required">*</span></label>
                     <div class="file-upload">
-                        <input type="file" name="surat_rekomendasi" accept="application/pdf" id="rekom-input" required>
-                        <i class="fas fa-cloud-upload-alt" style="display: block;"></i>
-                        <div class="file-text" id="rekom-label">Klik atau seret file ke sini</div>
-                        <div class="file-hint">Format .pdf, maksimal 2MB — <strong>Wajib dilampirkan</strong></div>
+                        <input type="file" name="pas_foto" accept="image/jpeg,image/png,image/jpg" id="foto-input" required>
+                        <i class="fas fa-camera" style="display: block;"></i>
+                        <div class="file-text" id="foto-label">Klik atau seret foto ke sini</div>
+                        <div class="file-hint">Format .jpg / .png, maksimal 1MB — <strong>Untuk foto profil dashboard</strong></div>
                     </div>
-                    @error('surat_rekomendasi') <div class="form-error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div> @enderror
+                    @error('pas_foto') <div class="form-error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div> @enderror
                 </div>
 
                 <button type="submit" class="btn-submit">
@@ -487,6 +508,33 @@
         ],
         @endforeach
     };
+
+    // ── Toggle labels based on tingkat pendidikan ──
+    function toggleFormLabels() {
+        const isUniv = document.getElementById('univ').checked;
+        const labelInstitusi = document.getElementById('label-institusi');
+        const inputInstitusi = document.getElementById('input-institusi');
+        const labelJurusan = document.getElementById('label-jurusan');
+        const inputJurusan = document.getElementById('input-jurusan');
+        const labelNimNis = document.getElementById('label-nim-nis');
+        const inputNimNis = document.getElementById('input-nim-nis');
+
+        if (isUniv) {
+            labelInstitusi.innerHTML = 'Nama Universitas <span class="required">*</span>';
+            inputInstitusi.placeholder = 'Contoh: Universitas Indonesia';
+            labelJurusan.innerHTML = 'Program Studi <span class="required">*</span>';
+            inputJurusan.placeholder = 'Contoh: Teknik Informatika';
+            labelNimNis.innerHTML = 'NIM <span class="required">*</span>';
+            inputNimNis.placeholder = 'Masukkan Nomor Induk Mahasiswa';
+        } else {
+            labelInstitusi.innerHTML = 'Nama Sekolah <span class="required">*</span>';
+            inputInstitusi.placeholder = 'Contoh: SMK Negeri 1 Jakarta';
+            labelJurusan.innerHTML = 'Jurusan <span class="required">*</span>';
+            inputJurusan.placeholder = 'Contoh: Teknik Komputer Jaringan';
+            labelNimNis.innerHTML = 'NIS <span class="required">*</span>';
+            inputNimNis.placeholder = 'Masukkan Nomor Induk Siswa';
+        }
+    }
 
     function updateTimKerja() {
         const selectedBidang = document.getElementById('select-bidang').value;
@@ -547,11 +595,18 @@
     document.getElementById('rekom-input').addEventListener('change', function() {
         document.getElementById('rekom-label').textContent = this.files[0] ? this.files[0].name : 'Klik atau seret file ke sini';
     });
+    document.getElementById('foto-input').addEventListener('change', function() {
+        document.getElementById('foto-label').textContent = this.files[0] ? this.files[0].name : 'Klik atau seret foto ke sini';
+    });
 
     // Restore on load
     document.addEventListener("DOMContentLoaded", function() {
         if (document.getElementById('select-bidang').value !== "") {
             updateTimKerja();
+        }
+        // Trigger label toggle if radio was restored via old()
+        if (document.querySelector('input[name="tingkat_pendidikan"]:checked')) {
+            toggleFormLabels();
         }
     });
 </script>

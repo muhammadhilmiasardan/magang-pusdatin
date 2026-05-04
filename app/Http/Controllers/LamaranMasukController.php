@@ -16,6 +16,12 @@ class LamaranMasukController extends Controller
         return view('admin.lamaran.index', compact('lamaran'));
     }
 
+    public function show($id)
+    {
+        $peserta = PesertaMagang::with(['timKerja1', 'timKerja2'])->findOrFail($id);
+        return response()->json($peserta);
+    }
+
     public function terima(Request $request, $id)
     {
         $peserta = PesertaMagang::findOrFail($id);
@@ -33,9 +39,9 @@ class LamaranMasukController extends Controller
     {
         $peserta = PesertaMagang::findOrFail($id);
         
-        $peserta->status_magang = 'Anulir';
+        $peserta->status_magang = 'Ditolak';
         $peserta->save();
 
-        return redirect()->route('admin.lamaran.index')->with('success', "Lamaran {$peserta->nama} telah ditolak (Anulir).");
+        return redirect()->route('admin.lamaran.index')->with('success', "Lamaran {$peserta->nama} telah ditolak.");
     }
 }

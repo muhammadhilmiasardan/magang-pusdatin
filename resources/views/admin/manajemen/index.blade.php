@@ -9,6 +9,7 @@
         'belum-aktif' => ['label' => 'Belum Aktif',  'data' => $grouped['belum_aktif'], 'icon' => 'fa-hourglass-half'],
         'selesai'     => ['label' => 'Selesai',      'data' => $grouped['selesai'],     'icon' => 'fa-graduation-cap'],
         'anulir'      => ['label' => 'Anulir',       'data' => $grouped['anulir'],      'icon' => 'fa-ban'],
+        'ditolak'     => ['label' => 'Ditolak',      'data' => $grouped['ditolak'],     'icon' => 'fa-times-circle'],
     ];
 @endphp
 
@@ -266,8 +267,21 @@
         </div>
 
         {{-- Modal Footer --}}
-        <div style="padding: 16px 24px; border-top: 1px solid var(--border); text-align: right;">
-            <button onclick="closeModal()" class="btn-outline-custom">Tutup</button>
+        <div style="padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+            <div id="m-resign-area" style="display: none;">
+                <button onclick="confirmAnulir()" class="btn-sm-custom" style="
+                    background: #fef2f2; color: #dc2626; border: 1px solid #fecaca;
+                    padding: 8px 16px; border-radius: 8px; cursor: pointer;
+                    font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500;
+                    display: inline-flex; align-items: center; gap: 6px;
+                    transition: all 150ms ease;
+                " onmouseover="this.style.background='#fee2e2'" onmouseout="this.style.background='#fef2f2'">
+                    <i class="fas fa-door-open"></i> Mengundurkan Diri
+                </button>
+            </div>
+            <div style="margin-left: auto;">
+                <button onclick="closeModal()" class="btn-outline-custom">Tutup</button>
+            </div>
         </div>
     </div>
 </div>
@@ -322,6 +336,10 @@
             document.getElementById('detailOverlay').style.display = 'block';
 
             $.get(`/admin/manajemen/${id}`, function(data) {
+                // Store current ID for resign action
+                window._currentPesertaId = data.id;
+                window._currentPesertaNama = data.nama;
+
                 // Populate
                 $('#m-nama').text(data.nama);
                 const statusEl = $('#m-status');
@@ -331,6 +349,7 @@
                 else if (data.status_magang === 'Belum Aktif') statusEl.addClass('badge-belum');
                 else if (data.status_magang === 'Selesai') statusEl.addClass('badge-selesai');
                 else if (data.status_magang === 'Anulir') statusEl.addClass('badge-anulir');
+                else if (data.status_magang === 'Ditolak') statusEl.addClass('badge-anulir');
 
                 $('#m-email').text(data.email);
                 $('#m-telp').text(data.nomor_telp);
@@ -349,6 +368,13 @@
                 setDocBadge('#m-eval-badge', data.is_evaluasi_sent);
                 setDocBadge('#m-cert-badge', data.is_sertifikat_sent);
 
+                // Show resign button only for Belum Aktif / Aktif
+                if (data.status_magang === 'Belum Aktif' || data.status_magang === 'Aktif') {
+                    $('#m-resign-area').show();
+                } else {
+                    $('#m-resign-area').hide();
+                }
+
                 $('#loadingSpinner').hide();
                 $('#modalContent').show();
             });
@@ -364,5 +390,25 @@
             }
         }
     });
+
+    // Resign / Anulir action
+    function confirmAnulir() {
+        const nama = window._currentPesertaNama;
+        if (!confirm(`Apakah Anda yakin ingin mengundurkan ${nama}?\nStatus akan berubah menjadi ANULIR dan tidak dapat dibatalkan.`)) return;
+
+        $.ajax({
+            url: `/admin/manajemen/${window._currentPesertaId}/anulir`,
+            type: 'POST',
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            success: function(res) {
+                alert(res.message);
+                closeModal();
+                location.reload();
+            },
+            error: function(xhr) {
+                alert(xhr.responseJSON?.error || 'Terjadi kesalahan.');
+            }
+        });
+    }
 </script>
 @endpush

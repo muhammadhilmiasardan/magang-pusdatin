@@ -16,6 +16,7 @@ class ManajemenMagangController extends Controller
             'aktif' => $peserta->where('status_magang', 'Aktif'),
             'selesai' => $peserta->where('status_magang', 'Selesai'),
             'anulir' => $peserta->where('status_magang', 'Anulir'),
+            'ditolak' => $peserta->where('status_magang', 'Ditolak'),
         ];
 
         return view('admin.manajemen.index', compact('grouped'));
@@ -25,5 +26,23 @@ class ManajemenMagangController extends Controller
     {
         $peserta = PesertaMagang::with(['timKerja1', 'timKerja2'])->findOrFail($id);
         return response()->json($peserta);
+    }
+
+    /**
+     * Mengundurkan diri — ubah status peserta menjadi Anulir.
+     * Hanya bisa dilakukan jika status saat ini Belum Aktif atau Aktif.
+     */
+    public function anulir(Request $request, $id)
+    {
+        $peserta = PesertaMagang::findOrFail($id);
+
+        if (!in_array($peserta->status_magang, ['Belum Aktif', 'Aktif'])) {
+            return response()->json(['error' => 'Hanya peserta Belum Aktif atau Aktif yang bisa mengundurkan diri.'], 422);
+        }
+
+        $peserta->status_magang = 'Anulir';
+        $peserta->save();
+
+        return response()->json(['success' => true, 'message' => "{$peserta->nama} telah mengundurkan diri (Anulir)."]);
     }
 }
