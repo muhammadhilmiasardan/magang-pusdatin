@@ -34,7 +34,7 @@ return new class extends Migration
             $table->foreignId('id_tim_kerja_2')->constrained('tim_kerja')->onDelete('cascade');
             $table->string('cv')->nullable(); // path file, opsional
             $table->string('surat_rekomendasi'); // path file, wajib
-            $table->string('status_magang')->default('Aktif'); // Aktif / Selesai
+            $table->string('status_magang')->default('Menunggu Review'); // Menunggu Review / Belum Aktif / Aktif / Selesai / Anulir
             $table->timestamps();
         });
     }
