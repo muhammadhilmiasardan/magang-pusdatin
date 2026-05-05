@@ -746,12 +746,6 @@
                         <span>Pusat Dokumen</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{ route('admin.foto-akses.index') }}" class="{{ request()->is('admin/foto-akses*') ? 'active' : '' }}">
-                        <i class="fas fa-id-badge"></i>
-                        <span>Foto Akses Pintu</span>
-                    </a>
-                </li>
             </ul>
         </div>
 

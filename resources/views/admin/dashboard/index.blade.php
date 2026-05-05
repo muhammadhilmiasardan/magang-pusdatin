@@ -4,17 +4,7 @@
 
 @section('content')
 {{-- KPI Cards --}}
-<div class="kpi-grid" style="grid-template-columns: repeat(3, 1fr);">
-    <div class="kpi-card">
-        <div class="kpi-info">
-            <h4>Menunggu Review</h4>
-            <div class="kpi-value">{{ $kpi['menunggu_review'] }}</div>
-        </div>
-        <div class="kpi-icon" style="background: #fef3c7; color: #b45309;">
-            <i class="fas fa-inbox"></i>
-        </div>
-    </div>
-
+<div class="kpi-grid" style="grid-template-columns: repeat(4, 1fr);">
     <div class="kpi-card">
         <div class="kpi-info">
             <h4>Belum Aktif</h4>
@@ -52,16 +42,6 @@
         </div>
         <div class="kpi-icon" style="background: #fff7ed; color: #ea580c;">
             <i class="fas fa-ban"></i>
-        </div>
-    </div>
-
-    <div class="kpi-card">
-        <div class="kpi-info">
-            <h4>Ditolak</h4>
-            <div class="kpi-value">{{ $kpi['ditolak'] }}</div>
-        </div>
-        <div class="kpi-icon" style="background: #fef2f2; color: #dc2626;">
-            <i class="fas fa-times-circle"></i>
         </div>
     </div>
 </div>
