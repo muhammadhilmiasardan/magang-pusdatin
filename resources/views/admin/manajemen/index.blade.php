@@ -136,18 +136,23 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
                 {{-- Left Column: Biodata --}}
                 <div>
-                    {{-- Profile --}}
+                    {{-- Profile with Photo --}}
                     <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 24px;">
-                        <div style="
-                            width: 56px; height: 56px; border-radius: 14px;
-                            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-                            display: flex; align-items: center; justify-content: center;
-                            color: #fff; font-size: 22px; flex-shrink: 0;
-                        ">
-                            <i class="fas fa-user"></i>
+                        <div style="flex-shrink: 0; position: relative;">
+                            <img id="m-foto" src="" alt="Pas Foto"
+                                 style="width: 72px; height: 72px; border-radius: 14px; object-fit: cover; border: 2px solid var(--border); display: none;">
+                            <div id="m-foto-placeholder" style="
+                                width: 72px; height: 72px; border-radius: 14px;
+                                background: linear-gradient(135deg, var(--primary), var(--primary-light));
+                                display: flex; align-items: center; justify-content: center;
+                                color: #fff; font-size: 26px;
+                            ">
+                                <i class="fas fa-user"></i>
+                            </div>
                         </div>
                         <div>
                             <h4 id="m-nama" style="font-size: 16px; font-weight: 700; color: var(--text-primary); margin: 0 0 4px;">-</h4>
+                            <span id="m-nim" style="font-size: 12px; color: var(--text-secondary); display: block; margin-bottom: 4px;">-</span>
                             <span id="m-status" class="badge-status badge-aktif">-</span>
                         </div>
                     </div>
@@ -228,13 +233,24 @@
                         <h5 style="font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border);">
                             Dokumen Pendaftaran
                         </h5>
-                        <div style="display: flex; gap: 8px;">
-                            <a href="#" id="m-btn-cv" class="btn-outline-custom" style="flex: 1; justify-content: center; text-decoration: none;">
-                                <i class="fas fa-download"></i> Unduh CV
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <a href="#" id="m-btn-rekom" target="_blank"
+                               class="btn-primary-custom"
+                               style="justify-content: center; text-decoration: none;">
+                                <i class="fas fa-file-pdf"></i> Buka Surat Permohonan
                             </a>
-                            <a href="#" id="m-btn-rekom" class="btn-outline-custom" style="flex: 1; justify-content: center; text-decoration: none;">
-                                <i class="fas fa-download"></i> Rekomendasi
-                            </a>
+                            <div style="display: flex; gap: 8px;">
+                                <a href="#" id="m-btn-cv" target="_blank"
+                                   class="btn-outline-custom"
+                                   style="flex:1; justify-content: center; text-decoration: none; display: none;">
+                                    <i class="fas fa-file-pdf"></i> Buka CV
+                                </a>
+                                <a href="#" id="m-btn-foto" target="_blank"
+                                   class="btn-outline-custom"
+                                   style="flex:1; justify-content: center; text-decoration: none; display: none;">
+                                    <i class="fas fa-camera"></i> Unduh Pas Foto
+                                </a>
+                            </div>
                         </div>
                     </div>
 
@@ -351,6 +367,21 @@
                 else if (data.status_magang === 'Anulir') statusEl.addClass('badge-anulir');
                 else if (data.status_magang === 'Ditolak') statusEl.addClass('badge-anulir');
 
+                // Nama & NIM
+                $('#m-nim').text(data.nim_nis ? 'NIM/NIS: ' + data.nim_nis : '');
+
+                // Foto
+                if (data.pas_foto) {
+                    const fotoUrl = '/storage/' + data.pas_foto;
+                    $('#m-foto').attr('src', fotoUrl).show();
+                    $('#m-foto-placeholder').hide();
+                    $('#m-btn-foto').attr('href', fotoUrl).attr('download', data.nama + '_pas_foto').show();
+                } else {
+                    $('#m-foto').hide();
+                    $('#m-foto-placeholder').show();
+                    $('#m-btn-foto').hide();
+                }
+
                 $('#m-email').text(data.email);
                 $('#m-telp').text(data.nomor_telp);
                 $('#m-institusi').text(data.nama_institusi + ' (' + data.tingkat_pendidikan + ')');
@@ -363,6 +394,18 @@
 
                 $('#m-tim-1').text(data.tim_kerja1 ? data.tim_kerja1.nama_tim : '-');
                 $('#m-tim-2').text(data.tim_kerja2 ? data.tim_kerja2.nama_tim : '-');
+
+                // Dokumen links
+                if (data.surat_rekomendasi) {
+                    $('#m-btn-rekom').attr('href', '/storage/' + data.surat_rekomendasi).show();
+                } else {
+                    $('#m-btn-rekom').hide();
+                }
+                if (data.cv) {
+                    $('#m-btn-cv').attr('href', '/storage/' + data.cv).show();
+                } else {
+                    $('#m-btn-cv').hide();
+                }
 
                 setDocBadge('#m-sk-badge', data.is_sk_sent);
                 setDocBadge('#m-eval-badge', data.is_evaluasi_sent);

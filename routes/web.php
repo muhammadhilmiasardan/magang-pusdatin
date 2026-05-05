@@ -30,4 +30,5 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/manajemen/{id}', [\App\Http\Controllers\ManajemenMagangController::class, 'show'])->name('manajemen.show');
     Route::post('/manajemen/{id}/anulir', [\App\Http\Controllers\ManajemenMagangController::class, 'anulir'])->name('manajemen.anulir');
     Route::get('/dokumen', [\App\Http\Controllers\PusatDokumenController::class, 'index'])->name('dokumen.index');
+    Route::get('/foto-akses', [\App\Http\Controllers\FotoAksesController::class, 'index'])->name('foto-akses.index');
 });
