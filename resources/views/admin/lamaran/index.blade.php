@@ -233,22 +233,97 @@
                         </div>
                     </div>
 
-                    {{-- Aksi Cepat --}}
-                    <h5 style="font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border);">
-                        Keputusan Review
-                    </h5>
-                    <div style="display: flex; flex-direction: column; gap: 8px;">
-                        <form id="lm-form-terima" action="" method="POST">
-                            @csrf
-                            <button type="submit" class="btn-success-custom" style="width: 100%; justify-content: center;"
-                                    onclick="return confirm('Terima lamaran ini? Status akan menjadi Belum Aktif.')">
-                                <i class="fas fa-check-circle"></i> Terima Lamaran
+                    {{-- Keputusan Review --}}
+                    <div style="margin-bottom: 0;">
+                        <h5 style="font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border);">
+                            Keputusan Review
+                        </h5>
+
+                        {{-- PENEMPATAN --}}
+                        <div style="margin-bottom: 14px;">
+                            <label style="font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em; display: block; margin-bottom: 8px;">Penempatan Resmi</label>
+                            <div id="lm-penempatan-options" style="display: flex; flex-direction: column; gap: 8px;">
+                                {{-- diisi oleh JS --}}
+                            </div>
+                        </div>
+
+                        {{-- TOGGLE FORM SURAT --}}
+                        <button type="button" id="lm-btn-buka-surat"
+                            onclick="document.getElementById('lm-form-surat-wrapper').style.display = document.getElementById('lm-form-surat-wrapper').style.display === 'none' ? 'block' : 'none'; this.innerHTML = this.innerHTML.includes('Buka') ? '<i class=\'fas fa-chevron-up\'></i> Sembunyikan Form Surat' : '<i class=\'fas fa-file-alt\'></i> Buka Form Surat Penerimaan';"
+                            class="btn-outline-custom" style="width: 100%; justify-content: center; margin-bottom: 8px;">
+                            <i class="fas fa-file-alt"></i> Buka Form Surat Penerimaan
+                        </button>
+
+                        {{-- FORM SURAT (tersembunyi by default) --}}
+                        <div id="lm-form-surat-wrapper" style="display: none; border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 12px; background: #fafafa;">
+                            <div style="font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 12px;">Data Surat Penerimaan</div>
+
+                            <div style="margin-bottom: 10px;">
+                                <label style="font-size: 12px; color: var(--text-secondary); display: block; margin-bottom: 4px;">Nomor Surat <span style="color: #ef4444;">*</span></label>
+                                <input type="text" id="lm-nomor-surat" placeholder="Contoh: B.xxx/PUSDATIN/TU.01.02/05/2026"
+                                    style="width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 12.5px; font-family: inherit; outline: none;">
+                            </div>
+
+                            <div style="margin-bottom: 10px;">
+                                <label style="font-size: 12px; color: var(--text-secondary); display: block; margin-bottom: 4px;">Ditujukan Kepada (Yth.) <span style="color: #ef4444;">*</span></label>
+                                <input type="text" id="lm-yth" placeholder="Contoh: Dekan Fakultas Teknik Universitas ..."
+                                    style="width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 12.5px; font-family: inherit; outline: none;">
+                                <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px;">Dipakai di: "Yth. ..." dan "Menindaklanjuti surat dari ..."</div>
+                            </div>
+
+                            <div style="margin-bottom: 10px;">
+                                <label style="font-size: 12px; color: var(--text-secondary); display: block; margin-bottom: 4px;">Nomor Surat Permohonan Universitas/SLTA <span style="color: #ef4444;">*</span></label>
+                                <input type="text" id="lm-nomor-surat-univ" placeholder="Contoh: B.123/UN10/T1.5/2026"
+                                    style="width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 12.5px; font-family: inherit; outline: none;">
+                            </div>
+
+                            <div style="margin-bottom: 12px;">
+                                <label style="font-size: 12px; color: var(--text-secondary); display: block; margin-bottom: 4px;">Tanggal Surat Permohonan <span style="color: #ef4444;">*</span></label>
+                                <input type="text" id="lm-tanggal-surat-lamaran" placeholder="Contoh: 10 April 2026"
+                                    style="width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 12.5px; font-family: inherit; outline: none;">
+                            </div>
+
+                            {{-- Tombol Preview --}}
+                            <button type="button" onclick="previewSurat()"
+                                class="btn-primary-custom" style="width: 100%; justify-content: center; margin-bottom: 8px;">
+                                <i class="fas fa-eye"></i> Preview Surat Penerimaan
                             </button>
-                        </form>
-                        <form id="lm-form-tolak" action="" method="POST">
+
+                            {{-- Preview Iframe --}}
+                            <div id="lm-preview-surat-container" style="display: none; margin-top: 8px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden;">
+                                <div style="background: #f1f5f9; padding: 8px 12px; font-size: 12px; font-weight: 600; color: var(--text-secondary); display: flex; justify-content: space-between; align-items: center;">
+                                    <span><i class="fas fa-eye" style="margin-right: 6px;"></i>Preview Surat</span>
+                                    <button type="button" onclick="document.getElementById('lm-preview-surat-container').style.display='none'" style="background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 14px;"><i class="fas fa-times"></i></button>
+                                </div>
+                                <iframe id="lm-surat-iframe" src="" style="width: 100%; height: 480px; border: none; display: block;"></iframe>
+                            </div>
+                        </div>
+
+                        {{-- AKSI FINAL --}}
+                        <div style="display: flex; gap: 8px;">
+                            {{-- Terima & Simpan Penempatan --}}
+                            <form id="lm-form-terima" action="" method="POST" style="flex: 1;">
+                                @csrf
+                                <input type="hidden" name="id_tim_kerja_ditempatkan" id="lm-hidden-tim">
+                                <button type="submit" class="btn-success-custom" style="width: 100%; justify-content: center;"
+                                        onclick="return validateAndConfirmTerima()">
+                                    <i class="fas fa-check-circle"></i> Terima Lamaran
+                                </button>
+                            </form>
+
+                            {{-- Download Surat PDF --}}
+                            <button type="button" onclick="downloadSurat()" title="Download Surat Penerimaan PDF Saja"
+                                class="btn-accent-custom" style="white-space: nowrap;">
+                                <i class="fas fa-file-download"></i> Download PDF
+                            </button>
+                        </div>
+
+                        {{-- Tolak --}}
+                        <form id="lm-form-tolak" action="" method="POST" style="margin-top: 8px;">
                             @csrf
-                            <button type="submit" class="btn-danger-custom" style="width: 100%; justify-content: center;"
-                                    onclick="return confirm('Tolak lamaran ini?')">
+                            <button type="submit" class="btn-danger-custom" style="width: 100%; justify-content: center; background: #fef2f2; color: #dc2626; border: 1px solid #fecaca;"
+                                    onclick="return confirm('Tolak lamaran ini?')"
+                                    onmouseover="this.style.background='#fee2e2'" onmouseout="this.style.background='#fef2f2'">
                                 <i class="fas fa-times-circle"></i> Tolak Lamaran
                             </button>
                         </form>
@@ -275,8 +350,17 @@
 
 @push('scripts')
 <script>
+// ── State ──────────────────────────────────────────────
+let _currentLamaranId   = null;
+let _currentLamaranData = null;
+
+// ── Modal helpers ───────────────────────────────────────
 function closeLamaranModal() {
     document.getElementById('lamaranOverlay').style.display = 'none';
+    // Reset form surat
+    document.getElementById('lm-form-surat-wrapper').style.display = 'none';
+    document.getElementById('lm-preview-surat-container').style.display = 'none';
+    document.getElementById('lm-btn-buka-surat').innerHTML = '<i class="fas fa-file-alt"></i> Buka Form Surat Penerimaan';
 }
 
 document.getElementById('lamaranOverlay').addEventListener('click', function(e) {
@@ -286,19 +370,183 @@ document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeLamaranModal();
 });
 
+// ── Build pilihan penempatan radio buttons ──────────────
+function buildPenempatanOptions(data) {
+    const container = document.getElementById('lm-penempatan-options');
+    container.innerHTML = '';
+
+    const options = [];
+    if (data.tim_kerja1) options.push({ id: data.id_tim_kerja_1, nama: data.tim_kerja1.nama_tim, label: 'Pilihan 1 (Utama)' });
+    if (data.tim_kerja2) options.push({ id: data.id_tim_kerja_2, nama: data.tim_kerja2.nama_tim, label: 'Pilihan 2' });
+
+    options.forEach((opt, i) => {
+        const radioId = `lm-radio-tim-${i}`;
+        const div = document.createElement('div');
+        div.style.cssText = `
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 14px; border-radius: 8px; cursor: pointer;
+            border: 2px solid var(--border); transition: all 150ms ease;
+            background: #fff;
+        `;
+        div.innerHTML = `
+            <input type="radio" name="lm_penempatan" id="${radioId}" value="${opt.id}"
+                   style="accent-color: var(--primary); width: 16px; height: 16px; cursor: pointer;"
+                   ${i === 0 ? 'checked' : ''}>
+            <label for="${radioId}" style="cursor: pointer; flex: 1; margin: 0;">
+                <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">${opt.label}</div>
+                <div style="font-size: 13px; font-weight: 600; color: var(--primary); margin-top: 2px;">${opt.nama}</div>
+            </label>
+        `;
+        // Style selected state
+        const radio = div.querySelector('input');
+        const updateStyle = () => {
+            div.style.borderColor = radio.checked ? 'var(--primary)' : 'var(--border)';
+            div.style.background  = radio.checked ? 'var(--primary-lighter)' : '#fff';
+        };
+        radio.addEventListener('change', () => {
+            container.querySelectorAll('div').forEach(d => {
+                const r = d.querySelector('input');
+                if (r) { d.style.borderColor = 'var(--border)'; d.style.background = '#fff'; }
+            });
+            updateStyle();
+            // Sync hidden input
+            document.getElementById('lm-hidden-tim').value = radio.value;
+        });
+        div.addEventListener('click', () => { radio.checked = true; radio.dispatchEvent(new Event('change')); });
+        updateStyle();
+        container.appendChild(div);
+    });
+
+    // Set initial hidden value
+    const first = container.querySelector('input[type=radio]');
+    if (first) document.getElementById('lm-hidden-tim').value = first.value;
+}
+
+// ── Get selected tim ID ─────────────────────────────────
+function getSelectedTimId() {
+    const selected = document.querySelector('input[name="lm_penempatan"]:checked');
+    return selected ? selected.value : null;
+}
+
+// ── Collect form surat data ─────────────────────────────
+function getSuratFormData() {
+    return {
+        id_tim_kerja_ditempatkan: getSelectedTimId(),
+        nomor_surat:              document.getElementById('lm-nomor-surat').value.trim(),
+        yth:                      document.getElementById('lm-yth').value.trim(),
+        nomor_surat_univ:         document.getElementById('lm-nomor-surat-univ').value.trim(),
+        tanggal_surat_lamaran:    document.getElementById('lm-tanggal-surat-lamaran').value.trim(),
+    };
+}
+
+// ── Preview surat via POST into iframe ──────────────────
+function previewSurat() {
+    const form = getSuratFormData();
+    if (!form.nomor_surat || !form.yth || !form.nomor_surat_univ || !form.tanggal_surat_lamaran) {
+        alert('Harap lengkapi semua field data surat terlebih dahulu.');
+        return;
+    }
+    if (!form.id_tim_kerja_ditempatkan) {
+        alert('Harap pilih penempatan terlebih dahulu.');
+        return;
+    }
+
+    // Submit to preview endpoint, result loads in iframe via hidden form
+    const previewUrl = `/admin/lamaran/${_currentLamaranId}/surat/preview`;
+    const hiddenForm = document.createElement('form');
+    hiddenForm.method  = 'POST';
+    hiddenForm.action  = previewUrl;
+    hiddenForm.target  = 'lm-surat-iframe';
+    hiddenForm.style.display = 'none';
+
+    const csrfInput = document.createElement('input');
+    csrfInput.type  = 'hidden';
+    csrfInput.name  = '_token';
+    csrfInput.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    hiddenForm.appendChild(csrfInput);
+
+    Object.entries(form).forEach(([key, val]) => {
+        const input = document.createElement('input');
+        input.type  = 'hidden';
+        input.name  = key;
+        input.value = val;
+        hiddenForm.appendChild(input);
+    });
+
+    document.body.appendChild(hiddenForm);
+    hiddenForm.submit();
+    document.body.removeChild(hiddenForm);
+
+    document.getElementById('lm-preview-surat-container').style.display = 'block';
+}
+
+// ── Download Surat PDF ─────────────────────────────
+function downloadSurat() {
+    const form = getSuratFormData();
+    if (!form.nomor_surat || !form.yth || !form.nomor_surat_univ || !form.tanggal_surat_lamaran) {
+        // Buka form surat kalau belum diisi
+        document.getElementById('lm-form-surat-wrapper').style.display = 'block';
+        alert('Harap lengkapi semua field data surat terlebih dahulu, lalu klik Download PDF.');
+        return;
+    }
+    if (!form.id_tim_kerja_ditempatkan) {
+        alert('Harap pilih penempatan terlebih dahulu.');
+        return;
+    }
+
+    // Submit to download endpoint (auto-downloads PDF)
+    const downloadUrl = `/admin/lamaran/${_currentLamaranId}/surat/download`;
+    const hiddenForm  = document.createElement('form');
+    hiddenForm.method  = 'POST';
+    hiddenForm.action  = downloadUrl;
+    hiddenForm.style.display = 'none';
+
+    const csrfInput = document.createElement('input');
+    csrfInput.type  = 'hidden';
+    csrfInput.name  = '_token';
+    csrfInput.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    hiddenForm.appendChild(csrfInput);
+
+    Object.entries(form).forEach(([key, val]) => {
+        const input = document.createElement('input');
+        input.type  = 'hidden';
+        input.name  = key;
+        input.value = val;
+        hiddenForm.appendChild(input);
+    });
+
+    document.body.appendChild(hiddenForm);
+    hiddenForm.submit();
+    document.body.removeChild(hiddenForm);
+}
+
+// ── Validate sebelum submit Terima ──────────────────────
+function validateAndConfirmTerima() {
+    const timId = document.getElementById('lm-hidden-tim').value;
+    if (!timId) {
+        alert('Harap pilih penempatan resmi terlebih dahulu.');
+        return false;
+    }
+    return confirm('Terima lamaran ini? Status akan berubah menjadi "Belum Aktif".');
+}
+
+// ── Load modal data ─────────────────────────────────────
 $(document).ready(function() {
     $('.view-detail-lamaran').click(function(e) {
         e.preventDefault();
         const id = $(this).data('id');
+        _currentLamaranId = id;
 
         $('#lamaranLoadingSpinner').show();
         $('#lamaranModalContent').hide();
         document.getElementById('lamaranOverlay').style.display = 'block';
 
         $.get(`/admin/lamaran/${id}`, function(data) {
+            _currentLamaranData = data;
+
             // Nama & NIM
             $('#lm-nama').text(data.nama);
-            $('#lm-nim').text((data.nim_nis ? 'NIM/NIS: ' + data.nim_nis : ''));
+            $('#lm-nim').text(data.nim_nis ? 'NIM/NIS: ' + data.nim_nis : '');
 
             // Foto
             if (data.pas_foto) {
@@ -324,25 +572,24 @@ $(document).ready(function() {
             $('#lm-mulai').text(new Date(data.tanggal_mulai).toLocaleDateString('id-ID', opt));
             $('#lm-selesai').text(new Date(data.tanggal_selesai).toLocaleDateString('id-ID', opt));
 
-            // Tim
+            // Tim pilihan (info saja)
             $('#lm-tim-1').text(data.tim_kerja1 ? data.tim_kerja1.nama_tim : '-');
             $('#lm-tim-2').text(data.tim_kerja2 ? data.tim_kerja2.nama_tim : '-');
 
             // Dokumen
             if (data.surat_rekomendasi) {
                 $('#lm-btn-rekom').attr('href', '/storage/' + data.surat_rekomendasi).show();
-            } else {
-                $('#lm-btn-rekom').hide();
-            }
+            } else { $('#lm-btn-rekom').hide(); }
             if (data.cv) {
                 $('#lm-btn-cv').attr('href', '/storage/' + data.cv).show();
-            } else {
-                $('#lm-btn-cv').hide();
-            }
+            } else { $('#lm-btn-cv').hide(); }
 
-            // Form actions
+            // Build penempatan radio
+            buildPenempatanOptions(data);
+
+            // Set form actions
             $('#lm-form-terima').attr('action', `/admin/lamaran/${data.id}/terima`);
-            $('#lm-form-tolak').attr('action', `/admin/lamaran/${data.id}/tolak`);
+            $('#lm-form-tolak').attr('action',  `/admin/lamaran/${data.id}/tolak`);
 
             $('#lamaranLoadingSpinner').hide();
             $('#lamaranModalContent').show();

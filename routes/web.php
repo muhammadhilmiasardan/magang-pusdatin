@@ -24,8 +24,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\AdminDashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/lamaran', [\App\Http\Controllers\LamaranMasukController::class, 'index'])->name('lamaran.index');
     Route::get('/lamaran/{id}', [\App\Http\Controllers\LamaranMasukController::class, 'show'])->name('lamaran.show');
-    Route::post('/lamaran/{id}/terima', [\App\Http\Controllers\LamaranMasukController::class, 'terima'])->name('lamaran.terima');
+    Route::post('/lamaran/{id}/terima', [\App\Http\Controllers\SuratPenerimaanController::class, 'terima'])->name('lamaran.terima');
     Route::post('/lamaran/{id}/tolak', [\App\Http\Controllers\LamaranMasukController::class, 'tolak'])->name('lamaran.tolak');
+    Route::post('/lamaran/{id}/surat/preview', [\App\Http\Controllers\SuratPenerimaanController::class, 'preview'])->name('lamaran.surat.preview');
+    Route::post('/lamaran/{id}/surat/download', [\App\Http\Controllers\SuratPenerimaanController::class, 'download'])->name('lamaran.surat.download');
     Route::get('/manajemen', [\App\Http\Controllers\ManajemenMagangController::class, 'index'])->name('manajemen.index');
     Route::get('/manajemen/{id}', [\App\Http\Controllers\ManajemenMagangController::class, 'show'])->name('manajemen.show');
     Route::post('/manajemen/{id}/anulir', [\App\Http\Controllers\ManajemenMagangController::class, 'anulir'])->name('manajemen.anulir');
