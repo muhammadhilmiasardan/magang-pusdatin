@@ -158,6 +158,11 @@
             </div>
         </div>
 
+        {{-- Anti-clipping khusus untuk block body --}}
+        <div style="color:#ffffff; font-size:1px; line-height:1px; mso-line-height-rule:exactly; min-height:1px; padding:0; margin:0;">
+            &zwj; {{ uniqid() }} &zwj;
+        </div>
+
     </div>
 
     {{-- ══ FOOTER ══ --}}
@@ -171,8 +176,8 @@
     </div>
     
     {{-- Trik untuk menghindari Gmail menyingkat (clipping / ellipsis ...) email yang kontennya mirip --}}
-    <div style="display:none; color:transparent; font-size:1px; line-height:1px; max-height:0px; max-width:0px; opacity:0; overflow:hidden;">
-        ID: {{ uniqid() }} - TS: {{ now()->timestamp }}
+    <div style="color:#f0f2f5; font-size:1px; line-height:1px; mso-line-height-rule:exactly; min-height:1px;">
+        &zwj; Ref: {{ uniqid() }} - {{ now()->timestamp }} &zwj;
     </div>
 
 </div>

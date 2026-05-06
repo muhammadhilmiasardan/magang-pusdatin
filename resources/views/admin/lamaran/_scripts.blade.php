@@ -1,5 +1,5 @@
 <script>
-const CAPTION_TEMPLATE = (nama, institusi, jamNow) => {
+const CAPTION_TEMPLATE = (nama, institusi, jamNow, tglMulai) => {
     const jam = parseInt(jamNow);
     const sapa = jam < 11 ? 'pagi' : jam < 15 ? 'siang' : 'sore';
     return `Selamat ${sapa} Sdr. ${nama}, berikut terlampir surat tanggapan dari kami terkait permohonan magang dari ${institusi}:
@@ -26,11 +26,12 @@ Senin - Jumat : Memakai seragam SMK/SMA sesuai dengan ketentuan sekolah dan Sepa
 4. Tidak Membawa Barang Terlarang
 5. Dilarang keras merokok/pods diruang kerja dan/atau ruangan tertutup serta menimbulkan terganggunya aktivitas pegawai lain
 6. Mentaati dan Melakukan segala Ketentuan yang berlaku di Lingkungan Pusdatin dan Kementerian PU
-7. Dapat bertemu dengan narahubung pada tanggal [ISI TANGGAL] pukul 08.00 WIB di Gedung Pusdatin Kementerian PU`;
+7. Dapat bertemu dengan narahubung pada tanggal ${tglMulai} pukul 08.00 WIB di Gedung Pusdatin Kementerian PU`;
 };
 
 // ── State ──────────────────────────────────────────
 let _id = null, _data = null, _uploadedPath = null, _uploadedUrl = null;
+let _emailJustOpened = false;
 
 // ── Modal helpers ───────────────────────────────────
 function closeReviewModal()  { document.getElementById('reviewOverlay').style.display='none'; }
@@ -137,6 +138,10 @@ function downloadSurat(){
 function openUploadModal(){
     const f=getSuratData();
     if(!f.id_tim_kerja_ditempatkan){ alert('Pilih penempatan terlebih dahulu.'); return; }
+    if(!f.nomor_surat||!f.yth||!f.nomor_surat_univ||!f.tanggal_surat_lamaran){ 
+        alert('Harap lengkapi semua Data Surat Penerimaan sebelum melanjutkan ke Langkah 3.'); 
+        return; 
+    }
     closeSuratModal();
     clearFile();
     document.getElementById('uploadOverlay').style.display='block';
@@ -186,7 +191,7 @@ function submitUpload(){
         if(res.success){
             _uploadedPath=res.file_path; _uploadedUrl=res.file_url;
             closeUploadModal();
-            openEmailModal();
+            setTimeout(()=>openEmailModal(), 250);
         } else { alert(res.message||'Upload gagal.'); document.getElementById('btn-upload-submit').disabled=false; }
         document.getElementById('upload-progress-wrapper').style.display='none';
         document.getElementById('upload-progress-bar').style.width='0%';
@@ -199,13 +204,30 @@ function submitUpload(){
 // ── Modal 4: Email ──────────────────────────────────
 function openEmailModal(){
     if(!_data) return;
+    
+    // Reset state modal ke form
+    document.getElementById('em-form').style.display='block';
+    document.getElementById('em-success').style.display='none';
+    document.getElementById('em-footer').style.display='flex';
+    
     document.getElementById('em-nama-penerima').textContent=_data.nama;
     document.getElementById('em-email-penerima').textContent=_data.email;
     const fname=_uploadedPath ? _uploadedPath.split('/').pop() : 'Surat Penerimaan';
     document.getElementById('em-file-name').textContent=fname;
     if(_uploadedUrl) document.getElementById('em-file-link').href=_uploadedUrl;
     const jam=new Date().getHours();
-    document.getElementById('em-caption').value=CAPTION_TEMPLATE(_data.nama, _data.nama_institusi, jam);
+    
+    // Format tanggal mulai ke format Indonesia (contoh: 11 Mei 2026)
+    const tglMulaiObj = new Date(_data.tanggal_mulai);
+    const formatter = new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+    const tglMulaiText = formatter.format(tglMulaiObj);
+    
+    document.getElementById('em-caption').value=CAPTION_TEMPLATE(_data.nama, _data.nama_institusi, jam, tglMulaiText);
+    
+    // Set flag anti-ghost click
+    _emailJustOpened=true;
+    setTimeout(()=>{ _emailJustOpened=false; }, 500);
+    
     document.getElementById('emailOverlay').style.display='block';
 }
 
@@ -213,7 +235,8 @@ function submitKirimEmail(){
     const caption=document.getElementById('em-caption').value.trim();
     if(!caption){ alert('Isi pesan email tidak boleh kosong.'); return; }
     if(!confirm(`Kirim email penerimaan ke ${_data.email}?\n\nStatus ${_data.nama} akan berubah menjadi "Belum Aktif".`)) return;
-    document.getElementById('btn-kirim-email').disabled=true;
+    const btn = document.getElementById('btn-kirim-email');
+    btn.disabled=true;
     document.getElementById('em-sending-indicator').style.display='flex';
     $.ajax({
         url: `/admin/lamaran/${_id}/kirim-email`,
@@ -221,22 +244,30 @@ function submitKirimEmail(){
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
         data: {caption: caption},
         success: function(res){
-            alert('✅ '+res.message);
-            closeEmailModal();
-            location.reload();
+            // Tampilkan success state animasi
+            document.getElementById('em-form').style.display='none';
+            document.getElementById('em-footer').style.display='none';
+            document.getElementById('em-success-to').textContent='Berhasil dikirim kepada '+_data.nama;
+            document.getElementById('em-success-email').textContent=_data.email;
+            document.getElementById('em-success').style.display='flex';
         },
         error: function(xhr){
             alert('❌ '+(xhr.responseJSON?.message||'Terjadi kesalahan.'));
-            document.getElementById('btn-kirim-email').disabled=false;
+            btn.disabled=false;
             document.getElementById('em-sending-indicator').style.display='none';
         }
     });
 }
 
 // ── ESC & overlay close ─────────────────────────────
-['reviewOverlay','suratOverlay','uploadOverlay','emailOverlay'].forEach(id=>{
+['reviewOverlay','suratOverlay','uploadOverlay'].forEach(id=>{
     document.getElementById(id).addEventListener('click',function(e){ if(e.target===this) this.style.display='none'; });
 });
+// emailOverlay punya proteksi anti-ghost click
+document.getElementById('emailOverlay').addEventListener('click',function(e){ 
+    if(e.target===this && !_emailJustOpened) this.style.display='none'; 
+});
+
 document.addEventListener('keydown',function(e){
     if(e.key==='Escape'){
         ['emailOverlay','uploadOverlay','suratOverlay','reviewOverlay'].forEach(id=>{
@@ -245,4 +276,8 @@ document.addEventListener('keydown',function(e){
         });
     }
 });
+
+function closeEmailModal(){
+    document.getElementById('emailOverlay').style.display='none';
+}
 </script>

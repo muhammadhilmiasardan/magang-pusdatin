@@ -16,7 +16,7 @@
         <div style="overflow-x:auto;">
             <table class="table-clean">
                 <thead><tr>
-                    <th>No</th><th>Pelamar</th><th>Institusi</th><th>Periode</th><th>Pilihan Tim</th><th style="text-align:center;">Aksi</th>
+                    <th style="text-align:left;">No</th><th style="text-align:left;">Pelamar</th><th style="text-align:left;">Institusi</th><th style="text-align:left;">Periode</th><th style="text-align:left;">Pilihan Tim</th><th style="text-align:center;">Aksi</th>
                 </tr></thead>
                 <tbody>
                 @foreach($lamaran as $i=>$item)
@@ -36,8 +36,8 @@
                     </td>
                     <td>
                         <div style="display:flex;flex-direction:column;gap:4px;">
-                            <span class="badge-status badge-selesai" style="font-size:10.5px;width:fit-content;">① {{ $item->timKerja1->nama_tim ?? '-' }}</span>
-                            <span class="badge-status badge-pending" style="font-size:10.5px;width:fit-content;">② {{ $item->timKerja2->nama_tim ?? '-' }}</span>
+                            <span class="badge-status badge-selesai" style="font-size:10.5px;width:fit-content;">1. {{ $item->timKerja1->nama_tim ?? '-' }}</span>
+                            <span class="badge-status badge-pending" style="font-size:10.5px;width:fit-content;">2. {{ $item->timKerja2->nama_tim ?? '-' }}</span>
                         </div>
                     </td>
                     <td style="text-align:center;">
@@ -55,7 +55,7 @@
 
 {{-- ═══ MODAL 1: REVIEW DATA ═══ --}}
 <div id="reviewOverlay" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(15,29,61,0.6);backdrop-filter:blur(4px);">
-    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:16px;width:90%;max-width:860px;max-height:90vh;overflow-y:auto;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);">
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:16px;width:90%;max-width:860px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);">
         <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
             <div>
                 <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">Langkah 1 dari 4</div>
@@ -63,6 +63,7 @@
             </div>
             <button onclick="closeReviewModal()" style="background:none;border:none;cursor:pointer;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:16px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'"><i class="fas fa-times"></i></button>
         </div>
+        <div style="overflow-y:auto;flex:1;">
         <div id="reviewLoadingSpinner" style="text-align:center;padding:60px;">
             <div style="width:36px;height:36px;margin:0 auto 14px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;"></div>
             <p style="color:var(--text-secondary);font-size:13px;">Memuat data...</p>
@@ -122,7 +123,8 @@
                 </div>
             </div>
         </div>
-        <div style="padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+        </div>
+        <div style="padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">
             <button onclick="closeReviewModal()" class="btn-outline-custom">Tutup</button>
             <button onclick="openSuratModal()" class="btn-primary-custom"><i class="fas fa-arrow-right"></i> Lanjut: Tentukan Penempatan &amp; Buat Surat</button>
         </div>
@@ -131,7 +133,7 @@
 
 {{-- ═══ MODAL 2: GENERATE SURAT ═══ --}}
 <div id="suratOverlay" style="display:none;position:fixed;inset:0;z-index:1010;background:rgba(15,29,61,0.6);backdrop-filter:blur(4px);">
-    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:16px;width:90%;max-width:760px;max-height:90vh;overflow-y:auto;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);">
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:16px;width:90%;max-width:760px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);">
         <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
             <div>
                 <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">Langkah 2 dari 4</div>
@@ -139,6 +141,7 @@
             </div>
             <button onclick="closeSuratModal()" style="background:none;border:none;cursor:pointer;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:16px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'"><i class="fas fa-times"></i></button>
         </div>
+        <div style="overflow-y:auto;flex:1;">
         <div style="padding:24px;">
             <h5 style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-secondary);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border);">Penempatan Resmi</h5>
             <div id="lm-penempatan-options" style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;"></div>
@@ -178,7 +181,8 @@
                 <strong><i class="fas fa-info-circle"></i> Setelah download:</strong> Lakukan TTE dan tambahkan lampiran secara manual, lalu klik "Lanjut Upload Surat".
             </div>
         </div>
-        <div style="padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;">
+        </div>
+        <div style="padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-shrink:0;">
             <button onclick="closeSuratModal();document.getElementById('reviewOverlay').style.display='block';" class="btn-outline-custom"><i class="fas fa-arrow-left"></i> Kembali</button>
             <button onclick="openUploadModal()" class="btn-primary-custom"><i class="fas fa-arrow-right"></i> Lanjut: Upload Surat Final</button>
         </div>
@@ -196,6 +200,7 @@
     @keyframes fadeIn{from{opacity:0}to{opacity:1}}
     @keyframes scaleIn{from{opacity:0;transform:translate(-50%,-50%) scale(.95)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
     @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes successPop{0%{transform:scale(0);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
     #reviewOverlay > div,#suratOverlay > div,#uploadOverlay > div,#emailOverlay > div{animation:scaleIn .2s ease}
 </style>
 @endpush

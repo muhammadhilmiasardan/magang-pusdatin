@@ -1,6 +1,6 @@
 {{-- ═══ MODAL 3: UPLOAD SURAT FINAL ═══ --}}
 <div id="uploadOverlay" style="display:none;position:fixed;inset:0;z-index:1020;background:rgba(15,29,61,0.6);backdrop-filter:blur(4px);">
-    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:16px;width:90%;max-width:520px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.3);">
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:16px;width:90%;max-width:520px;overflow:hidden;box-shadow:0 25px 50px -12px rgba(0,0,0,0.3);">
         <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
             <div>
                 <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">Langkah 3 dari 4</div>
