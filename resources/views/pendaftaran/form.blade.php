@@ -362,7 +362,7 @@
                         </div>
                         <div class="radio-option">
                             <input type="radio" name="tingkat_pendidikan" value="SLTA" id="slta" {{ old('tingkat_pendidikan') == 'SLTA' ? 'checked' : '' }} onchange="toggleFormLabels()">
-                            <label for="slta"><i class="fas fa-school"></i> SLTA</label>
+                            <label for="slta"><i class="fas fa-school"></i> SMK</label>
                         </div>
                     </div>
                     @error('tingkat_pendidikan') <div class="form-error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div> @enderror

@@ -23,6 +23,7 @@ class PesertaMagang extends Model
         'id_tim_kerja_2',
         'cv',
         'surat_rekomendasi',
+        'surat_penerimaan_final',
         'pas_foto',
         'status_magang',
         'is_sk_sent',
