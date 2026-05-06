@@ -34,6 +34,9 @@ class SuratPenerimaanMail extends Mailable
     {
         return new Content(
             view: 'emails.surat-penerimaan',
+            with: [
+                'logoUrl' => config('app.url') . '/logo_pu.png',
+            ],
         );
     }
 
