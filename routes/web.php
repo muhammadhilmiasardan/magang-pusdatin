@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PendaftaranController;
+use App\Http\Controllers\PusatDokumenController;
 
 // Redirect root URL ke halaman pendaftaran
 Route::get('/', function () {
@@ -32,6 +33,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/manajemen', [\App\Http\Controllers\ManajemenMagangController::class, 'index'])->name('manajemen.index');
     Route::get('/manajemen/{id}', [\App\Http\Controllers\ManajemenMagangController::class, 'show'])->name('manajemen.show');
     Route::post('/manajemen/{id}/anulir', [\App\Http\Controllers\ManajemenMagangController::class, 'anulir'])->name('manajemen.anulir');
-    Route::get('/dokumen', [\App\Http\Controllers\PusatDokumenController::class, 'index'])->name('dokumen.index');
+    
+    Route::prefix('dokumen')->name('dokumen.')->group(function () {
+        Route::get('/', [PusatDokumenController::class, 'index'])->name('index');
+        Route::get('/sk-magang/{id}/preview', [PusatDokumenController::class, 'previewSkMagang'])->name('sk-magang.preview');
+        Route::get('/sk-magang/{id}/download', [PusatDokumenController::class, 'downloadSkMagang'])->name('sk-magang.download');
+        Route::post('/sk-magang/{id}/upload-kirim', [PusatDokumenController::class, 'uploadDanKirimSkMagang'])->name('sk-magang.upload-kirim');
+
+        Route::post('/evaluasi/{id}/simpan-draft', [PusatDokumenController::class, 'saveDraftEvaluasi'])->name('evaluasi.simpan-draft');
+        Route::get('/evaluasi/{id}/preview', [PusatDokumenController::class, 'previewEvaluasi'])->name('evaluasi.preview');
+        Route::get('/evaluasi/{id}/download', [PusatDokumenController::class, 'downloadEvaluasi'])->name('evaluasi.download');
+        Route::post('/evaluasi/{id}/upload-kirim', [PusatDokumenController::class, 'uploadDanKirimEvaluasi'])->name('evaluasi.upload-kirim');
+    });
+
     Route::get('/foto-akses', [\App\Http\Controllers\FotoAksesController::class, 'index'])->name('foto-akses.index');
 });
