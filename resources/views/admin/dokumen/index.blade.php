@@ -364,8 +364,8 @@
                                 <input type="text" id="ev_nomor_surat" name="nomor_surat" class="form-input" style="padding: 6px 10px; font-size: 13px;" placeholder="Contoh: B.1234/5678">
                             </div>
                             <div style="margin-bottom: 15px;">
-                                <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px;">Kepada Yth</label>
-                                <textarea id="ev_kepada_yth" name="kepada_yth" class="form-input" rows="3" style="padding: 6px 10px; font-size: 13px;" placeholder="Bapak/Ibu ...&#10;Universitas/Sekolah ..."></textarea>
+                                <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px;">Jabatan Tujuan (Setelah Bapak/Ibu)</label>
+                                <input type="text" id="ev_kepada_yth" name="kepada_yth" class="form-input" style="padding: 6px 10px; font-size: 13px;" placeholder="Contoh: Kepala Sekolah / Rektor">
                             </div>
                             
                             <div style="font-size: 12px; font-weight: 600; margin-bottom: 8px; color: #475569;">Nilai (Skala 8.5 s/d 10)</div>
@@ -417,10 +417,30 @@
                         </form>
                     </div>
 
-                    {{-- Preview Kanan --}}
+                    {{-- Preview Kanan (portrait iframe) --}}
                     <div style="flex: 2; min-width: 400px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px;">
                         <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #334155;">Preview Lembar Evaluasi</h4>
-                        <iframe id="evaluasiPreviewFrame" src="" style="width: 100%; height: 500px; border: 1px solid #cbd5e1; border-radius: 6px; background: #e2e8f0;"></iframe>
+                        {{-- Rasio A4 Portrait: 21/29.7 = 0.707. padding-top trick = (29.7/21)*100 = 141.42% --}}
+                        <div id="evaluasiIframeWrapper" style="
+                            position: relative;
+                            width: 100%;
+                            padding-top: 141.42%;
+                            background: #64748b;
+                            border-radius: 6px;
+                            overflow: hidden;
+                            border: 1px solid #cbd5e1;
+                        ">
+                            <iframe id="evaluasiPreviewFrame" src=""
+                                style="
+                                    position: absolute;
+                                    top: 0; left: 0;
+                                    width: 100%;
+                                    height: 100%;
+                                    border: none;
+                                    border-radius: 6px;
+                                "
+                            ></iframe>
+                        </div>
                     </div>
 
                 </div>

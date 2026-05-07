@@ -25,19 +25,26 @@
     }
 
     @if(!$is_pdf)
-    /* Preview di Browser */
-    body {
-        background: #e2e8f0;
+    /* Preview mode: body tidak scroll, page di-scale ke viewport */
+    html, body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        background: #64748b;
         display: flex;
         justify-content: center;
-        padding: 2rem;
+        align-items: center;
     }
     .page {
         width: 21cm;
-        min-height: 29.7cm;
+        height: 29.7cm; /* Tinggi fixed A4 agar bisa di-scale */
         padding: 0.85cm 2cm 1cm 2.5cm;
         background: white;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        flex-shrink: 0;
+        transform-origin: center center;
     }
     @endif
 
@@ -159,7 +166,8 @@
     {{-- ═══ YTH ═══ --}}
     <div class="content-section">
         <div>Yth,</div>
-        <div>{!! nl2br(e($kepada_yth)) !!}</div>
+        <div>Bapak/Ibu {{ $kepada_yth }}</div>
+        <div>{{ $peserta->nama_institusi }}</div>
         <div>di Tempat</div>
     </div>
 
@@ -297,5 +305,39 @@
     </div>
 
 </div>
+@if(!$is_pdf)
+<script>
+    (function () {
+        function fitEvaluasi() {
+            var page = document.querySelector('.page');
+            if (!page) return;
+
+            // Ukuran asli A4 Portrait dalam px (21cm x 29.7cm @96dpi)
+            // 1cm = 96/2.54 px = 37.795px
+            var CM = 37.795;
+            var pageW = 21   * CM;  // ~794px
+            var pageH = 29.7 * CM;  // ~1122px
+
+            var vw = window.innerWidth;
+            var vh = window.innerHeight;
+
+            var scaleX = vw / pageW;
+            var scaleY = vh / pageH;
+            var scale  = Math.min(scaleX, scaleY) * 0.97; // 3% margin agar tidak terlalu mepet
+
+            page.style.transform = 'scale(' + scale + ')';
+        }
+
+        window.addEventListener('load', fitEvaluasi);
+        window.addEventListener('resize', fitEvaluasi);
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', fitEvaluasi);
+        } else {
+            fitEvaluasi();
+        }
+    })();
+</script>
+@endif
 </body>
 </html>
