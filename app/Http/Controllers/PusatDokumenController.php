@@ -27,8 +27,9 @@ class PusatDokumenController extends Controller
             ->get();
 
         // 3. Sertifikat Kelulusan
-        // Menampilkan daftar alumni magang (Selesai) yang belum mendapatkan sertifikat
-        $sertifikat = PesertaMagang::where('status_magang', 'Selesai')
+        // Peserta Aktif yang tanggal selesainya <= hari ini dan belum dikirim sertifikatnya
+        $sertifikat = PesertaMagang::where('status_magang', 'Aktif')
+            ->whereDate('tanggal_selesai', '<=', Carbon::today())
             ->where('is_sertifikat_sent', 0)
             ->get();
 
@@ -307,6 +308,154 @@ class PusatDokumenController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal mengirim email: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // =========================================================================
+    // SERTIFIKAT MAGANG METHODS
+    // =========================================================================
+
+    public function saveDraftSertifikat(Request $request, $id)
+    {
+        $request->validate([
+            'nomor_sertifikat' => 'nullable|string',
+            'predikat'         => 'nullable|string',
+        ]);
+
+        $peserta = PesertaMagang::findOrFail($id);
+        $peserta->sertifikat_data = json_encode($request->only('nomor_sertifikat', 'predikat'));
+        $peserta->save();
+
+        return response()->json(['success' => true, 'message' => 'Draft sertifikat berhasil disimpan.']);
+    }
+
+    private function buildSertifikatData($peserta)
+    {
+        // Encode semua aset gambar ke base64 agar dompdf & preview browser sama-sama bisa render
+        $assetPaths = [
+            'logo_pu_base64'       => public_path('logo_pu.png'),
+            'logo_pusdatin_base64' => public_path('logo_PUSDATIN.png'),
+            'logo_bwk_base64'      => public_path('Wilayah_Bebas_dari_Korupsi.png'),
+            'bg_bingkai_base64'    => public_path('bg_bingkai.png'),
+        ];
+
+        $assets = [];
+        foreach ($assetPaths as $key => $path) {
+            $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+            $mime = $ext === 'jpg' || $ext === 'jpeg' ? 'image/jpeg' : 'image/png';
+            $assets[$key] = file_exists($path)
+                ? 'data:' . $mime . ';base64,' . base64_encode(file_get_contents($path))
+                : '';
+        }
+
+        // Font Monotype Corsiva untuk DomPDF
+        $fontPath = public_path('fonts/MTCORSVA.TTF');
+        $assets['font_corsiva_base64'] = file_exists($fontPath)
+            ? 'data:font/truetype;charset=utf-8;base64,' . base64_encode(file_get_contents($fontPath))
+            : '';
+
+        $sebutan_peserta = (strtolower($peserta->tingkat_pendidikan) === 'smk'
+                        || strtolower($peserta->tingkat_pendidikan) === 'slta')
+            ? 'Siswa/i' : 'Mahasiswa/i';
+
+        Carbon::setLocale('id');
+
+        $sertifikat_data = $peserta->sertifikat_data ? json_decode($peserta->sertifikat_data, true) : [];
+
+        return array_merge($assets, [
+            'peserta'          => $peserta,
+            'sebutan_peserta'  => $sebutan_peserta,
+            'nomor_sertifikat' => $sertifikat_data['nomor_sertifikat'] ?? '',
+            'predikat'         => $sertifikat_data['predikat'] ?? '',
+            'tanggal_mulai'    => Carbon::parse($peserta->tanggal_mulai)->translatedFormat('d F Y'),
+            'tanggal_selesai'  => Carbon::parse($peserta->tanggal_selesai)->translatedFormat('d F Y'),
+            'tanggal_terbit'   => Carbon::parse($peserta->tanggal_selesai)->translatedFormat('d F Y'),
+        ]);
+    }
+
+    public function previewSertifikat($id)
+    {
+        $peserta = PesertaMagang::findOrFail($id);
+
+        $data = $this->buildSertifikatData($peserta);
+        $data['is_pdf'] = false;
+
+        $html = view('admin.dokumen.template-sertifikat', $data)->render();
+        return response($html)->header('Content-Type', 'text/html');
+    }
+
+    public function downloadSertifikat($id)
+    {
+        $peserta = PesertaMagang::findOrFail($id);
+
+        $data = $this->buildSertifikatData($peserta);
+        $data['is_pdf'] = true;
+
+        $pdf = Pdf::loadView('admin.dokumen.template-sertifikat', $data)
+            ->setPaper('a4', 'landscape')
+            ->setOptions([
+                'isHtml5ParserEnabled' => true,
+                'isRemoteEnabled'      => true,
+                'defaultFont'          => 'Times',
+                'dpi'                  => 150,
+            ]);
+
+        $filename = 'Sertifikat_Magang_' . str_replace(' ', '_', $peserta->nama) . '.pdf';
+        return $pdf->download($filename);
+    }
+
+    public function uploadDanKirimSertifikat(Request $request, $id)
+    {
+        $request->validate([
+            'surat_ttd'   => 'required|mimes:pdf|max:5120',
+            'pesan_email' => 'nullable|string',
+        ]);
+
+        $peserta = PesertaMagang::findOrFail($id);
+
+        // Upload File
+        if ($request->hasFile('surat_ttd')) {
+            $file     = $request->file('surat_ttd');
+            $filename = 'Sertifikat_TTD_' . time() . '_' . str_replace(' ', '_', $peserta->nama) . '.pdf';
+            $path     = $file->storeAs('public/sertifikat', $filename);
+
+            $peserta->surat_sertifikat   = 'sertifikat/' . $filename;
+            $peserta->is_sertifikat_sent = 1;
+
+            // Cek apakah semua dokumen sudah selesai → ubah status ke Selesai
+            if ($peserta->is_sk_sent && $peserta->is_evaluasi_sent && $peserta->is_sertifikat_sent) {
+                $peserta->status_magang = 'Selesai';
+            }
+
+            $peserta->save();
+        }
+
+        // Kirim Email
+        try {
+            Mail::send('emails.sertifikat', [
+                'peserta'         => $peserta,
+                'pesan_tambahan'  => $request->pesan_email,
+            ], function ($message) use ($peserta) {
+                $message->to($peserta->email)
+                        ->subject('Sertifikat Magang PUSDATIN PUPR');
+
+                if ($peserta->surat_sertifikat && Storage::disk('public')->exists($peserta->surat_sertifikat)) {
+                    $message->attach(Storage::disk('public')->path($peserta->surat_sertifikat), [
+                        'as'   => 'Sertifikat_Magang_' . $peserta->nama . '.pdf',
+                        'mime' => 'application/pdf',
+                    ]);
+                }
+            });
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Sertifikat berhasil diunggah dan dikirim ke email peserta.',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengirim email: ' . $e->getMessage(),
             ], 500);
         }
     }

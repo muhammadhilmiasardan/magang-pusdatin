@@ -29,6 +29,8 @@ class PesertaMagang extends Model
         'is_sk_sent',
         'is_evaluasi_sent',
         'is_sertifikat_sent',
+        'sertifikat_data',
+        'surat_sertifikat',
     ];
 
     /**

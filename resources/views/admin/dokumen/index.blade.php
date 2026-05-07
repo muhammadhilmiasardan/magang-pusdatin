@@ -169,23 +169,24 @@
     <div class="tab-panel hidden" id="tab-sertifikat" role="tabpanel">
         <div style="padding: 16px 22px 8px;">
             <p style="font-size: 13px; color: var(--text-secondary); margin: 0;">
-                Daftar alumni magang (Selesai) yang belum mendapatkan sertifikat kelulusan.
+                Daftar peserta aktif yang masa magangnya telah berakhir dan belum menerima sertifikat.
             </p>
         </div>
 
         @if($sertifikat->count() == 0)
             <div class="empty-state">
                 <i class="fas fa-award" style="display: block;"></i>
-                <p>Semua alumni telah menerima sertifikat. 🎉</p>
+                <p>Semua peserta telah menerima sertifikat. 🎉</p>
             </div>
         @else
             <div style="overflow-x: auto;">
                 <table class="table-clean">
                     <thead>
                         <tr>
-                            <th>Nama Alumni</th>
+                            <th>Nama Peserta</th>
                             <th>Institusi</th>
-                            <th>Selesai Pada</th>
+                            <th>Periode Magang</th>
+                            <th>Status</th>
                             <th style="text-align: center;">Aksi</th>
                         </tr>
                     </thead>
@@ -199,10 +200,21 @@
                                 </div>
                             </td>
                             <td>{{ $item->nama_institusi }}</td>
-                            <td style="font-size: 13px; white-space: nowrap;">{{ \Carbon\Carbon::parse($item->tanggal_selesai)->format('d M Y') }}</td>
+                            <td style="font-size: 12.5px; white-space: nowrap;">
+                                {{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d M Y') }}
+                                <span style="color: var(--text-muted);"> s/d </span>
+                                {{ \Carbon\Carbon::parse($item->tanggal_selesai)->format('d M Y') }}
+                            </td>
+                            <td>
+                                @if($item->is_sertifikat_sent)
+                                    <span class="badge-status badge-sent"><i class="fas fa-check"></i> Terkirim</span>
+                                @else
+                                    <span class="badge-status badge-pending"><i class="fas fa-clock"></i> Belum Dikirim</span>
+                                @endif
+                            </td>
                             <td style="text-align: center;">
-                                <button class="btn-success-custom btn-sm-custom">
-                                    <i class="fas fa-certificate"></i> Generate & Kirim
+                                <button class="btn-success-custom btn-sm-custom" onclick="openSertifikatModal({{ $item->id }})">
+                                    <i class="fas fa-certificate"></i> Proses Sertifikat
                                 </button>
                             </td>
                         </tr>
@@ -454,6 +466,141 @@
                     </button>
                     <button class="btn-primary-custom" onclick="submitEvaluasi()" id="btnSubmitEvaluasi">
                         <i class="fas fa-paper-plane"></i> Kirim Evaluasi via Email
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- ═══ MODAL SERTIFIKAT (3 STEP) ═══ --}}
+<div id="sertifikatModal" class="modal-overlay hidden">
+    <div class="modal-content" style="max-width: 1000px; width: 96%;">
+        <div class="modal-header">
+            <h3 class="modal-title"><i class="fas fa-certificate" style="color: var(--primary); margin-right: 8px;"></i> Proses Sertifikat Magang</h3>
+            <button class="modal-close" onclick="closeSertifikatModal()"><i class="fas fa-times"></i></button>
+        </div>
+
+        <div class="modal-body" style="padding: 24px;">
+            <input type="hidden" id="sertifikat_peserta_id" value="">
+
+            {{-- Stepper --}}
+            <div class="stepper-container">
+                <div class="step active" id="sert-step-1-indicator">
+                    <div class="step-icon"><i class="fas fa-file-pdf"></i></div>
+                    <div class="step-text">1. Form & Preview</div>
+                </div>
+                <div class="step-divider"></div>
+                <div class="step" id="sert-step-2-indicator">
+                    <div class="step-icon"><i class="fas fa-upload"></i></div>
+                    <div class="step-text">2. Upload TTE</div>
+                </div>
+                <div class="step-divider"></div>
+                <div class="step" id="sert-step-3-indicator">
+                    <div class="step-icon"><i class="fas fa-paper-plane"></i></div>
+                    <div class="step-text">3. Kirim Email</div>
+                </div>
+            </div>
+
+            {{-- STEP 1: FORM & PREVIEW --}}
+            <div id="sert-step-1-content" class="step-content">
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+
+                    {{-- Form Kiri --}}
+                    <div style="flex: 1; min-width: 260px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px;">
+                        <h4 style="margin: 0 0 14px 0; font-size: 14px; color: #334155;">Data Sertifikat</h4>
+                        <form id="formSertifikatData">
+                            <div style="margin-bottom: 14px;">
+                                <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 5px;">Nomor Sertifikat</label>
+                                <input type="text" id="sert_nomor" name="nomor_sertifikat" class="form-input" style="padding: 7px 10px; font-size: 13px;" placeholder="KP0902/B/Sd/2026/...">
+                            </div>
+                            <div style="margin-bottom: 14px;">
+                                <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 5px;">Predikat</label>
+                                <select id="sert_predikat" name="predikat" class="form-input" style="padding: 7px 10px; font-size: 13px;">
+                                    <option value="">-- Pilih Predikat --</option>
+                                    <option value="Sangat Baik">Sangat Baik</option>
+                                    <option value="Baik">Baik</option>
+                                    <option value="Cukup">Cukup</option>
+                                </select>
+                            </div>
+                            <button type="button" class="btn-secondary-custom" style="width: 100%;" onclick="simpanDraftSertifikat()" id="btnSimpanSertifikat">
+                                <i class="fas fa-sync"></i> Simpan & Perbarui Preview
+                            </button>
+                        </form>
+                    </div>
+
+                    {{-- Preview Kanan (landscape iframe) --}}
+                    <div style="flex: 2.5; min-width: 420px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #334155;">Preview Sertifikat</h4>
+                        {{-- Rasio A4 landscape: 29.7/21 = 1.4143. padding-top trick = (21/29.7)*100 = 70.7% --}}
+                        <div id="sertifikatIframeWrapper" style="
+                            position: relative;
+                            width: 100%;
+                            padding-top: 70.7%;
+                            background: #64748b;
+                            border-radius: 6px;
+                            overflow: hidden;
+                            border: 1px solid #cbd5e1;
+                        ">
+                            <iframe id="sertifikatPreviewFrame" src=""
+                                style="
+                                    position: absolute;
+                                    top: 0; left: 0;
+                                    width: 100%;
+                                    height: 100%;
+                                    border: none;
+                                    border-radius: 6px;
+                                "
+                            ></iframe>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                    <a href="#" id="btnDownloadSertifikat" class="btn-success-custom" style="text-decoration: none; display: inline-block;">
+                        <i class="fas fa-download"></i> Download PDF untuk di-TTE
+                    </a>
+                    <button class="btn-primary-custom" onclick="nextSertStep(2)">
+                        Lanjut ke Upload <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            {{-- STEP 2: UPLOAD TTE --}}
+            <div id="sert-step-2-content" class="step-content hidden">
+                <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+                    <p style="margin: 0 0 12px 0; font-size: 13px; color: #1e3a8a;">
+                        <i class="fas fa-info-circle"></i>
+                        Silakan minta Tanda Tangan Elektronik (TTE) Kepala PUSDATIN pada draft PDF,
+                        kemudian upload file yang sudah ber-TTE di bawah ini.
+                    </p>
+                    <form id="formUploadSertifikat" enctype="multipart/form-data">
+                        <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px;">File Sertifikat ber-TTE (PDF, maks. 5MB)</label>
+                        <input type="file" id="sert_ttd" class="form-input" accept=".pdf">
+                    </form>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <button class="btn-secondary-custom" onclick="nextSertStep(1)">
+                        <i class="fas fa-arrow-left"></i> Kembali
+                    </button>
+                    <button class="btn-primary-custom" onclick="nextSertStep(3)">
+                        Lanjut ke Email <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            {{-- STEP 3: KIRIM EMAIL --}}
+            <div id="sert-step-3-content" class="step-content hidden">
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+                    <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px;">Pesan Email Tambahan (Opsional)</label>
+                    <textarea id="sert_pesan_email" class="form-input" rows="4" placeholder="Terlampir adalah Sertifikat Magang Anda dari PUSDATIN PUPR..."></textarea>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <button class="btn-secondary-custom" onclick="nextSertStep(2)">
+                        <i class="fas fa-arrow-left"></i> Kembali
+                    </button>
+                    <button class="btn-primary-custom" onclick="submitSertifikat()" id="btnSubmitSertifikat">
+                        <i class="fas fa-paper-plane"></i> Kirim Sertifikat via Email
                     </button>
                 </div>
             </div>
@@ -760,5 +907,125 @@
             btn.disabled = false;
         });
     }
+
+    // ==========================================
+    // SERTIFIKAT MAGANG FUNCTIONS
+    // ==========================================
+
+    function openSertifikatModal(id) {
+        document.getElementById('sertifikat_peserta_id').value = id;
+        document.getElementById('sertifikatModal').classList.remove('hidden');
+        document.getElementById('formSertifikatData').reset();
+        document.getElementById('formUploadSertifikat').reset();
+        nextSertStep(1);
+        reloadSertifikatPreview(id);
+    }
+
+    function closeSertifikatModal() {
+        document.getElementById('sertifikatModal').classList.add('hidden');
+        document.getElementById('sertifikatPreviewFrame').src = '';
+    }
+
+    function nextSertStep(step) {
+        document.querySelectorAll('#sertifikatModal .step-content').forEach(c => c.classList.add('hidden'));
+        document.getElementById('sert-step-' + step + '-content').classList.remove('hidden');
+
+        for (let i = 1; i <= 3; i++) {
+            let ind = document.getElementById('sert-step-' + i + '-indicator');
+            if (i < step) {
+                ind.className = 'step completed';
+            } else if (i === step) {
+                ind.className = 'step active';
+            } else {
+                ind.className = 'step';
+            }
+        }
+    }
+
+    function reloadSertifikatPreview(forceId = null) {
+        const id = forceId || document.getElementById('sertifikat_peserta_id').value;
+        const cb = new Date().getTime();
+        document.getElementById('sertifikatPreviewFrame').src = `/admin/dokumen/sertifikat/${id}/preview?cb=${cb}`;
+        document.getElementById('btnDownloadSertifikat').href = `/admin/dokumen/sertifikat/${id}/download?cb=${cb}`;
+    }
+
+    function simpanDraftSertifikat() {
+        const id = document.getElementById('sertifikat_peserta_id').value;
+        const form = document.getElementById('formSertifikatData');
+        const formData = new FormData(form);
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+        const btn = document.getElementById('btnSimpanSertifikat');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+        btn.disabled = true;
+
+        fetch(`/admin/dokumen/sertifikat/${id}/simpan-draft`, {
+            method: 'POST',
+            headers: { 'X-CSRF-TOKEN': csrfToken },
+            body: formData
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                reloadSertifikatPreview(id);
+            } else {
+                alert('Gagal menyimpan draft: ' + data.message);
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Terjadi kesalahan saat menyimpan draft.');
+        })
+        .finally(() => {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        });
+    }
+
+    function submitSertifikat() {
+        const id = document.getElementById('sertifikat_peserta_id').value;
+        const fileInput = document.getElementById('sert_ttd');
+        const pesan = document.getElementById('sert_pesan_email').value;
+
+        if (!fileInput.files.length) {
+            alert('Silakan pilih file PDF sertifikat yang sudah ber-TTE.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('surat_ttd', fileInput.files[0]);
+        formData.append('pesan_email', pesan);
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+        const btn = document.getElementById('btnSubmitSertifikat');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
+        btn.disabled = true;
+
+        fetch(`/admin/dokumen/sertifikat/${id}/upload-kirim`, {
+            method: 'POST',
+            headers: { 'X-CSRF-TOKEN': csrfToken },
+            body: formData
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                window.location.reload();
+            } else {
+                alert('Gagal: ' + data.message);
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Terjadi kesalahan pada server.');
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        });
+    }
 </script>
 @endpush
+

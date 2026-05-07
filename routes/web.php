@@ -44,6 +44,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/evaluasi/{id}/preview', [PusatDokumenController::class, 'previewEvaluasi'])->name('evaluasi.preview');
         Route::get('/evaluasi/{id}/download', [PusatDokumenController::class, 'downloadEvaluasi'])->name('evaluasi.download');
         Route::post('/evaluasi/{id}/upload-kirim', [PusatDokumenController::class, 'uploadDanKirimEvaluasi'])->name('evaluasi.upload-kirim');
+
+        Route::post('/sertifikat/{id}/simpan-draft', [PusatDokumenController::class, 'saveDraftSertifikat'])->name('sertifikat.simpan-draft');
+        Route::get('/sertifikat/{id}/preview', [PusatDokumenController::class, 'previewSertifikat'])->name('sertifikat.preview');
+        Route::get('/sertifikat/{id}/download', [PusatDokumenController::class, 'downloadSertifikat'])->name('sertifikat.download');
+        Route::post('/sertifikat/{id}/upload-kirim', [PusatDokumenController::class, 'uploadDanKirimSertifikat'])->name('sertifikat.upload-kirim');
     });
 
     Route::get('/foto-akses', [\App\Http\Controllers\FotoAksesController::class, 'index'])->name('foto-akses.index');
