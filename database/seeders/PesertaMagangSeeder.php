@@ -87,6 +87,9 @@ class PesertaMagangSeeder extends Seeder
     {
         // Hapus karakter non-printable (kontrol Unicode, BOM, dll)
         $clean = preg_replace('/[^\x20-\x7E\x{00C0}-\x{024F}]/u', '', $raw);
+        if ($clean === null) {
+            $clean = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $raw);
+        }
         // Gabungkan multi-line jadi satu baris
         $clean = preg_replace('/\s+/', ' ', $clean);
         // Trim dan hapus trailing comma
@@ -162,7 +165,7 @@ class PesertaMagangSeeder extends Seeder
      */
     public function run(): void
     {
-        $csvFile = base_path('data orang magang.csv');
+        $csvFile = base_path('anak magang.csv');
 
         if (!file_exists($csvFile)) {
             $this->command->warn("File $csvFile tidak ditemukan.");
@@ -180,30 +183,44 @@ class PesertaMagangSeeder extends Seeder
         $failCount = 0;
 
         while (($row = fgetcsv($file, 0, ';')) !== false) {
-            // Pastikan baris memiliki minimal 11 kolom (No sampai Status)
-            if (count($row) < 11) {
+            // Pastikan baris memiliki minimal 14 kolom (No sampai Status)
+            if (count($row) < 14) {
                 $skipCount++;
                 continue;
             }
 
-            $nama = trim($row[1]);
-            $tingkatPendidikan = trim($row[3]);
-            $namaInstitusi = trim($row[4]);
-            $jurusan = trim($row[5]);
-            $tanggalMulai = trim($row[6]);
-            $tanggalSelesai = trim($row[7]);
-            $nomorTelp = trim($row[8]);
-            $penempatan = trim($row[9]);
-            $statusMagang = trim($row[10]);
+            $nama = trim($row[1] ?? '');
+            $nim_nis = trim($row[2] ?? '');
+            $tingkatPendidikan = trim($row[3] ?? '');
+            $namaInstitusi = trim($row[4] ?? '');
+            $jurusan = trim($row[5] ?? '');
+            $tanggalMulai = trim($row[6] ?? '');
+            $tanggalSelesai = trim($row[7] ?? '');
+            $nomorTelp = trim($row[8] ?? '');
+            $emailRaw = trim($row[9] ?? '');
+            $emailInstitusiRaw = trim($row[10] ?? '');
+            $bidang = trim($row[11] ?? '');
+            $timKerja = trim($row[12] ?? '');
+            $statusMagang = trim($row[13] ?? 'Aktif');
+
+            $penempatan = !empty($timKerja) ? $timKerja : $bidang;
 
             // Skip baris kosong
-            if (empty($nama)) {
+            if (empty($nama) || strtolower($nama) === 'nama' || strtolower($nama) === 'nama peserta') {
                 $skipCount++;
                 continue;
             }
 
             // Normalisasi nama (hapus karakter aneh, trim extra spaces)
-            $nama = preg_replace('/[^\x20-\x7E\x{00C0}-\x{024F}]/u', '', $nama);
+            $cleanName = preg_replace('/[^\x20-\x7E\x{00C0}-\x{024F}]/u', '', $nama);
+            if ($cleanName !== null) {
+                $nama = $cleanName;
+            } else {
+                // Fallback: hapus karakter non-ascii standar jika /u gagal karena invalid utf8
+                $nama = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $nama);
+            }
+            // Hapus karakter ? jika ada di akhir nama (biasanya hasil salah encoding)
+            $nama = rtrim($nama, '?');
             $nama = preg_replace('/\s+/', ' ', trim($nama));
 
             // Resolve tim kerja dari penempatan
@@ -232,14 +249,15 @@ class PesertaMagangSeeder extends Seeder
 
             PesertaMagang::create([
                 'nama' => $nama,
+                'nim_nis' => $nim_nis,
                 'tingkat_pendidikan' => $tingkatPendidikan,
                 'nama_institusi' => $namaInstitusi,
                 'jurusan' => $jurusan,
                 'tanggal_mulai' => $tanggalMulai,
                 'tanggal_selesai' => $tanggalSelesai,
                 'nomor_telp' => $phone,
-                'email' => $emailName . '@gmail.com',
-                'email_institusi' => 'kampus@' . $institusiClean . '.ac.id',
+                'email' => $emailRaw ?: $emailName . '@gmail.com',
+                'email_institusi' => $emailInstitusiRaw ?: 'kampus@' . $institusiClean . '.ac.id',
                 'id_tim_kerja_1' => $idTimKerja1,
                 'id_tim_kerja_2' => $idTimKerja2,
                 'cv' => null,

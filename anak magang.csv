@@ -1,0 +1,189 @@
+No;Nama Mahasiswa;NIM;Tingkat Pendidikan;Nama Institusi;Jurusan;Tanggal_Mulai;Tanggal_Selesai;Nomor Telp;Email Pribadi;Email Sekolah;Bidang;Tim Kerja;Status Magang
+1;Muhammad Ghafiqi Radiyansyah;;Universitas;Institut Teknologi Bandung;Teknik Geodesi dan Geomatika;2024-01-08;2024-02-02;-;;;;BDI;Selesai
+2;Siti RahMuhammad Arsyad Nawawi;;Universitas;Institut Teknologi Bandung;Teknik Geodesi dan Geomatika;2024-01-08;2024-02-02;-;;;;BDI;Selesai
+3;Rafly Maharazi;;Universitas;Institut Teknologi Bandung;Teknik Geodesi dan Geomatika;2024-01-08;2024-02-02;-;;;;BDI;Selesai
+4;Reza Akbar Ramadhan;;Universitas;Institut Teknologi Bandung;Teknik Geodesi dan Geomatika;2024-01-08;2024-02-02;-;;;;BDI;Selesai
+5;Mutyayasa Adji Nugroho;;Universitas;Universitas Bina Nusantara;Computer Science;2024-01-01;2025-02-28;6,28123E+12;;;;MTI;Selesai
+6;Az-Zahra Rizqi Fauziyah;;Universitas;Politeknik Negeri Media Kreatif;D4 Tekonologi Rekayasa Multimedia;2024-03-04;2024-07-05;6,28964E+12;;;;MTI;Selesai
+7;Inayat Adilasyahel;;Universitas;Politeknik Negeri Media Kreatif;D4 Tekonologi Rekayasa Multimedia;2024-03-04;2024-07-05;6,28987E+11;;;;MTI;Selesai
+8;Muhammad Alvian Ghifari;;SMK;SMK Plus Al - Musyarrofah;Teknik Komputer Jaringan;2024-09-02;2025-11-29;6,28159E+12;;;;MTI;Selesai
+9;Alfat Fauzan;;SMK;SMK Plus Al - Musyarrofah;Teknik Komputer Jaringan;2024-09-02;2025-11-29;6,28159E+12;;;;MTI;Selesai
+10;Keiza Nuriza Refalah;;SMK;SMK Plus Al - Musyarrofah;Teknik Komputer Jaringan;2024-09-02;2025-11-29;6,28159E+12;;;;MTI;Selesai
+11;Soleha Febriyanti;;SMK;SMK Plus Al - Musyarrofah;Teknik Komputer Jaringan;2024-09-02;2025-11-29;6,28159E+12;;;;MTI;Selesai
+12;Ananda Delphianto Satya;;Universitas;Universitas Esa Unggul;Teknik Informatika;2024-04-01;2024-08-30;6,28129E+12;;;;MTI;Selesai
+13;Bagus Axel Satria;;Universitas;Universitas Budi Luhur;Teknik Elektro;2024-04-01;2025-06-28;6,28152E+12;;;;MTI;Selesai
+14;Anggely Artini Gracesilia;;Universitas;Universitas Mercu Buana;Teknik Informatika;2024-06-03;2025-07-31;6,28139E+12;;;;MTI;Selesai
+15;Yeni Monica Belay;;Universitas;Universitas Mercu Buana;Teknik Informatika;2024-06-03;2025-07-31;6,28129E+12;;;;MTI;Selesai
+16;Fuza Syakhi;;SMK;SMK Negeri 1 Gunung Sindur;Teknik Komputer Jaringan;2024-07-01;2024-09-30;6,28129E+12;;;;TU;Selesai
+17;Alisa Putri;;SMK;SMK Negeri 1 Gunung Sindur;Teknik Komputer Jaringan;2024-07-01;2024-09-30;6,28569E+12;;;;TU;Selesai
+18;Elsa Saskia;;SMK;SMK Negeri 1 Gunung Sindur;Teknik Komputer Jaringan;2024-07-01;2024-09-30;6,28132E+12;;;;TU;Selesai
+19;Shafa Safira;;SMK;SMK Negeri 1 Gunung Sindur;Teknik Komputer Jaringan;2024-07-01;2024-09-30;6,28572E+12;;;;TU;Selesai
+20;Reyna Juliawati;;SMK;SMK Negeri 1 Gunung Sindur;Teknik Komputer Jaringan;2024-07-01;2024-09-30;6,28129E+12;;;;TU;Selesai
+21;Dea Marliana;;SMK;SMK Negeri 1 Gunung Sindur;Teknik Komputer Jaringan;2024-07-01;2024-09-30;6,28315E+12;;;;TU;Selesai
+22;Griselda Labibah;;SMK;SMK Budhi Warman II;Manajemen Perkantoran dan Layanan Bisnis;2024-10-01;2025-01-01;6,28139E+12;;;;TU;Selesai
+23;Giska Amanda;;SMK;SMK Budhi Warman II;Manajemen Perkantoran dan Layanan Bisnis;2024-10-01;2025-01-01;6,28139E+12;;;;TU;Selesai
+24;Rania Nabila Sofyan;;SMK;SMK Budhi Warman II;Manajemen Perkantoran dan Layanan Bisnis;2024-10-01;2025-01-01;6,28139E+12;;;;TU;Selesai
+25;Ahmad Fajar;;Universitas;Universitas Diponegoro;Teknik Komputer;2024-07-01;2024-07-31;6,28573E+12;;;;MTI;Selesai
+26;Halmar Bintang Kusuma Hano;;Universitas;Universitas Diponegoro;Teknik Komputer;2024-07-01;2024-07-31;6,28123E+12;;;;MTI;Selesai
+27;Rifki Arief Fadhillah Roboth;;Universitas;Universitas Diponegoro;Teknik Komputer;2024-07-01;2024-07-31;6,28122E+12;;;;MTI;Selesai
+28;Ridho Huda Hawari ;;Universitas;Universitas Diponegoro Sekolah Vokasi;S.Tr. Perencanaan Tata Ruang dan Pertanahan ;2024-06-18;2024-08-16;6,28516E+12;;;;DI;Selesai
+29;Nibran Ariqa Mekar Damuli ;;Universitas;Universitas Diponegoro Sekolah Vokasi;S.Tr. Perencanaan Tata Ruang dan Pertanahan ;2024-06-18;2024-08-16;6,2823E+12;;;;DI;Selesai
+30;Manika Dwi Anjani ;;Universitas;Universitas Diponegoro Sekolah Vokasi;S.Tr. Perencanaan Tata Ruang dan Pertanahan ;2024-06-18;2024-08-16;6,28129E+12;;;;DI;Selesai
+31;Muhammad Satriawan Fajar ;;Universitas;Universitas Diponegoro Sekolah Vokasi;S.Tr. Perencanaan Tata Ruang dan Pertanahan ;2024-06-18;2024-08-16;6,28151E+12;;;;DI;Selesai
+32;Githa Zetira Bilqis ;;Universitas;Universitas Diponegoro Sekolah Vokasi;S.Tr. Perencanaan Tata Ruang dan Pertanahan ;2024-06-18;2024-08-16;6,28131E+12;;;;DI;Selesai
+33;Rayhan Mulia Pratama;;Universitas;Telkom University;Sistem Informasi;2024-07-15;2024-08-31;-;;;;MTI;Selesai
+34;Muhammad Nibras Salsabil ;;SMK;SMK IDN ;Teknik Komputer Jaringan ;2024-09-02;2024-12-31;6,28521E+12;;;;MTI;Selesai
+35;Rieska Tri Hastuti;;Universitas;BSI;Sistem Informasi;2024-10-01;2024-12-31;6,28988E+11;;;;MTI;Selesai
+36;Rifai Ilham Ramadhan ;;Universitas;UAI;Informatika;2024-11-01;2025-01-31;6,28996E+11;;;;MTI;Selesai
+37;R Matahari Bila Pancar ;;Universitas;UAI;Informatika;2024-11-01;2025-01-31;6,28956E+13;;;;MTI;Selesai
+38;Kevin S. H. Napitupulu;;Universitas;Univ Gundar;Informatika;2024-11-01;2025-01-31;6,2822E+12;;;;MTI;Selesai
+39;Atta Advisa Dewintaningrum;;Universitas;IPB;Teknologi Rekayasa Komputer;2025-01-20;2025-06-05;6,28962E+12;;;;Manajemen Data dan Bencana;Selesai
+40;Hexania Nurul Rizkia Putri;;Universitas;IPB;Teknologi Rekayasa Komputer;2025-01-20;2025-06-06;6,28953E+13;;;;Manajemen Data dan Bencana;Selesai
+41;Hafidzah Kamilah;;Universitas;IPB;Teknologi Rekayasa Komputer;2025-01-20;2025-06-07;6,28237E+12;;;;MTI;Selesai
+42;Shafa Nada;;Universitas;IPB;Teknologi Rekayasa Komputer;2025-01-20;2025-06-08;6,28972E+11;;;;MTI;Selesai
+43;MUHAMAD ELKIANO PUTRA;;SMK;SMK CYBER MEDIA;TJKT;2025-01-02;2025-03-31;6,28225E+12;;;;TU;Selesai
+44;MUHAMMAD HAYDAR ARKAN;;SMK;SMK CYBER MEDIA;TJKT;2025-01-02;2025-03-31;6,28581E+12;;;;TU;Selesai
+45;DANIEL SETIAWAN PUTRA;;SMK;SMK CYBER MEDIA;TJKT;2025-01-02;2025-03-31;6,28383E+12;;;;TU;Selesai
+46;MUHAMMAD PAHSA ALFARIZZI;;SMK;SMK CYBER MEDIA;TJKT;2025-01-02;2025-03-31;6,28589E+12;;;;TU;Selesai
+47;Faishal Hammam;;Universitas;Poltek APP Jakarta;Manajemen Logistik Industri Elektronika;2024-12-02;2025-06-06;0819-0603-0013;;;;MTI;Selesai
+48;Muhammad As'ad Muizzu;;Universitas;ITB;Teknik Geodesi dan Geomatika;2025-01-13;2025-02-14;0822-8106-0471;;;;BDI - BIM dan Pengukuran Referensi;Selesai
+49;Muhammad Rafif Setyo N;;Universitas;ITB;Teknik Geodesi dan Geomatika;2025-01-13;2025-02-14;0857-1462-3068;;;;BDI - BIM dan Pengukuran Referensi;Selesai
+50;Atsil Hamid Putera Marwan;;Universitas;ITB;Teknik Geodesi dan Geomatika;2025-01-13;2025-02-14;0821-1797-0622;;;;BDI - BIM dan Pengukuran Referensi;Selesai
+51;Fathan Faishal Sudrajat;;Universitas;ITB;Teknik Geodesi dan Geomatika;2025-01-13;2025-02-14;0819-0956-2262;;;;BDI - BIM dan Pengukuran Referensi;Selesai
+52;Daniswara Indraputra;;SMK;SMK CITRA NEGARA;Pengembangan Perangkat lunak dan GIM (PPLG);2025-02-02;2025-03-31;81511965001;;;;MTI;Selesai
+53;Fakhri Rizky Masyudianto;;SMK;SMK CITRA NEGARA;Pengembangan Perangkat lunak dan GIM (PPLG);2025-02-02;2025-03-31;0812-2226-1508;;;;MTI;Selesai
+54;Alik Habibi Prihastama;;SMK;SMK CITRA NEGARA;Pengembangan Perangkat lunak dan GIM (PPLG);2025-02-02;2025-03-31;0858-1055-7403;;;;MTI;Selesai
+55;Fabyan Arnav Faizal;;Universitas;Univ Binus;Management;2024-12-27;2025-01-12;0812-1985-7833;;;;BDI;Selesai
+56;Anggita Noviana Rizki;;Universitas;UGM;Perencanaan Wilayah dan Kota;2025-01-08;2025-02-07;0857-1023-0160;;;;BDI;Selesai
+57;Buana Baruna Bayu;;Universitas;UGM;Perencanaan Wilayah dan Kota;2025-01-08;2025-02-07;83877109643;;;;BDI;Selesai
+58;Rainaya Fathiya Azzahra;;SMK;SMK TUNAS MEDIA;XI-MM.2;2025-02-03;2025-03-19;82122310026;;;;BDI;Selesai
+59;Nurindra Paramhamzah;;SMK;SMK TUNAS MEDIA;XI-MM.1;2025-02-03;2025-03-19;81221355841;;;;BDI;Selesai
+60;"RAMADHAN NOVRIANSYAH BINTANG 
+RADITYA";;Universitas;UIN;Sistem Informasi;2025-02-10;2025-04-10;82126292117;;;;MTI;Selesai
+61;Arsenio Nathaniel Wiliono;;Universitas;ITB;Teknik Geodesi dan Geomatika;2025-07-21;2025-08-22;8889263991;;;;BDI - BIM dan GIS;Selesai
+62;Fajrina Fitri Dewi;;Universitas;ITB;Teknik Geodesi dan Geomatika;2025-07-21;2025-08-22;81211995307;;;;BDI - BIM dan GIS;Selesai
+63;Emir Fazli Hanif Rachmawan;;Universitas;ITB;Teknik Geodesi dan Geomatika;2025-07-21;2025-08-22;81291850975;;;;BDI - BIM dan GIS;Selesai
+64;Ivan Yuantama Pradipta;;Universitas;UI;Teknik Komputer Paralel;2025-07-01;2025-09-30;88225825623;;;;TU & MTI;Selesai
+65;ABIMANYU DEKO AURTA ;;Universitas;UIN;Sistem Informasi ;2025-03-01;2025-03-31;89504932197;;;;BDI;Selesai
+66;FIKA BARAKA;;Universitas;UIN;Sistem Informasi ;2025-03-01;2025-03-31;89627843416;;;;BDI;Selesai
+67;Muhammad Fazri Nazrulloh ;;SMK;SMK Tamansiswa 2;XI TKJ ;2025-07-01;2025-12-05;0855-9847-947;;;;MTI;Selesai
+68;Muhammad Raysha Putra R ;;SMK;SMK Tamansiswa 2;XI TKJ ;2025-07-01;2025-12-05;0881-0255-39248;;;;MTI;Selesai
+69;Elfan Radittya ;;SMK;SMK Tamansiswa 2;XI TKJ ;2025-07-01;2025-12-05;;;;;MTI;Selesai
+70;Amalia Sekar Utami;;Universitas;Universitas Mitra Bangsa;Manajemen Pemasaran;2025-04-15;2025-06-10;;;;;TU;Selesai
+71;Sabrini ;;Universitas;Universitas Mitra Bangsa;Manajemen Pemasaran;2025-04-15;2025-06-10;;;;;TU;Selesai
+72;Thasya Felisha Desfat;;SMK;SMK Negeri 40 Jakarta;Rekayasa Perangkat Lunak;2025-07-01;2025-09-30;;;;;BDA;Selesai
+73;Rachmat Firmansyah;;SMK;SMK Negeri 40 Jakarta;Rekayasa Perangkat Lunak;2025-07-01;2025-09-30;;;;;BDA;Selesai
+74;Aditia Ihsan Akbar ;;Universitas;Universitas Al Azhar Indonesia;Studi Informatika;2025-07-01;2025-08-29;;;;;MTI;Selesai
+75;Neo Cahyabumi Suharto ;;SMK;SMK Bakti Idhata;TKJ ;2025-10-01;2025-11-30;;;;;Tim Kerja Sistem IOT;Selesai
+76;Gathan Leo Abinowo ;;SMK;SMK Bakti Idhata;TKJ ;2025-10-01;2025-11-30;;;;;Tim Kerja Sistem IOT;Selesai
+77;M. Farel Putra Jaya ;;SMK;SMK Bakti Idhata;TKJ ;2025-10-01;2025-11-30;;;;;Tim Kerja Sistem IOT;Selesai
+78;Awaluzien Abdullah ;;SMK;SMK Bakti Idhata;TKJ ;2025-10-01;2025-11-30;;;;;Tim Kerja Sistem IOT;Selesai
+79;Bunga Fitri Shavira ;;Universitas;BSI;Manajemen;2025-08-01;2025-10-31;;;;;TU;Selesai
+80;Putria Friska Nabila ;;Universitas;BSI;Manajemen;2025-08-01;2025-10-31;;;;;TU;Selesai
+81;Dafa Saputra;;SMK;SMK Daaruluum;XI TJKT;2025-08-01;2025-11-30;;;;;MTI;Selesai
+82;Iwan Gunawan;;SMK;SMK Daaruluum;XI TJKT;2025-08-01;2025-11-30;;;;;MTI;Selesai
+83;Jihan Aurora;;SMK;SMK Daaruluum;XI TJKT;2025-08-01;2025-11-30;;;;;MTI;Selesai
+84;Muhammad Irhamsyah Hasbullah;;SMK;SMK Daaruluum;XI TJKT;2025-08-01;2025-11-30;;;;;MTI;Selesai
+85;Azzahra Nabila;;SMK;SMK Daaruluum;XI TJKT;2025-08-01;2025-11-30;;;;;MTI;Selesai
+86;Sherryl Belin Patricia;;Universitas;Telkom University;Teknik Elektro;2025-06-30;2025-08-09;;;;;Tim Kerja Sistem IOT;Selesai
+87;Muhammad Salman;;SMK;Budhi Warman II;TKJ ;2025-07-14;2025-11-14;;;;;MTI;Selesai
+88;Vryaz Hezboullah;;SMK;Budhi Warman II;TKJ ;2025-07-14;2025-11-14;;;;;MTI;Selesai
+89;Akram Fatih;;SMK;Budhi Warman II;TKJ ;2025-07-14;2025-11-14;;;;;MTI;Selesai
+90;Muhammad Arvan Fajri;;SMK;Budhi Warman II;TKJ ;2025-07-14;2025-11-14;;;;;MTI;Selesai
+91;Antonio Aderald Markus Hasugian;;Universitas;STTPU;Teknik Informatika;2025-07-01;2025-08-31;;;;;MTI;Selesai
+92;Agus Guntur Ramadhan ;;SMK;SMK Cyber Media (Batch 2);XII-TKJ;2025-07-21;2025-09-21;;;;;MTI;Selesai
+93;Gheysar Shuitani ;;SMK;SMK Cyber Media (Batch 2);XII-TKJ;2025-07-21;2025-09-21;;;;;MTI;Selesai
+94;Danang Setiawan ;;SMK;SMK Cyber Media (Batch 2);XII-TKJ;2025-07-21;2025-09-21;;;;;TU;Selesai
+95;Fayi Adli Nugroho ;;SMK;SMK Cyber Media (Batch 2);XII-TKJ;2025-07-21;2025-09-21;;;;;MTI;Selesai
+96;Fajar Lingga;;SMK;SMK Negeri 35 Jakarta;XI DPIB 2;2025-07-14;2025-12-15;;;;;BDA-BIM;Selesai
+97;Febrina Nur Rahmah;;SMK;SMK Negeri 35 Jakarta;XI DPIB 2;2025-07-14;2025-12-15;;;;;BDA-BIM;Selesai
+98;Chika Anggun Jelita;;SMK;SMK Negeri 35 Jakarta;XI DPIB 2;2025-07-14;2025-12-15;;;;;BDA-BIM;Selesai
+99;Kayla Putri Rahakbauw;;SMK;SMK Negeri 35 Jakarta;XI DPIB 2;2025-07-14;2025-12-15;;;;;BDA-BIM;Selesai
+100;Muhammad Salim Mursid;;Universitas;Telkom University;S2 Sistem Informasi;2025-07-14;2025-08-08;;;;;MTI;Selesai
+101;Nayyara Aqila Marshall ;;Universitas;UPN;Teknik Informatika;2025-08-19;2025-12-19;;;;;BDA;Selesai
+102;Ratu Adisya Famela;;Universitas;ITPLN;Teknik Informatika;2025-08-25;2025-11-25;;;;;BDA;Selesai
+103;Zaidan Jibran Azhar ;;Universitas;ITPLN;Teknik Informatika;2025-08-25;2025-11-25;;;;;BDA;Selesai
+104;Salwa Diah Safitri;;SMK;SMK Media Informatika;DKV;2026-01-05;2026-03-31;;;;;PDBI - Tim Kerja Pelaporan Kebencanaan;Selesai
+105;Mutia Febriyanti ;;SMK;SMK Media Informatika;DKV;2026-01-05;2026-03-31;;;;;TU - Tim Kerja Kepegawaian dan JF;Selesai
+106;Raditya Arshendy;;SMK;SMK Media Informatika;DKV;2026-01-05;2026-03-31;;;;;DA - Tim Kerja Data dan Informasi Statistik Infrastruktur Pekerjaan Umum;Selesai
+107;Helmi Mubarak ;;SMK;SMK Media Informatika;DKV;2026-01-05;2026-03-31;;;;;PDBI - Tim Kerja Pelaporan Kebencanaan;Selesai
+108;Fajri Muhammad Akbar;;SMK;SMK Media Informatika;DKV;2026-01-05;2026-03-31;;;;;DA - Tim Kerja Data dan Informasi Statistik Infrastruktur Pekerjaan Umum;Selesai
+109;AFIIF RAMADHAN;;Universitas;BSI;Ilmu Komunikasi;2025-10-01;2025-12-31;;;;;Tim Kepegawaian JF;Selesai
+110;ADHA NASTITI;;Universitas;BSI;Ilmu Komunikasi;2025-10-01;2025-12-31;;;;;Tim Jaringan;Selesai
+111;Rifqi Cahyo Winardianto;;Universitas;UNINDRA;Fakultas Teknik dan Ilmu Komputer;2025-10-01;2025-12-31;;;;;Tim Jaringan;Selesai
+112;Farrin Syarrofa;23/512912/SV/22173;Universitas;Universitas Gadjah Mada;Teknologi Survei dan Pemetaan Dasar;2026-02-02;2026-06-30;0812-5933-8995;syarrofafarrin@gmail.com;farrinsyarrofa@mail.ugm.ac.id;BIDANG DATA ANALITIK PEKERJAAN UMUM;Tim Kerja Sistem Informasi Geografis dan Portal GIS PU;Aktif
+113;Vincentia Prima Tiara;23/518634/SV/23022;Universitas;Universitas Gadjah Mada;Teknologi Survei dan Pemetaan Dasar;2026-02-02;2026-06-30;0831-2334-1299;vincentiaprimatiara@gmail.com;vincentiaprimatiara@mail.ugm.ac.id;BIDANG DATA ANALITIK PEKERJAAN UMUM;Tim Kerja Analisis Data dan Informasi Geospasial Infrastruktur dan Kebencanaan;Aktif
+114;Fabio Muhammad Nabiel;;SMK;SMK WASKITO;DKV;2025-12-15;2026-03-15;;;;;Tim Kepegawaian JF;Anulir
+115;Muchmmad Khafizh Algifakhri;;SMK;SMK WASKITO;DKV;2025-12-15;2026-03-15;;;;;TU - Tim Kerja Kepegawaian dan JF;Selesai
+116;Daffa Pratama Putra;;SMK;SMK Media Informatika;XII TKJT 3;2026-01-05;2026-03-31;;;;;Tim Jaringan;Selesai
+117;Aditya Pratama;;SMK;SMK Media Informatika;XII TKJT 3;2026-01-05;2026-03-31;;;;;Tim Jaringan;Selesai
+118;Fachri Arkan Alfaris;;SMK;SMK Media Informatika;XII TKJT 3;2026-01-05;2026-03-31;;;;;Tim Jaringan;Selesai
+119;Ikhwan Faisal Marufi;;SMK;SMK Media Informatika;XII TKJT 3;2026-01-05;2026-03-31;;;;;Tim Jaringan;Selesai
+120;Achmad Farhan Islamy ;;Universitas;ITPLN;Teknik Infomatika;2025-10-13;2026-01-13;;;;;Tim Kepegawaian JF;Selesai
+121;Andi Muhammad Nabil Alkaf ;;Universitas;ITPLN;Teknik Infomatika;2025-10-13;2026-01-13;;;;;Tim Kepegawaian JF;Selesai
+122;Fayyadh Athaya Zhavranov Ramadhani ;;Universitas;UPI;DKV;2025-10-27;2025-12-31;;;;;Tim Kerja Program dan Evaluasi;Selesai
+123;"Faza Dzoukhar Doudayef 
+Umairullah ";;Universitas;ITPLN;Teknik Infomatika;2025-10-27;2026-01-27;;;;;Tim Kepegawaian JF;Selesai
+124;Muhammad Al Ikhsan ;240846;SMK;SMK Trikarya;Teknik Komputer Jaringan;2026-01-02;2026-05-01;83896916362;dadamoleng12345@gmail.com;smktrikarya.jaksel@gmail.com;BIDANG MANAJEMEN TEKNOLOGI INFORMASI (MTI);Tim Kerja Sistem Kendali Otomatis dan Kecerdasan Buatan;Aktif
+125;Rafif Arkana Maryyadi;240849;SMK;SMK Trikarya;Teknik Komputer Jaringan;2026-01-02;2026-05-01;83870992811;dilangryta321@gmail.com;smktrikarya.jaksel@gmail.com;BIDANG MANAJEMEN TEKNOLOGI INFORMASI (MTI);Tim Kerja Sistem Kendali Otomatis dan Kecerdasan Buatan;Aktif
+126;Pauzi Pasa Abdul Fatah;240847;SMK;SMK Trikarya;Teknik Komputer Jaringan;2026-01-02;2026-05-01;88101251374;serdadutea841@gmal.com;smktrikarya.jaksel@gmail.com;BIDANG MANAJEMEN TEKNOLOGI INFORMASI (MTI);Tim Kerja Sistem Kendali Otomatis dan Kecerdasan Buatan;Aktif
+127;Boy Surya Akbar ;240843;SMK;SMK Trikarya;Teknik Komputer Jaringan;2026-01-02;2026-05-01;85123944890;boysuryaakbar2008@gmail.com;smktrikarya.jaksel@gmail.com;BIDANG MANAJEMEN TEKNOLOGI INFORMASI (MTI);Tim Kerja Sistem Kendali Otomatis dan Kecerdasan Buatan;Aktif
+128;Razzak Hasyim Wibowo;7146;SMK;SMK Al Falah ;Teknik Jaringan Komputer dan Telekomunikasi;2026-01-02;2026-06-30;85184545699;razzakw856@gmail.com;smkalfalah1@gmail.com;BIDANG MANAJEMEN TEKNOLOGI INFORMASI (MTI);Tim Kerja Sistem Kendali Otomatis dan Kecerdasan Buatan;Aktif
+129;Wakamiya Naufal;7150;SMK;SMK Al Falah ;Teknik Jaringan Komputer dan Telekomunikasi;2026-01-02;2026-06-30;85817553839;wkm.naufal@gmail.com;smkalfalah1@gmail.com;BIDANG MANAJEMEN TEKNOLOGI INFORMASI (MTI);Tim Kerja Sistem Kendali Otomatis dan Kecerdasan Buatan;Aktif
+130;Bagus Giri Sanjaya;7129;SMK;SMK Al Falah ;Teknik Jaringan Komputer dan Telekomunikasi;2026-01-02;2026-06-30;83808753802;bagusgiri082k20@gmail.com;smkalfalah1@gmail.com;BIDANG MANAJEMEN TEKNOLOGI INFORMASI (MTI);Tim Kerja Sistem Kendali Otomatis dan Kecerdasan Buatan;Aktif
+131;Dimas Saiful Muqti Setiawan ;7106;SMK;SMK Al Falah ;Teknik Jaringan Komputer dan Telekomunikasi;2026-01-02;2026-06-30;85719012750;masssboysss2805@gmail.com;smkalfalah1@gmail.com;BIDANG MANAJEMEN TEKNOLOGI INFORMASI (MTI);Tim Kerja Sistem Kendali Otomatis dan Kecerdasan Buatan;Aktif
+132;Najma Hanifah;;Universitas;Universitas Indonesia;Geografi;2026-01-01;2026-01-31;0857-1418-1925;alifcahyagithub@gmail.com;smkn15@yahoo.com;;Tim Kerja Sistem Informasi Geografis dan Portal GIS PU;Selesai
+133;Andrean;;SMK;SMK Yadika 2;TKJ;2026-02-01;2026-03-31;0895-1335-0186;Radithyaelang837@gmail.com;smkn15@yahoo.com;;Manajemen Data dan Bencana;Selesai
+134;Auszan Brelgi Setiawan;;SMK;SMK Yadika 2;TKJ;2026-02-01;2026-03-31;;;;;Manajemen Data dan Bencana;Selesai
+135;Mohammad Farel;;SMK;SMK Yadika 2;TKJ;2026-02-01;2026-03-31;;;;;Manajemen Data dan Bencana;Selesai
+136;Muhammad Gyan Pahranul Hakim;;SMK;SMK Yadika 2;TKJ;2026-02-01;2026-03-31;;;;;Manajemen Data dan Bencana;Selesai
+137;Muhammad Rasya Ramadhan;;SMK;SMK Yadika 2;TKJ;2026-02-01;2026-03-31;;;;;Manajemen Data dan Bencana;Selesai
+138;Shinta Aprilia Dew;;Universitas;Universitas Diponegoro;Teknik Elektro;2026-01-05;2026-02-27;;;;;"Tim Kerja Sistem Kendali Otomatis dan 
+Kecerdasan Buatan";Anulir
+139;Cahya Atma Wijaya;2492;SMK;SMK Negeri 15 ;Rekaya Perangkat Lunak;2026-01-02;2026-06-30;0857-1418-1925;alifcahyagithub@gmail.com;smkn15@yahoo.com;BIDANG PENGELOLAAN DATA BENCANA INFRASTRUKTUR;Tim Kerja Pelaporan Kebencanaan;Aktif
+140;Radithya Elang Firandhika;11844;SMK;SMK Negeri 15 ;Rekaya Perangkat Lunak;2026-01-02;2026-06-30;0895-1335-0186;Radithyaelang837@gmail.com;smkn15@yahoo.com;BIDANG PENGELOLAAN DATA BENCANA INFRASTRUKTUR;Tim Kerja Pelaporan Kebencanaan;Aktif
+141;Rayya Ranu Ramdhan;8386;SMK;SMK Negeri 15 ;Rekaya Perangkat Lunak;2026-01-02;2026-06-30;0857-7533-5498;rayyaranu11@gmail.com;smkn15@yahoo.com;BIDANG PENGELOLAAN DATA BENCANA INFRASTRUKTUR;Tim Kerja Pelaporan Kebencanaan;Aktif
+142;Rastiar;11850;SMK;SMK Negeri 15 ;Rekaya Perangkat Lunak;2026-01-02;2026-06-30;0852-8382-8294;rastiar1127@gmail.com;smkn15@yahoo.com;BIDANG PENGELOLAAN DATA BENCANA INFRASTRUKTUR;Tim Kerja Pelaporan Kebencanaan;Aktif
+145;Naufal Danish Affandi;;SMK;SMK Walisongo;Teknik Jaringan Komputer dan Telekomunikasi;2026-01-02;2026-04-30;;;;;Tim Kerja Jaringan Teknologi Informasi;Selesai
+143;Zidan Ferdiansyah;;SMK;SMK Walisongo;Teknik Jaringan Komputer dan Telekomunikasi;2026-01-02;2026-04-30;;;;;Tim Kerja Jaringan Teknologi Informasi;Selesai
+144;Muhammad Robbi Ilyasa;;SMK;SMK Walisongo;Teknik Jaringan Komputer dan Telekomunikasi;2026-01-02;2026-04-30;;;;;Tim Kerja Jaringan Teknologi Informasi;Selesai
+146;Muhammad Afganistan;;SMK;SMK Walisongo;Teknik Jaringan Komputer dan Telekomunikasi;2026-01-02;2026-04-30;;;;;Tim Kerja Jaringan Teknologi Informasi;Selesai
+147;Bima Arjuna;2304140081;Universitas;Universitas Negeri Semarang;Sistem Infomasi;2026-01-19;2026-06-19;0895 1839 0060;bimaarjuna@students.unnes.ac.id;mipa@mail.unnes.ac.id;BIDANG DATA ANALITIK PEKERJAAN UMUM;Tim Kerja Layanan dan Integrasi Data Infrastruktur;Aktif
+148;Muhammad Raissa Akhdyan;2304140071;Universitas;Universitas Negeri Semarang;Sistem Infomasi;2026-01-19;2026-06-19;0877 83358925;muhammadakhdiyan@students.unnes.ac.id;mipa@mail.unnes.ac.id;BIDANG MANAJEMEN TEKNOLOGI INFORMASI (MTI);Tim Kerja Sistem Informasi;Aktif
+149;Muhammad Hilmi Asardan;2304140051;Universitas;Universitas Negeri Semarang;Sistem Infomasi;2026-01-19;2026-06-19;0895 8010 02329;hilmiasardan@students.unnes.ac.id;mipa@mail.unnes.ac.id;BIDANG MANAJEMEN TEKNOLOGI INFORMASI (MTI);Tim Kerja Sistem Informasi;Aktif
+150;Eza Aditya Nugroho;2304140083;Universitas;Universitas Negeri Semarang;Sistem Infomasi;2026-01-19;2026-06-19;0856 9708 7310;ezaadityanugroho@students.unnes.ac.id;mipa@mail.unnes.ac.id;BIDANG MANAJEMEN TEKNOLOGI INFORMASI (MTI);Tim Kerja Sistem Informasi;Aktif
+151;Muhammad Hasan Faedloni;2304140087;Universitas;Universitas Negeri Semarang;Sistem Infomasi;2026-01-19;2026-06-19;0851 7222 1403;sanfaedloni@students.unnes.ac.id;mipa@mail.unnes.ac.id;BIDANG MANAJEMEN TEKNOLOGI INFORMASI (MTI);Tim Kerja Sistem Informasi;Aktif
+152;Bimo Saputra Mulyadi;2304140060;Universitas;Universitas Negeri Semarang;Sistem Infomasi;2026-01-19;2026-06-19;0857 8275 3556;bimosaputra@students.unnes.ac.id;mipa@mail.unnes.ac.id;BIDANG DATA ANALITIK PEKERJAAN UMUM;Tim Kerja Layanan dan Integrasi Data Infrastruktur;Aktif
+153;Naila Puti Syalini;;Universitas;Universitas Indonesia;Geografi;2025-12-22;2026-02-20;;;;;Tim Kerja Analisis Data dan Informasi Geospasial Infrastruktur dan Kebencanaan - Bidang PDBI;Selesai
+154;Amirah Nayla Dinar Susena;;Universitas;Universitas Indonesia;Geografi;2025-12-22;2026-02-20;;;;;Tim Kerja Analisis Data dan Informasi Geospasial Infrastruktur dan Kebencanaan - Bidang PDBI;Selesai
+155;Kania Putri Ramadhanty;;Universitas;Universitas Indonesia;Geografi;2025-12-22;2026-02-20;;;;;Tim Kerja Analisis Data dan Informasi Geospasial Infrastruktur dan Kebencanaan - Bidang PDBI;Selesai
+156;Molina Putri Nabila;;Universitas;Institut Teknologi Bandung;Teknik Geodesi dan Geomatika;2026-02-02;2026-02-27;;;;;Tim Kerja Digitalisasi Infrastruktur Pekerjaan Umum;Selesai
+157;Nur Adilah;;Universitas;Institut Teknologi Bandung;Teknik Geodesi dan Geomatika;2026-02-02;2026-02-27;;;;;Tim Kerja Digitalisasi Infrastruktur Pekerjaan Umum;Selesai
+158;Tia Rahmatari;;Universitas;Institut Teknologi Bandung;Teknik Geodesi dan Geomatika;2026-02-02;2026-02-27;;;;;Tim Kerja Digitalisasi Infrastruktur Pekerjaan Umum;Selesai
+159;Finda Khaulasandy;;Universitas;Institut Teknologi Bandung;Teknik Geodesi dan Geomatika;2026-02-02;2026-02-27;;;;;Tim Kerja Digitalisasi Infrastruktur Pekerjaan Umum;Selesai
+160;Syahla Akira Chasanah;;Universitas;Institut Teknologi Bandung;Teknik Geodesi dan Geomatika;2026-02-02;2026-02-27;;;;;Tim Kerja Sistem Informasi Geografis dan Portal GIS PU;Selesai
+161;Indah Amelia Harahap;;Universitas;Institut Teknologi Bandung;Teknik Geodesi dan Geomatika;2026-02-02;2026-02-27;;;;;Tim Kerja Sistem Informasi Geografis dan Portal GIS PU;Selesai
+162;Marsya Nabila;13513;SMK;SMK Negeri 47 Jakarta;Akuntansi;2026-01-05;2026-06-30;0858 6668 4782;marsyanabila011@gmail.com;smkn47jkt@gmail.com;SUB BAGIAN TATA USAHA (TU) ;Tim Kerja Keuangan;Aktif
+163;Haidar Akbar Ramadhan;13487;SMK;SMK Negeri 47 Jakarta;Akuntansi;2026-01-05;2026-06-30;0895-4169-38181;haidarakbarramadhan@gmail.com;smkn47jkt@gmail.com;SUB BAGIAN TATA USAHA (TU) ;Tim Kerja Keuangan;Aktif
+164;Putri Gantika Melga;13578;SMK;SMK Negeri 47 Jakarta;Akuntansi;2026-01-05;2026-06-30;0815-1143-6022;putrigantikamelga@gmail.com;smkn47jkt@gmail.com;SUB BAGIAN TATA USAHA (TU) ;Tim Kerja Pengelolaan BMN dan Arsip ;Aktif
+165;Mukhamad Reyza Saputra;13549;SMK;SMK Negeri 47 Jakarta;Akuntansi;2026-01-05;2026-06-30;0858-7924-4862;reyzasaputra84@gmail.com;smkn47jkt@gmail.com;SUB BAGIAN TATA USAHA (TU) ;Tim Kerja Pengelolaan BMN dan Arsip ;Aktif
+166;Elnaya Adesayu;;Universitas;Universitas Budi Luhur;Teknik Informatika;2026-01-15;2026-02-27;;;;;Tim Kerja Kepegawaian dan Jabatan Fungsional;Selesai
+167;Nasywa Febriane;;Universitas;Universitas Islam Negeri Syarif Hidayatullah Jakarta;Ilmu Ekonomi Pembangunan;2026-01-05;2026-01-31;0895 2551 5709;;;;Tim Kerja Program dan Evaluasi;Selesai
+168;Faturrahman Al Hadi;244964;SMK;SMK Putra Satria;Teknik Komputer Jaringan;2026-01-05;2026-06-30;0857 8245 0053;alfaturrahman@gmail.com;smkputrasatria1988@gmail.com;BIDANG MANAJEMEN TEKNOLOGI INFORMASI (MTI);Tim Kerja Infrastruktur Teknologi Informasi ;Aktif
+169;Muhammad Revan;244968;SMK;SMK Putra Satria;Teknik Komputer Jaringan;2026-01-05;2026-06-30;0814 0052 5910;vannyxczvann@gmail.com;smkputrasatria1988@gmail.com;BIDANG MANAJEMEN TEKNOLOGI INFORMASI (MTI);Tim Kerja Infrastruktur Teknologi Informasi ;Aktif
+170;Prasetio Nurochman;244980;SMK;SMK Putra Satria;Teknik Komputer Jaringan;2026-01-05;2026-06-30;0822 2747 3318;prasetionrchmn8@gmail.com;smkputrasatria1988@gmail.com;BIDANG MANAJEMEN TEKNOLOGI INFORMASI (MTI);Tim Kerja Infrastruktur Teknologi Informasi ;Aktif
+171;Raihan Paradise;244983;SMK;SMK Putra Satria;Teknik Komputer Jaringan;2026-01-05;2026-06-30;0838 7302 5158;raihanparadise2008@gmail.com;smkputrasatria1988@gmail.com;BIDANG MANAJEMEN TEKNOLOGI INFORMASI (MTI);Tim Kerja Infrastruktur Teknologi Informasi ;Aktif
+172;Renata Heru Octafiana;;Universitas;Universitas Gadjah Mada;Teknik Geodesi;2026-01-19;2026-02-19;0896 5076 0119;;;;Tim Kerja Sistem Informasi Geografis dan Portal GIS PU;Selesai
+173;Nabila Rossa Herwinda;;Universitas;Universitas Gadjah Mada;Teknik Geodesi;2026-01-19;2026-02-19;0895 3791 7787;;;;Tim Kerja Sistem Informasi Geografis dan Portal GIS PU;Selesai
+174;Mochamad Farhan Ali;;Universitas;Sekolah Tinggi Teknologi Pekerjaan Umum;Teknik Informatika;2026-01-26;2026-04-24;0857 7182 6637;;;;Tim Kerja Kepegawaian dan Jabatan Fungsional;Selesai
+175;Muhammad Zakki Arifin;2310511116;Universitas;Universitas Pembangunan Nasional Veteran Jakarta;Informatika;2026-02-02;2026-05-31;0877 3199 0890;muhammadzakkiarifin@gmail.com;upnvj@upnvj.ac.id;SUB BAGIAN TATA USAHA (TU) ;Tim Kerja Kepegawaian dan Jabatan Fungsional;Aktif
+176;Ariel Ardiansyah ;2310511092;Universitas;Universitas Pembangunan Nasional Veteran Jakarta;Informatika;2026-03-02;2026-06-26;0896 2420 0137;Arielardiansyah244@gmail.com;upnvj@upnvj.ac.id;SUB BAGIAN TATA USAHA (TU) ;Tim Kerja Kepegawaian dan Jabatan Fungsional;Aktif
+177;Erlangga Saputra;;Universitas;Universitas Mercu Buana;Public Relations;2026-03-30;2026-06-30;0851 6309 7116;;;;Tim Kerja BMN dan Arsip;Anulir
+178;"Muhammad Zhafran 
+Nabil";2310511086;Universitas;Universitas Pembangunan Nasional Veteran Jakarta;Informatika;2026-03-09;2026-06-30;0813 2226 8650;zhafrannabil277@gmail.com;upnvj@upnvj.ac.id;BIDANG PENGELOLAAN DATA BENCANA INFRASTRUKTUR;Tim Kerja Analisis Data dan Informasi Geospasial Infrastruktur dan Kebencanaan;Aktif
+179;Ridho Anugrah Illahi;2310511088;Universitas;Universitas Pembangunan Nasional Veteran Jakarta;Informatika;2026-03-09;2026-06-30;0812 9827 9365;ridhoanugrah0804@gmail.com;upnvj@upnvj.ac.id;BIDANG PENGELOLAAN DATA BENCANA INFRASTRUKTUR;Tim Kerja Analisis Data dan Informasi Geospasial Infrastruktur dan Kebencanaan;Aktif
+180;Andita Widyawati;2306166474;Universitas;Universitas Indonesia;Geofisika;2026-03-05;2026-06-30;0895 3281 14965;anditawidyawati449@gmail.com;andita.widyawati@ui.ac.id;BIDANG PENGELOLAAN DATA BENCANA INFRASTRUKTUR;Tim Kerja Analisis Data dan Informasi Geospasial Infrastruktur dan Kebencanaan;Aktif
+181;Leysa Regita Parhusip ;237006516025;Universitas;Universitas Nasional;Sistem Informasi;2026-04-20;2026-07-20;08569874380;leysa19regita@gmail.com;info@unas.ac.id;BIDANG MANAJEMEN TEKNOLOGI INFORMASI (MTI);Tim Kerja Sistem Informasi ;Aktif
+182;Ruzbihan Salafi Bangko;2310511094;Universitas;Universitas Pembangunan Nasional Veteran Jakarta;Sistem Informasi;2026-04-20;2026-07-20;085880912797;ruzzzbihsalafi1312@gmail.com;upnvj@upnvj.ac.id;BIDANG MANAJEMEN TEKNOLOGI INFORMASI (MTI);Tim Kerja Sistem Informasi ;Aktif
+183;Karine Asna Parawansa ;202241211;Universitas;Universitas Prof. Dr. Moestopo (Beragama) ;Humas;2026-04-13;2026-06-13;081213227186;karinkarns.kap72@gmail.com;admin@moestopo.ac.id;BIDANG MANAJEMEN TEKNOLOGI INFORMASI (MTI);Tim Kerja Tata Kelola dan Perizinan;Aktif
+184;Ayla Fianti Syawalia ;202241096;Universitas;Universitas Prof. Dr. Moestopo (Beragama) ;Humas;2026-04-13;2026-06-13;081212740770;fifisyawalia30@gmail.com;admin@moestopo.ac.id;BIDANG MANAJEMEN TEKNOLOGI INFORMASI (MTI);Tim Kerja Tata Kelola dan Perizinan;Aktif
