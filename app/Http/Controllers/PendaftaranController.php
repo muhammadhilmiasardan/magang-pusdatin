@@ -11,10 +11,11 @@ class PendaftaranController extends Controller
     // Fungsi untuk menampilkan halaman form pendaftaran
     public function create()
     {
-        // Ambil data tim kerja + hitung jumlah peserta aktif di masing-masing tim
+        // Ambil data tim kerja + hitung peserta yang sudah diterima (Belum Aktif + Aktif)
+        // Kedua status ini sudah mengurangi kuota karena peserta telah resmi diterima
         $timKerja = TimKerja::withCount([
             'pesertaMagang' => function ($query) {
-                $query->where('status_magang', 'Aktif');
+                $query->whereIn('status_magang', ['Belum Aktif', 'Aktif']);
             }
         ])->get();
 

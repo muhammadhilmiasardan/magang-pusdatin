@@ -11,7 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // Middleware untuk auto-aktivasi peserta berdasarkan tanggal mulai
+        // Berjalan setiap kali halaman admin diakses — pengganti cron job
+        $middleware->alias([
+            'aktifkan.peserta' => \App\Http\Middleware\AktifkanPesertaMagang::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

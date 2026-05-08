@@ -42,14 +42,16 @@ class TimKerja extends Model
     }
 
     /**
-     * Override withCount: hitung peserta aktif dari kedua kolom pilihan.
+     * Hitung peserta yang SUDAH DITERIMA (mengurangi kuota).
+     * Mencakup 'Belum Aktif' (diterima, belum mulai) dan 'Aktif' (sedang magang).
+     * 'Ditolak', 'Anulir', 'Selesai', 'Menunggu Review' tidak mengurangi kuota.
      */
     public function scopeWithAktifCount(Builder $query)
     {
         return $query
             ->withCount([
                 'pesertaMagangPilihan1 as peserta_magang_count' => function ($q) {
-                    $q->where('status_magang', 'Aktif');
+                    $q->whereIn('status_magang', ['Belum Aktif', 'Aktif']);
                 },
             ]);
     }

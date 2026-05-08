@@ -21,7 +21,7 @@ Route::get('/pendaftaran/sukses', function () {
 })->name('pendaftaran.sukses');
 
 // Admin Routes
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('aktifkan.peserta')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\AdminDashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/lamaran', [\App\Http\Controllers\LamaranMasukController::class, 'index'])->name('lamaran.index');
     Route::get('/lamaran/{id}', [\App\Http\Controllers\LamaranMasukController::class, 'show'])->name('lamaran.show');

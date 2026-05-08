@@ -8,6 +8,9 @@ use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\SuratKeteranganMail;
+use App\Mail\SuratEvaluasiMail;
+use App\Mail\SuratSertifikatMail;
 
 class PusatDokumenController extends Controller
 {
@@ -97,52 +100,39 @@ class PusatDokumenController extends Controller
     public function uploadDanKirimSkMagang(Request $request, $id)
     {
         $request->validate([
-            'surat_ttd' => 'required|mimes:pdf|max:5120', // max 5MB
+            'surat_ttd'   => 'required|mimes:pdf|max:5120',
             'pesan_email' => 'nullable|string',
         ]);
 
         $peserta = PesertaMagang::findOrFail($id);
 
-        // Upload File
-        if ($request->hasFile('surat_ttd')) {
-            $file = $request->file('surat_ttd');
-            $filename = 'SK_Magang_TTD_' . time() . '_' . str_replace(' ', '_', $peserta->nama) . '.pdf';
-            $path = $file->storeAs('public/surat_keterangan', $filename);
-            
-            // Save path to DB
-            $peserta->surat_keterangan = 'surat_keterangan/' . $filename;
-            $peserta->is_sk_sent = 1;
-            // Optionally, change status to Selesai if not already
-            // User requested that admin completes SK, Evaluasi, Sertifikat BEFORE changing to Selesai.
-            // So we don't change status_magang here.
-            $peserta->save();
-        }
+        // Wajib ada file — validasi sudah memastikan ini
+        $file     = $request->file('surat_ttd');
+        $filename = 'SK_Magang_TTD_' . time() . '_' . str_replace(' ', '_', $peserta->nama) . '.pdf';
 
-        // Send Email
+        // Simpan file ke storage (disk: public)
+        $path = $file->storeAs('dokumen/surat-keterangan', $filename, 'public');
+
+        // Resolve path absolut untuk attachment
+        $filePath = storage_path('app/public/' . $path);
+
+        // Simpan ke DB
+        $peserta->surat_keterangan = $path;
+        $peserta->is_sk_sent = 1;
+        $peserta->save();
+
+        // Kirim Email dengan lampiran
         try {
-            Mail::send('emails.surat-keterangan', [
-                'peserta' => $peserta,
-                'pesan_tambahan' => $request->pesan_email
-            ], function ($message) use ($peserta) {
-                $message->to($peserta->email)
-                        ->subject('Surat Keterangan Selesai Magang PUSDATIN PUPR');
-                
-                if ($peserta->surat_keterangan && Storage::disk('public')->exists($peserta->surat_keterangan)) {
-                    $message->attach(Storage::disk('public')->path($peserta->surat_keterangan), [
-                        'as' => 'Surat_Keterangan_Magang_' . $peserta->nama . '.pdf',
-                        'mime' => 'application/pdf',
-                    ]);
-                }
-            });
+            Mail::to($peserta->email)->send(new SuratKeteranganMail($peserta, $request->pesan_email));
 
             return response()->json([
                 'success' => true,
-                'message' => 'Surat Keterangan Magang berhasil diunggah dan dikirim ke email peserta.'
+                'message' => 'Surat Keterangan Magang berhasil diunggah dan dikirim ke email peserta.',
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal mengirim email: ' . $e->getMessage()
+                'message' => 'Gagal mengirim email: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -260,54 +250,43 @@ class PusatDokumenController extends Controller
     public function uploadDanKirimEvaluasi(Request $request, $id)
     {
         $request->validate([
-            'surat_ttd' => 'required|mimes:pdf|max:5120', // max 5MB
+            'surat_ttd'   => 'required|mimes:pdf|max:5120',
             'pesan_email' => 'nullable|string',
         ]);
 
         $peserta = PesertaMagang::findOrFail($id);
 
-        // Upload File
-        if ($request->hasFile('surat_ttd')) {
-            $file = $request->file('surat_ttd');
-            $filename = 'Evaluasi_Magang_TTD_' . time() . '_' . str_replace(' ', '_', $peserta->nama) . '.pdf';
-            $path = $file->storeAs('public/surat_evaluasi', $filename);
-            
-            $peserta->surat_evaluasi = 'surat_evaluasi/' . $filename;
-            $peserta->is_evaluasi_sent = 1;
-            
-            // Check if status should be updated to Selesai
-            if ($peserta->is_sk_sent && $peserta->is_evaluasi_sent && $peserta->is_sertifikat_sent) {
-                $peserta->status_magang = 'Selesai';
-            }
-            
-            $peserta->save();
+        // Simpan file ke storage (disk: public)
+        $file     = $request->file('surat_ttd');
+        $filename = 'Evaluasi_Magang_TTD_' . time() . '_' . str_replace(' ', '_', $peserta->nama) . '.pdf';
+        $path     = $file->storeAs('dokumen/surat-evaluasi', $filename, 'public');
+
+        // Resolve path absolut untuk attachment
+        $filePath = storage_path('app/public/' . $path);
+
+        // Simpan ke DB
+        $peserta->surat_evaluasi    = $path;
+        $peserta->is_evaluasi_sent  = 1;
+
+        // Cek apakah semua dokumen sudah selesai → ubah status ke Selesai
+        if ($peserta->is_sk_sent && $peserta->is_evaluasi_sent && $peserta->is_sertifikat_sent) {
+            $peserta->status_magang = 'Selesai';
         }
 
-        // Send Email
+        $peserta->save();
+
+        // Kirim Email dengan lampiran
         try {
-            Mail::send('emails.surat-evaluasi', [
-                'peserta' => $peserta,
-                'pesan_tambahan' => $request->pesan_email
-            ], function ($message) use ($peserta) {
-                $message->to($peserta->email)
-                        ->subject('Lembar Evaluasi Magang PUSDATIN PUPR');
-                
-                if ($peserta->surat_evaluasi && Storage::disk('public')->exists($peserta->surat_evaluasi)) {
-                    $message->attach(Storage::disk('public')->path($peserta->surat_evaluasi), [
-                        'as' => 'Evaluasi_Magang_' . $peserta->nama . '.pdf',
-                        'mime' => 'application/pdf',
-                    ]);
-                }
-            });
+            Mail::to($peserta->email)->send(new SuratEvaluasiMail($peserta, $request->pesan_email));
 
             return response()->json([
                 'success' => true,
-                'message' => 'Surat Evaluasi berhasil diunggah dan dikirim ke email peserta.'
+                'message' => 'Surat Evaluasi berhasil diunggah dan dikirim ke email peserta.',
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal mengirim email: ' . $e->getMessage()
+                'message' => 'Gagal mengirim email: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -418,9 +397,9 @@ class PusatDokumenController extends Controller
         if ($request->hasFile('surat_ttd')) {
             $file     = $request->file('surat_ttd');
             $filename = 'Sertifikat_TTD_' . time() . '_' . str_replace(' ', '_', $peserta->nama) . '.pdf';
-            $path     = $file->storeAs('public/sertifikat', $filename);
+            $path     = $file->storeAs('dokumen/sertifikat', $filename, 'public');
 
-            $peserta->surat_sertifikat   = 'sertifikat/' . $filename;
+            $peserta->surat_sertifikat   = $path;
             $peserta->is_sertifikat_sent = 1;
 
             // Cek apakah semua dokumen sudah selesai → ubah status ke Selesai
@@ -433,20 +412,7 @@ class PusatDokumenController extends Controller
 
         // Kirim Email
         try {
-            Mail::send('emails.sertifikat', [
-                'peserta'         => $peserta,
-                'pesan_tambahan'  => $request->pesan_email,
-            ], function ($message) use ($peserta) {
-                $message->to($peserta->email)
-                        ->subject('Sertifikat Magang PUSDATIN PUPR');
-
-                if ($peserta->surat_sertifikat && Storage::disk('public')->exists($peserta->surat_sertifikat)) {
-                    $message->attach(Storage::disk('public')->path($peserta->surat_sertifikat), [
-                        'as'   => 'Sertifikat_Magang_' . $peserta->nama . '.pdf',
-                        'mime' => 'application/pdf',
-                    ]);
-                }
-            });
+            Mail::to($peserta->email)->send(new SuratSertifikatMail($peserta, $request->pesan_email));
 
             return response()->json([
                 'success' => true,

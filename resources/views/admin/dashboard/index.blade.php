@@ -94,7 +94,7 @@
                     <th>Bidang</th>
                     <th>Tim Kerja</th>
                     <th style="text-align: center;">Kuota</th>
-                    <th style="text-align: center;">Aktif</th>
+                    <th style="text-align: center;" title="Peserta 'Belum Aktif' + 'Aktif' — keduanya sudah mengurangi kuota">Terisi</th>
                     <th style="text-align: center;">Sisa</th>
                     <th style="width: 160px;">Kapasitas</th>
                 </tr>
