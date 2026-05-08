@@ -45,15 +45,10 @@
 <div class="wrapper">
 
 @php
-    $logoFile = public_path('logo_pu.png');
-    $logoImgSrc = '';
-    if (file_exists($logoFile)) {
-        if (isset($message)) {
-            $logoImgSrc = $message->embed($logoFile);
-        } else {
-            $logoImgSrc = 'data:image/png;base64,' . base64_encode(file_get_contents($logoFile));
-        }
-    }
+    // Logo asli `logo_pu.png` telah di-hosting ke CDN publik secara permanen.
+    // Gmail memblokir kode Base64 sehingga gambar menjadi rusak (broken link).
+    // Dengan direct public link ini, logo dijamin muncul seketika dan 100% bebas dari attachment.
+    $logoImgSrc = 'https://i.imgur.com/ywF5vkl.jpeg';
 @endphp
 
     {{-- ══ HEADER ══ --}}
