@@ -1,11 +1,11 @@
 {{-- ═══ MODAL 4: KIRIM EMAIL ═══ --}}
 <div id="emailOverlay" style="display:none;position:fixed;inset:0;z-index:1030;background:rgba(15,29,61,0.6);backdrop-filter:blur(4px);">
     {{-- Hapus flex-direction di container utama, gunakan flex di children kalau perlu --}}
-    <div id="emailBox" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:16px;width:90%;max-width:680px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.3);overflow:hidden;">
+    <div id="emailBox" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:16px;width:90%;max-width:680px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.3);overflow:hidden;display:flex;flex-direction:column;max-height:90vh;">
         
         {{-- STATE 1: FORM KIRIM EMAIL --}}
-        <div id="em-form" style="display:block;">
-            <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+        <div id="em-form" style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
+            <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
                 <div>
                     <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">Langkah 4 dari 4 — Final</div>
                     <h3 style="font-size:16px;font-weight:700;color:var(--text-primary);margin:0;"><i class="fas fa-paper-plane" style="color:var(--accent);margin-right:8px;"></i>Kirim Email Penerimaan</h3>
@@ -13,7 +13,7 @@
                 <button onclick="closeEmailModal()" style="background:none;border:none;cursor:pointer;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:16px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'"><i class="fas fa-times"></i></button>
             </div>
             
-            <div style="padding:24px; max-height:calc(90vh - 140px); overflow-y:auto;">
+            <div style="padding:24px;flex:1;overflow-y:auto;">
                 {{-- Info Penerima --}}
                 <div style="background:#f8fafc;border-radius:10px;padding:14px 16px;margin-bottom:16px;border:1px solid var(--border);">
                     <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">Informasi Pengiriman</div>
@@ -62,7 +62,7 @@
         </div>
 
         {{-- FOOTER KHUSUS FORM (Disembunyikan saat sukses) --}}
-        <div id="em-footer" style="padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:space-between;align-items:center;">
+        <div id="em-footer" style="padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:space-between;align-items:center;flex-shrink:0;">
             <button onclick="closeEmailModal();document.getElementById('uploadOverlay').style.display='block';" class="btn-outline-custom"><i class="fas fa-arrow-left"></i> Kembali</button>
             <div style="display:flex;gap:8px;">
                 <div id="em-sending-indicator" style="display:none;font-size:13px;color:var(--text-secondary);align-items:center;gap:8px;">

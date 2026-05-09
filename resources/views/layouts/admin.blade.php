@@ -386,6 +386,7 @@
             border-bottom: 1px solid var(--border);
             background: #f8fafc;
             white-space: nowrap;
+            text-align: left;
         }
 
         .table-clean tbody td {
@@ -693,6 +694,27 @@
             .main-content { margin-left: 220px; }
             .content-area { padding: 20px; }
         }
+
+        /* Custom styling for native file input buttons */
+        input[type="file"]::file-selector-button {
+            background: #fff;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 7px 14px;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all var(--transition);
+            margin-right: 12px;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background: var(--primary-lighter);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
     </style>
     @stack('styles')
 </head>
@@ -749,17 +771,6 @@
             </ul>
         </div>
 
-        <div class="sidebar-footer">
-            <div class="user-info">
-                <div class="user-avatar">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div>
-                    <div class="user-name">Admin</div>
-                    <div class="user-role">Kepegawaian</div>
-                </div>
-            </div>
-        </div>
     </aside>
 
     {{-- ── MAIN CONTENT ── --}}
@@ -770,9 +781,6 @@
             <div class="topbar-actions">
                 <button class="topbar-btn" title="Notifikasi">
                     <i class="fas fa-bell"></i>
-                </button>
-                <button class="topbar-btn" title="Pengaturan">
-                    <i class="fas fa-gear"></i>
                 </button>
                 <div class="topbar-avatar">A</div>
             </div>

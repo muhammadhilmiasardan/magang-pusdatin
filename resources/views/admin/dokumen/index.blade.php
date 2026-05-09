@@ -230,48 +230,46 @@
 {{-- ═══ MODAL SK MAGANG (3 STEP) ═══ --}}
 <div id="skModal" class="modal-overlay hidden">
     <div class="modal-content" style="max-width: 900px; width: 95%;">
-        <div class="modal-header">
-            <h3 class="modal-title">Proses Surat Keterangan Magang</h3>
-            <button class="modal-close" onclick="closeSkModal()"><i class="fas fa-times"></i></button>
+        <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+            <div>
+                <div id="sk-step-text" style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">LANGKAH 1 DARI 3</div>
+                <h3 style="font-size:16px;font-weight:700;color:var(--text-primary);margin:0;">
+                    <i id="sk-step-icon" class="fas fa-file-pdf" style="color:var(--accent);margin-right:8px;"></i>
+                    <span id="sk-step-title-text">Cetak &amp; TTD</span>
+                </h3>
+            </div>
+            <button onclick="closeSkModal()" style="background:none;border:none;cursor:pointer;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:16px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'"><i class="fas fa-times"></i></button>
         </div>
         
         <div class="modal-body" style="padding: 24px;">
-            {{-- Stepper UI --}}
-            <div class="stepper-container">
-                <div class="step active" id="step-1-indicator">
-                    <div class="step-icon"><i class="fas fa-file-pdf"></i></div>
-                    <div class="step-text">1. Cetak & TTD</div>
-                </div>
-                <div class="step-divider"></div>
-                <div class="step" id="step-2-indicator">
-                    <div class="step-icon"><i class="fas fa-upload"></i></div>
-                    <div class="step-text">2. Upload Berkas</div>
-                </div>
-                <div class="step-divider"></div>
-                <div class="step" id="step-3-indicator">
-                    <div class="step-icon"><i class="fas fa-paper-plane"></i></div>
-                    <div class="step-text">3. Kirim Email</div>
-                </div>
-            </div>
 
             {{-- STEP 1: CETAK & PREVIEW --}}
             <div id="step-1-content" class="step-content">
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px;">Nomor Surat</label>
-                    <div style="display: flex; gap: 10px;">
-                        <input type="text" id="nomor_surat" placeholder="B.1234/5678" class="form-input" style="flex: 1;" value="B.1234/5678">
-                        <button class="btn-secondary-custom" onclick="reloadPreview()" type="button">
-                            <i class="fas fa-sync"></i> Refresh Preview
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    
+                    {{-- Form Kiri --}}
+                    <div style="flex: 1; min-width: 260px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px;">
+                        <h4 style="margin: 0 0 14px 0; font-size: 14px; color: #334155;">Input Data Surat</h4>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px;">Nomor Surat</label>
+                            <input type="text" id="nomor_surat" placeholder="B.1234/5678" class="form-input" style="padding: 6px 10px; font-size: 13px;" value="B.1234/5678">
+                        </div>
+                        <button type="button" class="btn-outline-custom" style="width: 100%; margin-top: 5px; justify-content: center;" onclick="reloadPreview()">
+                            <i class="fas fa-save"></i> Simpan Data SK Magang
                         </button>
                     </div>
-                </div>
 
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
-                    <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #334155;">Preview Surat Keterangan</h4>
-                    <iframe id="skPreviewFrame" src="" style="width: 100%; height: 400px; border: 1px solid #cbd5e1; border-radius: 6px; background: #e2e8f0;"></iframe>
+                    {{-- Preview Kanan --}}
+                    <div id="skPreviewWrapper" style="flex: 2; min-width: 400px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #334155;">Preview Surat Keterangan</h4>
+                        <div class="iframe-fit-container" style="position: relative; width: 100%; padding-top: 141.42%; overflow: hidden; border: 1px solid #cbd5e1; border-radius: 6px; background: #64748b;">
+                            <iframe id="skPreviewFrame" src="" style="position: absolute; top: 0; left: 0; width: 794px; height: 1123px; border: none; transform-origin: top left;" onload="fitIframe(this)"></iframe>
+                        </div>
+                    </div>
+
                 </div>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <a href="#" id="btnDownloadSk" class="btn-success-custom" style="text-decoration: none; display: inline-block;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                    <a href="#" id="btnDownloadSk" class="btn-success-custom" style="text-decoration: none; display: inline-block;" onclick="this.dataset.downloaded = 'true'">
                         <i class="fas fa-download"></i> Download PDF untuk di-TTD
                     </a>
                     <button class="btn-primary-custom" onclick="nextStep(2)">
@@ -282,20 +280,31 @@
 
             {{-- STEP 2: UPLOAD --}}
             <div id="step-2-content" class="step-content hidden">
-                <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
-                    <p style="margin: 0 0 10px 0; font-size: 13px; color: #1e3a8a;">
-                        <i class="fas fa-info-circle"></i> Silakan upload Surat Keterangan Magang yang sudah ditandatangani basah beserta lampirannya (jika ada) dalam 1 file PDF.
-                    </p>
-                    <form id="formUploadSk">
-                        <input type="hidden" id="peserta_id" name="peserta_id">
-                        <div style="margin-bottom: 15px;">
-                            <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px;">File Surat TTD + Lampiran (PDF)</label>
-                            <input type="file" id="surat_ttd" name="surat_ttd" accept=".pdf" class="form-input" required>
-                        </div>
-                    </form>
+                <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:14px 16px;margin-bottom:20px;font-size:12.5px;color:#92400e;line-height:1.6;">
+                    <strong><i class="fas fa-info-circle"></i> Petunjuk:</strong><br>
+                    1. Download draft PDF dari Langkah 1<br>
+                    2. Lakukan Cetak &amp; TTD basah, tambahkan lampiran secara manual (jika ada)<br>
+                    3. Upload file final di sini (PDF, maks 5MB)
                 </div>
+                <form id="formUploadSk" style="margin-bottom:20px;">
+                    <input type="hidden" id="peserta_id" name="peserta_id">
+                    <div id="upload-dropzone-surat_ttd" style="border:2px dashed var(--border);border-radius:10px;padding:32px;text-align:center;cursor:pointer;transition:all 200ms ease;background:#fafafa;" onclick="document.getElementById('surat_ttd').click()" ondragover="event.preventDefault();this.style.borderColor='var(--primary)';this.style.background='var(--primary-lighter)'" ondragleave="this.style.borderColor='var(--border)';this.style.background='#fafafa'" ondrop="handleDrop(event, 'surat_ttd')">
+                        <i class="fas fa-cloud-upload-alt" style="font-size:32px;color:var(--text-muted);margin-bottom:10px;display:block;"></i>
+                        <div style="font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">Klik atau drag &amp; drop file di sini</div>
+                        <div style="font-size:11px;color:var(--text-muted);">PDF — Maksimal 5MB</div>
+                        <input type="file" id="surat_ttd" name="surat_ttd" accept=".pdf" style="display:none;" onchange="handleFileSelect(this, 'surat_ttd')" required>
+                    </div>
+                    <div id="upload-file-preview-surat_ttd" style="display:none;margin-top:12px;padding:12px 14px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;align-items:center;gap:10px;">
+                        <i class="fas fa-file-check" style="color:#16a34a;font-size:18px;flex-shrink:0;"></i>
+                        <div style="flex:1;overflow:hidden;">
+                            <div id="upload-file-name-surat_ttd" style="font-size:13px;font-weight:600;color:#15803d;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">-</div>
+                            <div id="upload-file-size-surat_ttd" style="font-size:11px;color:#16a34a;">-</div>
+                        </div>
+                        <button type="button" onclick="clearFile('surat_ttd')" style="background:none;border:none;cursor:pointer;color:#dc2626;font-size:14px;flex-shrink:0;"><i class="fas fa-times"></i></button>
+                    </div>
+                </form>
                 <div style="display: flex; justify-content: space-between;">
-                    <button class="btn-secondary-custom" onclick="nextStep(1)">
+                    <button class="btn-outline-custom" onclick="nextStep(1)" style="padding-left: 20px; padding-right: 20px;">
                         <i class="fas fa-arrow-left"></i> Kembali
                     </button>
                     <button class="btn-primary-custom" onclick="nextStep(3)">
@@ -311,7 +320,7 @@
                     <textarea id="pesan_email" form="formUploadSk" class="form-input" rows="4" placeholder="Terlampir adalah Surat Keterangan Magang..."></textarea>
                 </div>
                 <div style="display: flex; justify-content: space-between;">
-                    <button class="btn-secondary-custom" onclick="nextStep(2)">
+                    <button class="btn-outline-custom" onclick="nextStep(2)" style="padding-left: 20px; padding-right: 20px;">
                         <i class="fas fa-arrow-left"></i> Kembali
                     </button>
                     <button class="btn-primary-custom" onclick="submitSkMagang()" id="btnSubmitSk">
@@ -326,30 +335,19 @@
 {{-- MODAL EVALUASI --}}
 <div id="evaluasiModal" class="modal-overlay hidden">
     <div class="modal-content" style="max-width: 900px; width: 95%;">
-        <div class="modal-header">
-            <h3 class="modal-title"><i class="fas fa-file-signature" style="color: var(--primary); margin-right: 8px;"></i> Proses Surat Evaluasi Magang</h3>
-            <button class="modal-close" onclick="closeEvaluasiModal()"><i class="fas fa-times"></i></button>
+        <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+            <div>
+                <div id="ev-step-text" style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">LANGKAH 1 DARI 3</div>
+                <h3 style="font-size:16px;font-weight:700;color:var(--text-primary);margin:0;">
+                    <i id="ev-step-icon" class="fas fa-file-pdf" style="color:var(--accent);margin-right:8px;"></i>
+                    <span id="ev-step-title-text">Form &amp; Preview</span>
+                </h3>
+            </div>
+            <button onclick="closeEvaluasiModal()" style="background:none;border:none;cursor:pointer;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:16px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'"><i class="fas fa-times"></i></button>
         </div>
         
         <div class="modal-body" style="padding: 24px;">
             <input type="hidden" id="evaluasi_peserta_id" value="">
-            
-            <div class="stepper-container">
-                <div class="step active" id="ev-step-1-indicator">
-                    <div class="step-icon"><i class="fas fa-file-pdf"></i></div>
-                    <div class="step-text">1. Form & Preview</div>
-                </div>
-                <div class="step-divider"></div>
-                <div class="step" id="ev-step-2-indicator">
-                    <div class="step-icon"><i class="fas fa-upload"></i></div>
-                    <div class="step-text">2. Upload TTD</div>
-                </div>
-                <div class="step-divider"></div>
-                <div class="step" id="ev-step-3-indicator">
-                    <div class="step-icon"><i class="fas fa-paper-plane"></i></div>
-                    <div class="step-text">3. Kirim Email</div>
-                </div>
-            </div>
 
             {{-- STEP 1: FORM & PREVIEW --}}
             <div id="ev-step-1-content" class="step-content">
@@ -411,17 +409,17 @@
                                     <input type="number" step="0.1" name="nilai_10" id="ev_nilai_10" class="form-input" style="padding: 4px 8px; font-size: 12px;">
                                 </div>
                             </div>
-                            <button type="button" class="btn-secondary-custom" style="width: 100%; margin-top: 15px;" onclick="simpanDraftEvaluasi()" id="btnSimpanEvaluasi">
-                                <i class="fas fa-save"></i> Simpan & Perbarui Preview
+                            <button type="button" class="btn-outline-custom" style="width: 100%; margin-top: 15px; justify-content: center;" onclick="simpanDraftEvaluasi()" id="btnSimpanEvaluasi">
+                                <i class="fas fa-save"></i> Simpan Data Evaluasi
                             </button>
                         </form>
                     </div>
 
                     {{-- Preview Kanan (portrait iframe) --}}
-                    <div style="flex: 2; min-width: 400px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px;">
+                    <div id="evaluasiPreviewWrapper" style="flex: 2; min-width: 400px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px;">
                         <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #334155;">Preview Lembar Evaluasi</h4>
                         {{-- Rasio A4 Portrait: 21/29.7 = 0.707. padding-top trick = (29.7/21)*100 = 141.42% --}}
-                        <div id="evaluasiIframeWrapper" style="
+                        <div class="iframe-fit-container" style="
                             position: relative;
                             width: 100%;
                             padding-top: 141.42%;
@@ -434,11 +432,10 @@
                                 style="
                                     position: absolute;
                                     top: 0; left: 0;
-                                    width: 100%;
-                                    height: 100%;
+                                    width: 794px; height: 1123px;
                                     border: none;
-                                    border-radius: 6px;
-                                "
+                                    transform-origin: top left;
+                                " onload="fitIframe(this)"
                             ></iframe>
                         </div>
                     </div>
@@ -446,7 +443,7 @@
                 </div>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
-                    <a href="#" id="btnDownloadEvaluasi" class="btn-success-custom" style="text-decoration: none; display: inline-block;">
+                    <a href="#" id="btnDownloadEvaluasi" class="btn-success-custom" style="text-decoration: none; display: inline-block;" onclick="this.dataset.downloaded = 'true'">
                         <i class="fas fa-download"></i> Download PDF untuk di-TTD
                     </a>
                     <button class="btn-primary-custom" onclick="nextEvStep(2)">
@@ -457,15 +454,30 @@
 
             {{-- STEP 2: UPLOAD TTD --}}
             <div id="ev-step-2-content" class="step-content hidden">
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
-                    <h4 style="margin: 0 0 15px 0; font-size: 14px; color: #334155;">Upload Evaluasi Bertanda Tangan & Cap</h4>
-                    <form id="formUploadEvaluasi" enctype="multipart/form-data">
-                        <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px;">File Scan PDF (Maks. 5MB)</label>
-                        <input type="file" id="ev_surat_ttd" class="form-input" accept=".pdf">
-                    </form>
+                <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:14px 16px;margin-bottom:20px;font-size:12.5px;color:#92400e;line-height:1.6;">
+                    <strong><i class="fas fa-info-circle"></i> Petunjuk:</strong><br>
+                    1. Download draft PDF Lembar Evaluasi dari Langkah 1<br>
+                    2. Lakukan Cetak &amp; minta TTD serta Cap Instansi secara manual<br>
+                    3. Upload file scan final di sini (PDF, maks 5MB)
                 </div>
+                <form id="formUploadEvaluasi" enctype="multipart/form-data" style="margin-bottom:20px;">
+                    <div id="upload-dropzone-ev_surat_ttd" style="border:2px dashed var(--border);border-radius:10px;padding:32px;text-align:center;cursor:pointer;transition:all 200ms ease;background:#fafafa;" onclick="document.getElementById('ev_surat_ttd').click()" ondragover="event.preventDefault();this.style.borderColor='var(--primary)';this.style.background='var(--primary-lighter)'" ondragleave="this.style.borderColor='var(--border)';this.style.background='#fafafa'" ondrop="handleDrop(event, 'ev_surat_ttd')">
+                        <i class="fas fa-cloud-upload-alt" style="font-size:32px;color:var(--text-muted);margin-bottom:10px;display:block;"></i>
+                        <div style="font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">Klik atau drag &amp; drop file di sini</div>
+                        <div style="font-size:11px;color:var(--text-muted);">PDF — Maksimal 5MB</div>
+                        <input type="file" id="ev_surat_ttd" name="ev_surat_ttd" accept=".pdf" style="display:none;" onchange="handleFileSelect(this, 'ev_surat_ttd')">
+                    </div>
+                    <div id="upload-file-preview-ev_surat_ttd" style="display:none;margin-top:12px;padding:12px 14px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;align-items:center;gap:10px;">
+                        <i class="fas fa-file-check" style="color:#16a34a;font-size:18px;flex-shrink:0;"></i>
+                        <div style="flex:1;overflow:hidden;">
+                            <div id="upload-file-name-ev_surat_ttd" style="font-size:13px;font-weight:600;color:#15803d;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">-</div>
+                            <div id="upload-file-size-ev_surat_ttd" style="font-size:11px;color:#16a34a;">-</div>
+                        </div>
+                        <button type="button" onclick="clearFile('ev_surat_ttd')" style="background:none;border:none;cursor:pointer;color:#dc2626;font-size:14px;flex-shrink:0;"><i class="fas fa-times"></i></button>
+                    </div>
+                </form>
                 <div style="display: flex; justify-content: space-between;">
-                    <button class="btn-secondary-custom" onclick="nextEvStep(1)">
+                    <button class="btn-outline-custom" onclick="nextEvStep(1)" style="padding-left: 20px; padding-right: 20px;">
                         <i class="fas fa-arrow-left"></i> Kembali
                     </button>
                     <button class="btn-primary-custom" onclick="nextEvStep(3)">
@@ -481,7 +493,7 @@
                     <textarea id="ev_pesan_email" form="formUploadEvaluasi" class="form-input" rows="4" placeholder="Terlampir adalah Lembar Evaluasi Magang Anda..."></textarea>
                 </div>
                 <div style="display: flex; justify-content: space-between;">
-                    <button class="btn-secondary-custom" onclick="nextEvStep(2)">
+                    <button class="btn-outline-custom" onclick="nextEvStep(2)" style="padding-left: 20px; padding-right: 20px;">
                         <i class="fas fa-arrow-left"></i> Kembali
                     </button>
                     <button class="btn-primary-custom" onclick="submitEvaluasi()" id="btnSubmitEvaluasi">
@@ -496,31 +508,19 @@
 {{-- ═══ MODAL SERTIFIKAT (3 STEP) ═══ --}}
 <div id="sertifikatModal" class="modal-overlay hidden">
     <div class="modal-content" style="max-width: 1000px; width: 96%;">
-        <div class="modal-header">
-            <h3 class="modal-title"><i class="fas fa-certificate" style="color: var(--primary); margin-right: 8px;"></i> Proses Sertifikat Magang</h3>
-            <button class="modal-close" onclick="closeSertifikatModal()"><i class="fas fa-times"></i></button>
+        <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+            <div>
+                <div id="sert-step-text" style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">LANGKAH 1 DARI 3</div>
+                <h3 style="font-size:16px;font-weight:700;color:var(--text-primary);margin:0;">
+                    <i id="sert-step-icon" class="fas fa-file-pdf" style="color:var(--accent);margin-right:8px;"></i>
+                    <span id="sert-step-title-text">Form &amp; Preview</span>
+                </h3>
+            </div>
+            <button onclick="closeSertifikatModal()" style="background:none;border:none;cursor:pointer;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:16px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'"><i class="fas fa-times"></i></button>
         </div>
 
         <div class="modal-body" style="padding: 24px;">
             <input type="hidden" id="sertifikat_peserta_id" value="">
-
-            {{-- Stepper --}}
-            <div class="stepper-container">
-                <div class="step active" id="sert-step-1-indicator">
-                    <div class="step-icon"><i class="fas fa-file-pdf"></i></div>
-                    <div class="step-text">1. Form & Preview</div>
-                </div>
-                <div class="step-divider"></div>
-                <div class="step" id="sert-step-2-indicator">
-                    <div class="step-icon"><i class="fas fa-upload"></i></div>
-                    <div class="step-text">2. Upload TTE</div>
-                </div>
-                <div class="step-divider"></div>
-                <div class="step" id="sert-step-3-indicator">
-                    <div class="step-icon"><i class="fas fa-paper-plane"></i></div>
-                    <div class="step-text">3. Kirim Email</div>
-                </div>
-            </div>
 
             {{-- STEP 1: FORM & PREVIEW --}}
             <div id="sert-step-1-content" class="step-content">
@@ -543,17 +543,17 @@
                                     <option value="Cukup">Cukup</option>
                                 </select>
                             </div>
-                            <button type="button" class="btn-secondary-custom" style="width: 100%;" onclick="simpanDraftSertifikat()" id="btnSimpanSertifikat">
-                                <i class="fas fa-sync"></i> Simpan & Perbarui Preview
+                            <button type="button" class="btn-outline-custom" style="width: 100%; margin-top: 15px; justify-content: center;" onclick="simpanDraftSertifikat()" id="btnSimpanSertifikat">
+                                <i class="fas fa-save"></i> Simpan Data Sertifikat
                             </button>
                         </form>
                     </div>
 
                     {{-- Preview Kanan (landscape iframe) --}}
-                    <div style="flex: 2.5; min-width: 420px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px;">
+                    <div id="sertifikatPreviewWrapper" style="flex: 2.5; min-width: 420px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px;">
                         <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #334155;">Preview Sertifikat</h4>
                         {{-- Rasio A4 landscape: 29.7/21 = 1.4143. padding-top trick = (21/29.7)*100 = 70.7% --}}
-                        <div id="sertifikatIframeWrapper" style="
+                        <div class="iframe-fit-container" style="
                             position: relative;
                             width: 100%;
                             padding-top: 70.7%;
@@ -566,18 +566,17 @@
                                 style="
                                     position: absolute;
                                     top: 0; left: 0;
-                                    width: 100%;
-                                    height: 100%;
+                                    width: 1123px; height: 794px; /* Landscape A4 */
                                     border: none;
-                                    border-radius: 6px;
-                                "
+                                    transform-origin: top left;
+                                " onload="fitIframe(this)"
                             ></iframe>
                         </div>
                     </div>
                 </div>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
-                    <a href="#" id="btnDownloadSertifikat" class="btn-success-custom" style="text-decoration: none; display: inline-block;">
+                    <a href="#" id="btnDownloadSertifikat" class="btn-success-custom" style="text-decoration: none; display: inline-block;" onclick="this.dataset.downloaded = 'true'">
                         <i class="fas fa-download"></i> Download PDF untuk di-TTE
                     </a>
                     <button class="btn-primary-custom" onclick="nextSertStep(2)">
@@ -588,19 +587,30 @@
 
             {{-- STEP 2: UPLOAD TTE --}}
             <div id="sert-step-2-content" class="step-content hidden">
-                <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
-                    <p style="margin: 0 0 12px 0; font-size: 13px; color: #1e3a8a;">
-                        <i class="fas fa-info-circle"></i>
-                        Silakan minta Tanda Tangan Elektronik (TTE) Kepala PUSDATIN pada draft PDF,
-                        kemudian upload file yang sudah ber-TTE di bawah ini.
-                    </p>
-                    <form id="formUploadSertifikat" enctype="multipart/form-data">
-                        <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px;">File Sertifikat ber-TTE (PDF, maks. 5MB)</label>
-                        <input type="file" id="sert_ttd" class="form-input" accept=".pdf">
-                    </form>
+                <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:14px 16px;margin-bottom:20px;font-size:12.5px;color:#92400e;line-height:1.6;">
+                    <strong><i class="fas fa-info-circle"></i> Petunjuk:</strong><br>
+                    1. Download draft PDF Sertifikat dari Langkah 1<br>
+                    2. Lakukan proses Tanda Tangan Elektronik (TTE) Kepala PUSDATIN<br>
+                    3. Upload file sertifikat ber-TTE di sini (PDF, maks 5MB)
                 </div>
+                <form id="formUploadSertifikat" enctype="multipart/form-data" style="margin-bottom:20px;">
+                    <div id="upload-dropzone-sert_ttd" style="border:2px dashed var(--border);border-radius:10px;padding:32px;text-align:center;cursor:pointer;transition:all 200ms ease;background:#fafafa;" onclick="document.getElementById('sert_ttd').click()" ondragover="event.preventDefault();this.style.borderColor='var(--primary)';this.style.background='var(--primary-lighter)'" ondragleave="this.style.borderColor='var(--border)';this.style.background='#fafafa'" ondrop="handleDrop(event, 'sert_ttd')">
+                        <i class="fas fa-cloud-upload-alt" style="font-size:32px;color:var(--text-muted);margin-bottom:10px;display:block;"></i>
+                        <div style="font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">Klik atau drag &amp; drop file di sini</div>
+                        <div style="font-size:11px;color:var(--text-muted);">PDF — Maksimal 5MB</div>
+                        <input type="file" id="sert_ttd" name="sert_ttd" accept=".pdf" style="display:none;" onchange="handleFileSelect(this, 'sert_ttd')">
+                    </div>
+                    <div id="upload-file-preview-sert_ttd" style="display:none;margin-top:12px;padding:12px 14px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;align-items:center;gap:10px;">
+                        <i class="fas fa-file-check" style="color:#16a34a;font-size:18px;flex-shrink:0;"></i>
+                        <div style="flex:1;overflow:hidden;">
+                            <div id="upload-file-name-sert_ttd" style="font-size:13px;font-weight:600;color:#15803d;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">-</div>
+                            <div id="upload-file-size-sert_ttd" style="font-size:11px;color:#16a34a;">-</div>
+                        </div>
+                        <button type="button" onclick="clearFile('sert_ttd')" style="background:none;border:none;cursor:pointer;color:#dc2626;font-size:14px;flex-shrink:0;"><i class="fas fa-times"></i></button>
+                    </div>
+                </form>
                 <div style="display: flex; justify-content: space-between;">
-                    <button class="btn-secondary-custom" onclick="nextSertStep(1)">
+                    <button class="btn-outline-custom" onclick="nextSertStep(1)" style="padding-left: 20px; padding-right: 20px;">
                         <i class="fas fa-arrow-left"></i> Kembali
                     </button>
                     <button class="btn-primary-custom" onclick="nextSertStep(3)">
@@ -616,7 +626,7 @@
                     <textarea id="sert_pesan_email" class="form-input" rows="4" placeholder="Terlampir adalah Sertifikat Magang Anda dari PUSDATIN PUPR..."></textarea>
                 </div>
                 <div style="display: flex; justify-content: space-between;">
-                    <button class="btn-secondary-custom" onclick="nextSertStep(2)">
+                    <button class="btn-outline-custom" onclick="nextSertStep(2)" style="padding-left: 20px; padding-right: 20px;">
                         <i class="fas fa-arrow-left"></i> Kembali
                     </button>
                     <button class="btn-primary-custom" onclick="submitSertifikat()" id="btnSubmitSertifikat">
@@ -643,7 +653,11 @@
     .modal-content {
         background: #fff; border-radius: 12px;
         box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
-        max-height: 90vh; overflow-y: auto;
+        max-height: 90vh; overflow: hidden;
+        display: flex; flex-direction: column;
+    }
+    .modal-body {
+        flex: 1; overflow-y: auto;
     }
     .modal-header {
         padding: 16px 24px; border-bottom: 1px solid #f1f5f9;
@@ -697,10 +711,28 @@
         document.getElementById('tab-' + tabId).classList.remove('hidden');
     }
 
+    // Iframe Scaling to fit without scrolling
+    function fitIframe(iframe) {
+        if (!iframe || iframe.offsetParent === null) return; // if hidden
+        const parentWidth = iframe.parentElement.offsetWidth;
+        const iframeWidth = parseFloat(iframe.style.width);
+        if(parentWidth > 0 && iframeWidth > 0) {
+            const scale = parentWidth / iframeWidth;
+            iframe.style.transform = `scale(${scale})`;
+        }
+    }
+
+    window.addEventListener('resize', () => {
+        document.querySelectorAll('.iframe-fit-container iframe').forEach(fitIframe);
+    });
+
     // Modal SK Magang Functions
     function openSkModal(id) {
         document.getElementById('peserta_id').value = id;
         document.getElementById('skModal').classList.remove('hidden');
+        
+        // Reset download status
+        document.getElementById('btnDownloadSk').dataset.downloaded = 'false';
         
         // Use default nomor surat initially
         reloadPreview(id);
@@ -727,20 +759,42 @@
     }
 
     function nextStep(step) {
+        // VALIDASI SK MAGANG
+        if (step === 2) {
+            const noSurat = document.getElementById('nomor_surat').value.trim();
+            if (!noSurat) {
+                alert('Silakan isi Nomor Surat terlebih dahulu.');
+                return;
+            }
+            if (document.getElementById('btnDownloadSk').dataset.downloaded !== 'true') {
+                alert('Silakan Download PDF terlebih dahulu sebelum lanjut ke tahap Upload.');
+                return;
+            }
+        } else if (step === 3) {
+            const fileUpload = document.getElementById('surat_ttd');
+            if (!fileUpload.files || fileUpload.files.length === 0) {
+                alert('Silakan upload file Surat Keterangan yang sudah di-TTD terlebih dahulu.');
+                return;
+            }
+        }
+
         // Update Content Visibility
-        document.querySelectorAll('.step-content').forEach(c => c.classList.add('hidden'));
+        document.querySelectorAll('#skModal .step-content').forEach(c => c.classList.add('hidden'));
         document.getElementById('step-' + step + '-content').classList.remove('hidden');
 
-        // Update Indicators
-        for(let i=1; i<=3; i++) {
-            let ind = document.getElementById('step-' + i + '-indicator');
-            if(i < step) {
-                ind.className = 'step completed';
-            } else if (i === step) {
-                ind.className = 'step active';
-            } else {
-                ind.className = 'step';
-            }
+        // Update Dynamic Header
+        document.getElementById('sk-step-text').textContent = 'Langkah ' + step + ' dari 3';
+        const titleText = document.getElementById('sk-step-title-text');
+        const icon = document.getElementById('sk-step-icon');
+        if(step === 1) {
+            titleText.textContent = 'Cetak & TTD';
+            icon.className = 'fas fa-file-pdf';
+        } else if(step === 2) {
+            titleText.textContent = 'Upload Berkas';
+            icon.className = 'fas fa-upload';
+        } else if(step === 3) {
+            titleText.textContent = 'Kirim Email';
+            icon.className = 'fas fa-paper-plane';
         }
     }
 
@@ -799,6 +853,9 @@
         document.getElementById('evaluasi_peserta_id').value = id;
         document.getElementById('evaluasiModal').classList.remove('hidden');
         
+        // Reset download status
+        document.getElementById('btnDownloadEvaluasi').dataset.downloaded = 'false';
+        
         // Reset form inputs
         document.getElementById('formEvaluasiData').reset();
         
@@ -816,20 +873,51 @@
     }
 
     function nextEvStep(step) {
+        // VALIDASI EVALUASI
+        if (step === 2) {
+            const evNoSurat = document.getElementById('ev_nomor_surat').value.trim();
+            const evKepada = document.getElementById('ev_kepada_yth').value.trim();
+            if (!evNoSurat || !evKepada) {
+                alert('Silakan lengkapi Nomor Surat dan Jabatan Tujuan terlebih dahulu.');
+                return;
+            }
+            // Validasi nilai
+            for(let i=1; i<=10; i++) {
+                const nilai = document.getElementById('ev_nilai_' + i).value.trim();
+                if(!nilai) {
+                    alert('Silakan lengkapi semua nilai (1-10) terlebih dahulu.');
+                    return;
+                }
+            }
+            if (document.getElementById('btnDownloadEvaluasi').dataset.downloaded !== 'true') {
+                alert('Silakan Download PDF terlebih dahulu sebelum lanjut ke tahap Upload.');
+                return;
+            }
+        } else if (step === 3) {
+            const evUpload = document.getElementById('ev_surat_ttd');
+            if (!evUpload.files || evUpload.files.length === 0) {
+                alert('Silakan upload file Lembar Evaluasi yang sudah di-TTD terlebih dahulu.');
+                return;
+            }
+        }
+
         // Update Content Visibility
         document.querySelectorAll('#evaluasiModal .step-content').forEach(c => c.classList.add('hidden'));
         document.getElementById('ev-step-' + step + '-content').classList.remove('hidden');
 
-        // Update Indicators
-        for(let i=1; i<=3; i++) {
-            let ind = document.getElementById('ev-step-' + i + '-indicator');
-            if(i < step) {
-                ind.className = 'step completed';
-            } else if (i === step) {
-                ind.className = 'step active';
-            } else {
-                ind.className = 'step';
-            }
+        // Update Dynamic Header
+        document.getElementById('ev-step-text').textContent = 'Langkah ' + step + ' dari 3';
+        const titleText = document.getElementById('ev-step-title-text');
+        const icon = document.getElementById('ev-step-icon');
+        if(step === 1) {
+            titleText.textContent = 'Form & Preview';
+            icon.className = 'fas fa-file-pdf';
+        } else if(step === 2) {
+            titleText.textContent = 'Upload TTD';
+            icon.className = 'fas fa-upload';
+        } else if(step === 3) {
+            titleText.textContent = 'Kirim Email';
+            icon.className = 'fas fa-paper-plane';
         }
     }
 
@@ -935,6 +1023,10 @@
     function openSertifikatModal(id) {
         document.getElementById('sertifikat_peserta_id').value = id;
         document.getElementById('sertifikatModal').classList.remove('hidden');
+        
+        // Reset download status
+        document.getElementById('btnDownloadSertifikat').dataset.downloaded = 'false';
+        
         document.getElementById('formSertifikatData').reset();
         document.getElementById('formUploadSertifikat').reset();
         nextSertStep(1);
@@ -947,18 +1039,42 @@
     }
 
     function nextSertStep(step) {
+        // VALIDASI SERTIFIKAT
+        if (step === 2) {
+            const sertNomor = document.getElementById('sert_nomor').value.trim();
+            const sertPredikat = document.getElementById('sert_predikat').value;
+            if (!sertNomor || !sertPredikat) {
+                alert('Silakan lengkapi Nomor Sertifikat dan Predikat terlebih dahulu.');
+                return;
+            }
+            if (document.getElementById('btnDownloadSertifikat').dataset.downloaded !== 'true') {
+                alert('Silakan Download PDF terlebih dahulu sebelum lanjut ke tahap Upload.');
+                return;
+            }
+        } else if (step === 3) {
+            const sertUpload = document.getElementById('sert_ttd');
+            if (!sertUpload.files || sertUpload.files.length === 0) {
+                alert('Silakan upload file Sertifikat yang sudah di-TTE terlebih dahulu.');
+                return;
+            }
+        }
+
         document.querySelectorAll('#sertifikatModal .step-content').forEach(c => c.classList.add('hidden'));
         document.getElementById('sert-step-' + step + '-content').classList.remove('hidden');
 
-        for (let i = 1; i <= 3; i++) {
-            let ind = document.getElementById('sert-step-' + i + '-indicator');
-            if (i < step) {
-                ind.className = 'step completed';
-            } else if (i === step) {
-                ind.className = 'step active';
-            } else {
-                ind.className = 'step';
-            }
+        // Update Dynamic Header
+        document.getElementById('sert-step-text').textContent = 'Langkah ' + step + ' dari 3';
+        const titleText = document.getElementById('sert-step-title-text');
+        const icon = document.getElementById('sert-step-icon');
+        if(step === 1) {
+            titleText.textContent = 'Form & Preview';
+            icon.className = 'fas fa-file-pdf';
+        } else if(step === 2) {
+            titleText.textContent = 'Upload TTE';
+            icon.className = 'fas fa-upload';
+        } else if(step === 3) {
+            titleText.textContent = 'Kirim Email';
+            icon.className = 'fas fa-paper-plane';
         }
     }
 
@@ -1045,6 +1161,47 @@
             btn.innerHTML = originalText;
             btn.disabled = false;
         });
+    }
+
+    // ==========================================
+    // UPLOAD UI FUNCTIONS (DRAG & DROP)
+    // ==========================================
+
+    function handleFileSelect(input, idPrefix) {
+        if(input.files && input.files[0]) {
+            showFilePreview(input.files[0], idPrefix);
+        }
+    }
+
+    function handleDrop(e, idPrefix) {
+        e.preventDefault();
+        const dropzone = document.getElementById('upload-dropzone-' + idPrefix);
+        dropzone.style.borderColor = 'var(--border)';
+        dropzone.style.background = '#fafafa';
+        
+        if(e.dataTransfer.files && e.dataTransfer.files[0]) {
+            const fileInput = document.getElementById(idPrefix);
+            fileInput.files = e.dataTransfer.files; // Set the file to input
+            showFilePreview(e.dataTransfer.files[0], idPrefix);
+        }
+    }
+
+    function showFilePreview(f, idPrefix) {
+        if(f.size > 5 * 1024 * 1024) { 
+            alert('Ukuran file melebihi 5MB.'); 
+            clearFile(idPrefix);
+            return; 
+        }
+        document.getElementById('upload-file-name-' + idPrefix).textContent = f.name;
+        document.getElementById('upload-file-size-' + idPrefix).textContent = (f.size / 1024).toFixed(1) + ' KB';
+        document.getElementById('upload-file-preview-' + idPrefix).style.display = 'flex';
+        document.getElementById('upload-dropzone-' + idPrefix).style.display = 'none';
+    }
+
+    function clearFile(idPrefix) {
+        document.getElementById(idPrefix).value = '';
+        document.getElementById('upload-file-preview-' + idPrefix).style.display = 'none';
+        document.getElementById('upload-dropzone-' + idPrefix).style.display = 'block';
     }
 </script>
 @endpush

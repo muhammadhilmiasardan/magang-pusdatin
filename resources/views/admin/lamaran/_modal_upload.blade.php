@@ -1,6 +1,6 @@
 {{-- ═══ MODAL 3: UPLOAD SURAT FINAL ═══ --}}
 <div id="uploadOverlay" style="display:none;position:fixed;inset:0;z-index:1020;background:rgba(15,29,61,0.6);backdrop-filter:blur(4px);">
-    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:16px;width:90%;max-width:520px;overflow:hidden;box-shadow:0 25px 50px -12px rgba(0,0,0,0.3);">
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:16px;width:90%;max-width:520px;overflow:hidden;box-shadow:0 25px 50px -12px rgba(0,0,0,0.3);display:flex;flex-direction:column;max-height:90vh;">
         <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
             <div>
                 <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">Langkah 3 dari 4</div>
@@ -8,7 +8,7 @@
             </div>
             <button onclick="closeUploadModal()" style="background:none;border:none;cursor:pointer;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:16px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'"><i class="fas fa-times"></i></button>
         </div>
-        <div style="padding:24px;">
+        <div style="padding:24px;flex:1;overflow-y:auto;">
             <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:14px 16px;margin-bottom:20px;font-size:12.5px;color:#92400e;line-height:1.6;">
                 <strong><i class="fas fa-info-circle"></i> Petunjuk:</strong><br>
                 1. Download draft PDF dari Langkah 2<br>

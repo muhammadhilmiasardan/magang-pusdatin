@@ -263,9 +263,9 @@ class PesertaMagangSeeder extends Seeder
                 'cv' => null,
                 'surat_rekomendasi' => 'surat_dummy.pdf',
                 'status_magang' => $statusMagang,
-                'is_sk_sent' => in_array($statusMagang, ['Selesai', 'Aktif']) ? 1 : 0,
+                'is_sk_sent' => $statusMagang === 'Selesai' ? 1 : 0,
                 'is_evaluasi_sent' => $statusMagang === 'Selesai' ? 1 : 0,
-                'is_sertifikat_sent' => 0, // Sertifikat default belum dikirim, agar ada data di Pusat Dokumen
+                'is_sertifikat_sent' => $statusMagang === 'Selesai' ? 1 : 0,
             ]);
 
             $successCount++;

@@ -86,6 +86,9 @@ class PendaftaranController extends Controller
             'cv'                 => $cvPath,
             'pas_foto'           => $fotoPath,
             'status_magang'      => 'Menunggu Review',
+            'is_sk_sent'         => 0,
+            'is_evaluasi_sent'   => 0,
+            'is_sertifikat_sent' => 0,
         ]);
 
         return redirect()->route('pendaftaran.sukses');

@@ -280,4 +280,19 @@ document.addEventListener('keydown',function(e){
 function closeEmailModal(){
     document.getElementById('emailOverlay').style.display='none';
 }
+
+// Iframe Scaling to fit without scrolling
+function fitIframe(iframe) {
+    if (!iframe || iframe.offsetParent === null) return; // if hidden
+    const parentWidth = iframe.parentElement.offsetWidth;
+    const iframeWidth = parseFloat(iframe.style.width);
+    if(parentWidth > 0 && iframeWidth > 0) {
+        const scale = parentWidth / iframeWidth;
+        iframe.style.transform = `scale(${scale})`;
+    }
+}
+
+window.addEventListener('resize', () => {
+    document.querySelectorAll('.iframe-fit-container iframe').forEach(fitIframe);
+});
 </script>

@@ -96,8 +96,7 @@
         border-radius: 16px;
         width: 90%;
         max-width: 860px;
-        max-height: 90vh;
-        overflow-y: auto;
+        overflow: hidden;
         box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
         animation: scaleIn 0.2s ease;
     ">
@@ -132,12 +131,12 @@
         </div>
 
         {{-- Modal Body --}}
-        <div id="modalContent" style="display: none; padding: 24px;">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+        <div id="modalContent" style="display: none; padding: 20px 24px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
                 {{-- Left Column: Biodata --}}
                 <div>
                     {{-- Profile with Photo --}}
-                    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 24px;">
+                    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
                         <div style="flex-shrink: 0; position: relative;">
                             <img id="m-foto" src="" alt="Pas Foto"
                                  style="width: 72px; height: 72px; border-radius: 14px; object-fit: cover; border: 2px solid var(--border); display: none;">
@@ -158,8 +157,8 @@
                     </div>
 
                     {{-- Contact & Education --}}
-                    <div style="margin-bottom: 24px;">
-                        <h5 style="font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border);">
+                    <div style="margin-bottom: 20px;">
+                        <h5 style="font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border);">
                             Informasi Kontak & Pendidikan
                         </h5>
                         <div style="display: flex; flex-direction: column; gap: 10px;">
@@ -187,7 +186,7 @@
                     </div>
 
                     {{-- Period --}}
-                    <h5 style="font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border);">
+                    <h5 style="font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border);">
                         Periode Pelaksanaan
                     </h5>
                     <div style="display: flex; align-items: center; gap: 16px;">
@@ -212,8 +211,8 @@
                 {{-- Right Column: Berkas & Status --}}
                 <div>
                     {{-- Penempatan --}}
-                    <div style="margin-bottom: 24px;">
-                        <h5 style="font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border);">
+                    <div style="margin-bottom: 20px;">
+                        <h5 style="font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border);">
                             Penempatan
                         </h5>
                         <div style="background: #f8fafc; border-radius: 10px; padding: 16px; border: 1px solid var(--border);">
@@ -229,8 +228,8 @@
                     </div>
 
                     {{-- Dokumen --}}
-                    <div style="margin-bottom: 24px;">
-                        <h5 style="font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border);">
+                    <div style="margin-bottom: 20px;">
+                        <h5 style="font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border);">
                             Dokumen Pendaftaran
                         </h5>
                         <div style="display: flex; flex-direction: column; gap: 8px;">
@@ -255,23 +254,29 @@
                     </div>
 
                     {{-- Status Dokumen Akhir --}}
-                    <h5 style="font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border);">
+                    <h5 style="font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border);">
                         Status Pengiriman Dokumen
                     </h5>
-                    <div style="display: flex; flex-direction: column; gap: 8px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f1f5f9;">
+                    <div style="display: flex; flex-direction: column; gap: 6px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #f1f5f9;">
+                            <span style="font-size: 13px;">Surat Penerimaan</span>
+                            <span id="m-penerimaan-badge" class="badge-status badge-pending">
+                                <i class="fas fa-clock"></i> Belum
+                            </span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #f1f5f9;">
                             <span style="font-size: 13px;">SK Magang</span>
                             <span id="m-sk-badge" class="badge-status badge-pending">
                                 <i class="fas fa-clock"></i> Belum
                             </span>
                         </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f1f5f9;">
-                            <span style="font-size: 13px;">Lembar Evaluasi</span>
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #f1f5f9;">
+                            <span style="font-size: 13px;">Surat Evaluasi</span>
                             <span id="m-eval-badge" class="badge-status badge-pending">
                                 <i class="fas fa-clock"></i> Belum
                             </span>
                         </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0;">
                             <span style="font-size: 13px;">Sertifikat</span>
                             <span id="m-cert-badge" class="badge-status badge-pending">
                                 <i class="fas fa-clock"></i> Belum
@@ -407,6 +412,9 @@
                     $('#m-btn-cv').hide();
                 }
 
+                // Dokumen status
+                const isPenerimaanSent = (data.status_magang !== 'Pending' && data.status_magang !== 'Ditolak');
+                setDocBadge('#m-penerimaan-badge', isPenerimaanSent);
                 setDocBadge('#m-sk-badge', data.is_sk_sent);
                 setDocBadge('#m-eval-badge', data.is_evaluasi_sent);
                 setDocBadge('#m-cert-badge', data.is_sertifikat_sent);

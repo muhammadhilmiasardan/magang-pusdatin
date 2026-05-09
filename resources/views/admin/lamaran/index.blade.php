@@ -5,7 +5,6 @@
 <div class="card-clean">
     <div class="card-header-clean">
         <h3><i class="fas fa-inbox" style="color:var(--accent);margin-right:8px;"></i>Menunggu Review</h3>
-        <span class="badge-status badge-review">{{ $lamaran->count() }} Lamaran</span>
     </div>
     @if($lamaran->count()==0)
         <div class="empty-state">
@@ -175,7 +174,9 @@
                     <span><i class="fas fa-eye" style="margin-right:6px;"></i>Preview Surat</span>
                     <button onclick="document.getElementById('lm-preview-surat-container').style.display='none'" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:14px;"><i class="fas fa-times"></i></button>
                 </div>
-                <iframe id="lm-surat-iframe" name="lm-surat-iframe" src="" style="width:100%;height:480px;border:none;display:block;"></iframe>
+                <div class="iframe-fit-container" style="position: relative; width: 100%; padding-top: 141.42%; overflow: hidden; background: #64748b;">
+                    <iframe id="lm-surat-iframe" name="lm-surat-iframe" src="" style="position: absolute; top: 0; left: 0; width: 794px; height: 1123px; border: none; transform-origin: top left;" onload="if(typeof fitIframe === 'function') fitIframe(this);"></iframe>
+                </div>
             </div>
             <div style="background:#eff6ff;border-left:3px solid var(--primary);border-radius:0 8px 8px 0;padding:10px 14px;font-size:12px;color:#1e40af;margin-top:12px;">
                 <strong><i class="fas fa-info-circle"></i> Setelah download:</strong> Lakukan TTE dan tambahkan lampiran secara manual, lalu klik "Lanjut Upload Surat".
