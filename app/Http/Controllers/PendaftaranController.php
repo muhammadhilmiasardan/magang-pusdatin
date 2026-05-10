@@ -8,22 +8,39 @@ use App\Models\PesertaMagang;
 
 class PendaftaranController extends Controller
 {
-    // Fungsi untuk menampilkan halaman form pendaftaran
     public function create()
     {
-        // Ambil data tim kerja + hitung peserta yang sudah diterima (Belum Aktif + Aktif)
-        // Kedua status ini sudah mengurangi kuota karena peserta telah resmi diterima
-        $timKerja = TimKerja::withCount([
-            'pesertaMagang' => function ($query) {
-                $query->whereIn('status_magang', ['Belum Aktif', 'Aktif']);
+        $triwulans = ['Triwulan 1', 'Triwulan 2', 'Triwulan 3', 'Triwulan 4'];
+        $timKerjaList = TimKerja::all();
+        $quotaData = [];
+
+        foreach ($triwulans as $tw) {
+            $quotaData[$tw] = [];
+            foreach ($timKerjaList as $tim) {
+                // Hitung yang aktif di triwulan ini
+                $count = PesertaMagang::whereIn('status_magang', ['Belum Aktif', 'Aktif'])
+                    ->where('id_tim_kerja_1', $tim->id)
+                    ->whereJsonContains('periode_magang', $tw)
+                    ->count();
+                
+                $sisa = max(0, $tim->kuota_maksimal - $count);
+                
+                if (!isset($quotaData[$tw][$tim->bidang])) {
+                    $quotaData[$tw][$tim->bidang] = [];
+                }
+                
+                $quotaData[$tw][$tim->bidang][] = [
+                    'id' => $tim->id,
+                    'nama' => $tim->nama_tim,
+                    'sisa' => $sisa,
+                    'is_full' => $sisa <= 0 ? true : false
+                ];
             }
-        ])->get();
+        }
 
-        // Kelompokkan berdasarkan kolom 'bidang'
-        $groupedTimKerja = $timKerja->groupBy('bidang');
+        $groupedTimKerja = $timKerjaList->groupBy('bidang');
 
-        // Kirim data ke file Blade (resources/views/pendaftaran/form.blade.php)
-        return view('pendaftaran.form', compact('groupedTimKerja'));
+        return view('pendaftaran.form', compact('quotaData', 'groupedTimKerja'));
     }
 
     // Fungsi untuk memproses data saat tombol "Kirim" ditekan
@@ -41,6 +58,8 @@ class PendaftaranController extends Controller
             'nomor_telp'          => 'required|string|max:20',
             'email'               => 'required|email|max:255',
             'email_institusi'     => 'required|email|max:255',
+            'periode_magang'      => 'required|array|min:1',
+            'periode_magang.*'    => 'in:Triwulan 1,Triwulan 2,Triwulan 3,Triwulan 4',
             'bidang'              => 'required|string',
             'id_tim_kerja_1'      => 'required|exists:tim_kerja,id',
             'id_tim_kerja_2'      => 'required|exists:tim_kerja,id|different:id_tim_kerja_1',
@@ -80,6 +99,7 @@ class PendaftaranController extends Controller
             'nomor_telp'         => $validated['nomor_telp'],
             'email'              => $validated['email'],
             'email_institusi'    => $validated['email_institusi'],
+            'periode_magang'     => $validated['periode_magang'],
             'id_tim_kerja_1'     => $validated['id_tim_kerja_1'],
             'id_tim_kerja_2'     => $validated['id_tim_kerja_2'],
             'surat_rekomendasi'  => $suratPath,

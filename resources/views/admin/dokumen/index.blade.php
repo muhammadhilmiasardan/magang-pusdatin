@@ -230,7 +230,7 @@
 {{-- ═══ MODAL SK MAGANG (3 STEP) ═══ --}}
 <div id="skModal" class="modal-overlay hidden">
     <div class="modal-content" style="max-width: 900px; width: 95%;">
-        <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+        <div id="sk-modal-header" style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
             <div>
                 <div id="sk-step-text" style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">LANGKAH 1 DARI 3</div>
                 <h3 style="font-size:16px;font-weight:700;color:var(--text-primary);margin:0;">
@@ -241,7 +241,7 @@
             <button onclick="closeSkModal()" style="background:none;border:none;cursor:pointer;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:16px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'"><i class="fas fa-times"></i></button>
         </div>
         
-        <div class="modal-body" style="padding: 24px;">
+        <div id="sk-modal-body" class="modal-body" style="padding: 24px;">
 
             {{-- STEP 1: CETAK & PREVIEW --}}
             <div id="step-1-content" class="step-content">
@@ -329,13 +329,32 @@
                 </div>
             </div>
         </div>
+
+        {{-- SK SUCCESS STATE --}}
+        <div id="sk-success-state" style="display:none; flex-direction:column; align-items:center; justify-content:center; padding:50px 30px; text-align:center; flex:1; overflow-y:auto;">
+            <div style="width:80px;height:80px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:20px;animation:successPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
+                <i class="fas fa-check" style="font-size:40px;color:#16a34a;"></i>
+            </div>
+            <h3 style="font-size:22px;font-weight:700;color:#166534;margin:0 0 10px;">Email Berhasil Dikirim!</h3>
+            <p style="font-size:14px;color:#4b5563;margin:0 0 4px;">Berhasil dikirim kepada <span id="sk-success-to" style="font-weight:600;">-</span></p>
+            <p style="font-size:13px;font-weight:600;color:#15803d;margin:0 0 24px;" id="sk-success-email">-</p>
+            
+            <div style="background:#f3f4f6;border-radius:8px;padding:12px 20px;margin-bottom:30px;font-size:12px;color:#4b5563;">
+                <i class="fas fa-info-circle" style="color:var(--primary);margin-right:6px;"></i>
+                Status dokumen <strong>SK Magang</strong> kini menjadi <strong>Sudah Dikirim</strong>.
+            </div>
+
+            <button onclick="location.reload()" class="btn-success-custom" style="padding:12px 32px;font-size:14px;border-radius:10px;">
+                <i class="fas fa-check-circle"></i> Selesai
+            </button>
+        </div>
     </div>
 </div>
 
 {{-- MODAL EVALUASI --}}
 <div id="evaluasiModal" class="modal-overlay hidden">
     <div class="modal-content" style="max-width: 900px; width: 95%;">
-        <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+        <div id="ev-modal-header" style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
             <div>
                 <div id="ev-step-text" style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">LANGKAH 1 DARI 3</div>
                 <h3 style="font-size:16px;font-weight:700;color:var(--text-primary);margin:0;">
@@ -346,7 +365,7 @@
             <button onclick="closeEvaluasiModal()" style="background:none;border:none;cursor:pointer;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:16px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'"><i class="fas fa-times"></i></button>
         </div>
         
-        <div class="modal-body" style="padding: 24px;">
+        <div id="ev-modal-body" class="modal-body" style="padding: 24px;">
             <input type="hidden" id="evaluasi_peserta_id" value="">
 
             {{-- STEP 1: FORM & PREVIEW --}}
@@ -502,13 +521,32 @@
                 </div>
             </div>
         </div>
+
+        {{-- EV SUCCESS STATE --}}
+        <div id="ev-success-state" style="display:none; flex-direction:column; align-items:center; justify-content:center; padding:50px 30px; text-align:center; flex:1; overflow-y:auto;">
+            <div style="width:80px;height:80px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:20px;animation:successPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
+                <i class="fas fa-check" style="font-size:40px;color:#16a34a;"></i>
+            </div>
+            <h3 style="font-size:22px;font-weight:700;color:#166534;margin:0 0 10px;">Email Berhasil Dikirim!</h3>
+            <p style="font-size:14px;color:#4b5563;margin:0 0 4px;">Berhasil dikirim kepada <span id="ev-success-to" style="font-weight:600;">-</span></p>
+            <p style="font-size:13px;font-weight:600;color:#15803d;margin:0 0 24px;" id="ev-success-email">-</p>
+            
+            <div style="background:#f3f4f6;border-radius:8px;padding:12px 20px;margin-bottom:30px;font-size:12px;color:#4b5563;">
+                <i class="fas fa-info-circle" style="color:var(--primary);margin-right:6px;"></i>
+                Status dokumen <strong>Evaluasi Magang</strong> kini menjadi <strong>Sudah Dikirim</strong>.
+            </div>
+
+            <button onclick="location.reload()" class="btn-success-custom" style="padding:12px 32px;font-size:14px;border-radius:10px;">
+                <i class="fas fa-check-circle"></i> Selesai
+            </button>
+        </div>
     </div>
 </div>
 
 {{-- ═══ MODAL SERTIFIKAT (3 STEP) ═══ --}}
 <div id="sertifikatModal" class="modal-overlay hidden">
-    <div class="modal-content" style="max-width: 1000px; width: 96%;">
-        <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+    <div class="modal-content" style="max-width: 1000px; width: 96%; display: flex; flex-direction: column; max-height: 90vh; overflow: hidden; border-radius: 16px;">
+        <div id="sr-modal-header" style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between; flex-shrink: 0;">
             <div>
                 <div id="sert-step-text" style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">LANGKAH 1 DARI 3</div>
                 <h3 style="font-size:16px;font-weight:700;color:var(--text-primary);margin:0;">
@@ -519,7 +557,7 @@
             <button onclick="closeSertifikatModal()" style="background:none;border:none;cursor:pointer;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:16px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'"><i class="fas fa-times"></i></button>
         </div>
 
-        <div class="modal-body" style="padding: 24px;">
+        <div id="sr-modal-body" class="modal-body" style="padding: 24px; flex: 1; overflow-y: auto;">
             <input type="hidden" id="sertifikat_peserta_id" value="">
 
             {{-- STEP 1: FORM & PREVIEW --}}
@@ -634,6 +672,26 @@
                     </button>
                 </div>
             </div>
+            </div>
+
+            {{-- SR SUCCESS STATE --}}
+            <div id="sr-success-state" style="display:none; flex-direction:column; align-items:center; justify-content:center; padding:50px 30px; text-align:center; flex:1; overflow-y:auto;">
+                <div style="width:80px;height:80px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:20px;animation:successPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
+                    <i class="fas fa-check" style="font-size:40px;color:#16a34a;"></i>
+                </div>
+                <h3 style="font-size:22px;font-weight:700;color:#166534;margin:0 0 10px;">Email Berhasil Dikirim!</h3>
+                <p style="font-size:14px;color:#4b5563;margin:0 0 4px;">Berhasil dikirim kepada <span id="sr-success-to" style="font-weight:600;">-</span></p>
+                <p style="font-size:13px;font-weight:600;color:#15803d;margin:0 0 24px;" id="sr-success-email">-</p>
+                
+                <div style="background:#f3f4f6;border-radius:8px;padding:12px 20px;margin-bottom:30px;font-size:12px;color:#4b5563;">
+                    <i class="fas fa-info-circle" style="color:var(--primary);margin-right:6px;"></i>
+                    Status dokumen <strong>Sertifikat Magang</strong> kini menjadi <strong>Sudah Dikirim</strong>.
+                </div>
+
+                <button onclick="location.reload()" class="btn-success-custom" style="padding:12px 32px;font-size:14px;border-radius:10px;">
+                    <i class="fas fa-check-circle"></i> Selesai
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -643,6 +701,20 @@
 @push('styles')
 <style>
     .hidden { display: none !important; }
+
+    @keyframes successPop{0%{transform:scale(0);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+    .btn-success-custom {
+        background: #10b981;
+        color: white;
+        border: none;
+        transition: all 0.2s;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+    }
+    .btn-success-custom:hover { background: #059669; transform: translateY(-1px); }
     
     /* MODAL STYLES */
     .modal-overlay {
@@ -822,15 +894,19 @@
         fetch(`/admin/dokumen/sk-magang/${id}/upload-kirim`, {
             method: 'POST',
             headers: {
-                'X-CSRF-TOKEN': csrfToken
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json'
             },
             body: formData
         })
         .then(response => response.json())
         .then(data => {
             if(data.success) {
-                alert(data.message);
-                window.location.reload();
+                document.getElementById('sk-modal-header').style.display = 'none';
+                document.getElementById('sk-modal-body').style.display = 'none';
+                document.getElementById('sk-success-state').style.display = 'flex';
+                document.getElementById('sk-success-to').textContent = data.nama || '-';
+                document.getElementById('sk-success-email').textContent = data.email || '-';
             } else {
                 alert('Gagal: ' + data.message);
                 btn.innerHTML = originalText;
@@ -993,15 +1069,19 @@
         fetch(`/admin/dokumen/evaluasi/${id}/upload-kirim`, {
             method: 'POST',
             headers: {
-                'X-CSRF-TOKEN': csrfToken
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json'
             },
             body: formData
         })
         .then(response => response.json())
         .then(data => {
             if(data.success) {
-                alert(data.message);
-                window.location.reload();
+                document.getElementById('ev-modal-header').style.display = 'none';
+                document.getElementById('ev-modal-body').style.display = 'none';
+                document.getElementById('ev-success-state').style.display = 'flex';
+                document.getElementById('ev-success-to').textContent = data.nama || '-';
+                document.getElementById('ev-success-email').textContent = data.email || '-';
             } else {
                 alert('Gagal: ' + data.message);
                 btn.innerHTML = originalText;
@@ -1141,14 +1221,20 @@
 
         fetch(`/admin/dokumen/sertifikat/${id}/upload-kirim`, {
             method: 'POST',
-            headers: { 'X-CSRF-TOKEN': csrfToken },
+            headers: { 
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json'
+            },
             body: formData
         })
         .then(r => r.json())
         .then(data => {
             if (data.success) {
-                alert(data.message);
-                window.location.reload();
+                document.getElementById('sr-modal-header').style.display = 'none';
+                document.getElementById('sr-modal-body').style.display = 'none';
+                document.getElementById('sr-success-state').style.display = 'flex';
+                document.getElementById('sr-success-to').textContent = data.nama || '-';
+                document.getElementById('sr-success-email').textContent = data.email || '-';
             } else {
                 alert('Gagal: ' + data.message);
                 btn.innerHTML = originalText;

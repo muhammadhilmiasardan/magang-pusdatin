@@ -371,29 +371,58 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label id="label-institusi">Nama Institusi <span class="required">*</span></label>
-                        <input type="text" name="nama_institusi" id="input-institusi" class="form-input @error('nama_institusi') is-invalid @enderror" value="{{ old('nama_institusi') }}" placeholder="Nama kampus / sekolah" required>
+                        <input type="text" name="nama_institusi" id="input-institusi" class="form-input @error('nama_institusi') is-invalid @enderror" value="{{ old('nama_institusi') }}" placeholder="Pilih tingkat pendidikan dahulu" required {{ old('tingkat_pendidikan') ? '' : 'disabled' }}>
                     </div>
                     <div class="form-group">
                         <label id="label-jurusan">Jurusan / Program Studi <span class="required">*</span></label>
-                        <input type="text" name="jurusan" id="input-jurusan" class="form-input @error('jurusan') is-invalid @enderror" value="{{ old('jurusan') }}" placeholder="Contoh: Teknik Informatika" required>
+                        <input type="text" name="jurusan" id="input-jurusan" class="form-input @error('jurusan') is-invalid @enderror" value="{{ old('jurusan') }}" placeholder="Pilih tingkat pendidikan dahulu" required {{ old('tingkat_pendidikan') ? '' : 'disabled' }}>
                     </div>
                 </div>
 
                 {{-- NIM / NIS (dynamic) --}}
                 <div class="form-group">
                     <label id="label-nim-nis">NIM / NIS <span class="required">*</span></label>
-                    <input type="text" name="nim_nis" id="input-nim-nis" class="form-input @error('nim_nis') is-invalid @enderror" value="{{ old('nim_nis') }}" placeholder="Masukkan nomor induk" required>
+                    <input type="text" name="nim_nis" id="input-nim-nis" class="form-input @error('nim_nis') is-invalid @enderror" value="{{ old('nim_nis') }}" placeholder="Pilih tingkat pendidikan dahulu" required {{ old('tingkat_pendidikan') ? '' : 'disabled' }}>
                     @error('nim_nis') <div class="form-error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div> @enderror
+                </div>
+
+                <div class="section-title" style="margin-top: 32px;">
+                    <span class="section-icon"><i class="fas fa-calendar-alt"></i></span>
+                    Periode & Waktu Magang
+                </div>
+
+                <div class="form-group">
+                    <label>Pilih Periode (Triwulan) <span class="required">*</span></label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px;">
+                        <label style="display:flex; align-items:center; gap:8px; padding:10px 14px; border:1px solid var(--border); border-radius:var(--radius-sm); cursor:pointer;" class="periode-label">
+                            <input type="checkbox" name="periode_magang[]" value="Triwulan 1" class="periode-checkbox" onchange="handlePeriodeChange()" {{ is_array(old('periode_magang')) && in_array('Triwulan 1', old('periode_magang')) ? 'checked' : '' }}> 
+                            <span>Triwulan 1 <small style="color:var(--text-muted);display:block;">(Januari - Maret)</small></span>
+                        </label>
+                        <label style="display:flex; align-items:center; gap:8px; padding:10px 14px; border:1px solid var(--border); border-radius:var(--radius-sm); cursor:pointer;" class="periode-label">
+                            <input type="checkbox" name="periode_magang[]" value="Triwulan 2" class="periode-checkbox" onchange="handlePeriodeChange()" {{ is_array(old('periode_magang')) && in_array('Triwulan 2', old('periode_magang')) ? 'checked' : '' }}> 
+                            <span>Triwulan 2 <small style="color:var(--text-muted);display:block;">(April - Juni)</small></span>
+                        </label>
+                        <label style="display:flex; align-items:center; gap:8px; padding:10px 14px; border:1px solid var(--border); border-radius:var(--radius-sm); cursor:pointer;" class="periode-label">
+                            <input type="checkbox" name="periode_magang[]" value="Triwulan 3" class="periode-checkbox" onchange="handlePeriodeChange()" {{ is_array(old('periode_magang')) && in_array('Triwulan 3', old('periode_magang')) ? 'checked' : '' }}> 
+                            <span>Triwulan 3 <small style="color:var(--text-muted);display:block;">(Juli - September)</small></span>
+                        </label>
+                        <label style="display:flex; align-items:center; gap:8px; padding:10px 14px; border:1px solid var(--border); border-radius:var(--radius-sm); cursor:pointer;" class="periode-label">
+                            <input type="checkbox" name="periode_magang[]" value="Triwulan 4" class="periode-checkbox" onchange="handlePeriodeChange()" {{ is_array(old('periode_magang')) && in_array('Triwulan 4', old('periode_magang')) ? 'checked' : '' }}> 
+                            <span>Triwulan 4 <small style="color:var(--text-muted);display:block;">(Oktober - Desember)</small></span>
+                        </label>
+                    </div>
+                    <div id="periode-error" class="form-error" style="display:none;"><i class="fas fa-exclamation-circle"></i> Pilihan Triwulan harus berurutan.</div>
+                    @error('periode_magang') <div class="form-error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div> @enderror
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label>Tanggal Mulai Magang <span class="required">*</span></label>
-                        <input type="date" name="tanggal_mulai" class="form-input @error('tanggal_mulai') is-invalid @enderror" value="{{ old('tanggal_mulai') }}" required>
+                        <input type="date" name="tanggal_mulai" id="tanggal_mulai" class="form-input @error('tanggal_mulai') is-invalid @enderror" value="{{ old('tanggal_mulai') }}" required disabled>
                     </div>
                     <div class="form-group">
                         <label>Tanggal Selesai Magang <span class="required">*</span></label>
-                        <input type="date" name="tanggal_selesai" class="form-input @error('tanggal_selesai') is-invalid @enderror" value="{{ old('tanggal_selesai') }}" required>
+                        <input type="date" name="tanggal_selesai" id="tanggal_selesai" class="form-input @error('tanggal_selesai') is-invalid @enderror" value="{{ old('tanggal_selesai') }}" required disabled>
                     </div>
                 </div>
 
@@ -421,8 +450,8 @@
 
                 <div class="form-group">
                     <label>Pilih Bidang <span class="required">*</span></label>
-                    <select id="select-bidang" name="bidang" class="form-input @error('bidang') is-invalid @enderror" onchange="updateTimKerja()" required>
-                        <option value="" disabled selected>— Pilih Bidang —</option>
+                    <select id="select-bidang" name="bidang" class="form-input @error('bidang') is-invalid @enderror" onchange="updateTimKerja()" required disabled>
+                        <option value="" disabled selected>— Pilih Periode Dahulu —</option>
                         @foreach($groupedTimKerja as $bidang => $tims)
                             <option value="{{ $bidang }}" {{ old('bidang') == $bidang ? 'selected' : '' }}>{{ $bidang }}</option>
                         @endforeach
@@ -497,27 +526,41 @@
 </div>
 
 <script>
-    // Tim kerja data
-    const timKerjaData = {
-        @foreach($groupedTimKerja as $bidang => $tims)
-        "{{ $bidang }}": [
-            @foreach($tims as $tim)
-            @php $sisa = $tim->kuota_maksimal - $tim->peserta_magang_count; @endphp
-            { id: "{{ $tim->id }}", nama: "{{ $tim->nama_tim }}", sisa: {{ $sisa }}, is_full: {{ $sisa <= 0 ? 'true' : 'false' }} },
-            @endforeach
-        ],
-        @endforeach
+    // Quota data from backend
+    const quotaData = @json($quotaData);
+    
+    // Map triwulan ke nomor untuk validasi berurutan
+    const triwulanMap = {
+        "Triwulan 1": 1,
+        "Triwulan 2": 2,
+        "Triwulan 3": 3,
+        "Triwulan 4": 4
+    };
+    
+    // Map triwulan ke rentang bulan (MM-DD)
+    const triwulanDates = {
+        1: { start: "01-01", end: "03-31" },
+        2: { start: "04-01", end: "06-30" },
+        3: { start: "07-01", end: "09-30" },
+        4: { start: "10-01", end: "12-31" }
     };
 
     // ── Toggle labels based on tingkat pendidikan ──
     function toggleFormLabels() {
         const isUniv = document.getElementById('univ').checked;
+        const isSmk = document.getElementById('slta').checked;
         const labelInstitusi = document.getElementById('label-institusi');
         const inputInstitusi = document.getElementById('input-institusi');
         const labelJurusan = document.getElementById('label-jurusan');
         const inputJurusan = document.getElementById('input-jurusan');
         const labelNimNis = document.getElementById('label-nim-nis');
         const inputNimNis = document.getElementById('input-nim-nis');
+
+        if (isUniv || isSmk) {
+            inputInstitusi.disabled = false;
+            inputJurusan.disabled = false;
+            inputNimNis.disabled = false;
+        }
 
         if (isUniv) {
             labelInstitusi.innerHTML = 'Nama Universitas <span class="required">*</span>';
@@ -526,7 +569,7 @@
             inputJurusan.placeholder = 'Contoh: Teknik Informatika';
             labelNimNis.innerHTML = 'NIM <span class="required">*</span>';
             inputNimNis.placeholder = 'Masukkan Nomor Induk Mahasiswa';
-        } else {
+        } else if (isSmk) {
             labelInstitusi.innerHTML = 'Nama Sekolah <span class="required">*</span>';
             inputInstitusi.placeholder = 'Contoh: SMK Negeri 1 Jakarta';
             labelJurusan.innerHTML = 'Jurusan <span class="required">*</span>';
@@ -536,8 +579,72 @@
         }
     }
 
+    function handlePeriodeChange() {
+        const checkboxes = document.querySelectorAll('.periode-checkbox:checked');
+        const selected = Array.from(checkboxes).map(cb => triwulanMap[cb.value]).sort((a,b) => a - b);
+        const errorMsg = document.getElementById('periode-error');
+        const tMulai = document.getElementById('tanggal_mulai');
+        const tSelesai = document.getElementById('tanggal_selesai');
+        const sBidang = document.getElementById('select-bidang');
+        
+        let isValid = true;
+        if (selected.length > 0) {
+            // Check if consecutive
+            for(let i=0; i<selected.length-1; i++) {
+                if (selected[i+1] - selected[i] !== 1) {
+                    isValid = false; break;
+                }
+            }
+        } else {
+            isValid = false;
+        }
+
+        if (selected.length > 0 && !isValid) {
+            errorMsg.style.display = 'block';
+            tMulai.disabled = true; tSelesai.disabled = true;
+            sBidang.disabled = true;
+        } else if (selected.length > 0) {
+            errorMsg.style.display = 'none';
+            tMulai.disabled = false; tSelesai.disabled = false;
+            sBidang.disabled = false;
+            
+            // Setup Min Max Dates based on current year (or next year if Q1 is selected in December, but let's keep it simple: current year)
+            const currentYear = new Date().getFullYear();
+            const minMonthDay = triwulanDates[selected[0]].start;
+            const maxMonthDay = triwulanDates[selected[selected.length - 1]].end;
+            
+            tMulai.min = `${currentYear}-${minMonthDay}`;
+            tMulai.max = `${currentYear}-${maxMonthDay}`;
+            tSelesai.min = `${currentYear}-${minMonthDay}`;
+            tSelesai.max = `${currentYear}-${maxMonthDay}`;
+            
+        } else {
+            errorMsg.style.display = 'none';
+            tMulai.disabled = true; tSelesai.disabled = true;
+            sBidang.disabled = true;
+        }
+        
+        updateTimKerja();
+    }
+
+    function getSisaKuotaForTim(bidang, timId, selectedTriwulans) {
+        let minSisa = Infinity;
+        selectedTriwulans.forEach(tw => {
+            if (quotaData[tw] && quotaData[tw][bidang]) {
+                const tim = quotaData[tw][bidang].find(t => t.id == timId);
+                if (tim && tim.sisa < minSisa) {
+                    minSisa = tim.sisa;
+                }
+            }
+        });
+        return minSisa === Infinity ? 0 : minSisa;
+    }
+
     function updateTimKerja() {
         const selectedBidang = document.getElementById('select-bidang').value;
+        const checkboxes = document.querySelectorAll('.periode-checkbox:checked');
+        const selectedTw = Array.from(checkboxes).map(cb => cb.value);
+        
         const t1 = document.getElementById('select-tim-kerja-1');
         const t2 = document.getElementById('select-tim-kerja-2');
         const oldTim1 = "{{ old('id_tim_kerja_1') }}";
@@ -546,21 +653,27 @@
         t1.innerHTML = '<option value="" disabled selected>— Pilih Tim Kerja 1 —</option>';
         t2.innerHTML = '<option value="" disabled selected>— Pilih Tim Kerja 2 —</option>';
 
-        if (selectedBidang && timKerjaData[selectedBidang]) {
+        if (selectedBidang && selectedTw.length > 0 && document.getElementById('periode-error').style.display === 'none') {
             t1.disabled = false;
             t2.disabled = false;
 
-            timKerjaData[selectedBidang].forEach(tim => {
-                const label = tim.is_full ? tim.nama + ' (Penuh)' : tim.nama + ' (Sisa: ' + tim.sisa + ')';
+            // Ambil salah satu Triwulan untuk looping list tim kerjanya
+            const firstTw = selectedTw[0];
+            if (quotaData[firstTw] && quotaData[firstTw][selectedBidang]) {
+                quotaData[firstTw][selectedBidang].forEach(timBase => {
+                    const realSisa = getSisaKuotaForTim(selectedBidang, timBase.id, selectedTw);
+                    const isFull = realSisa <= 0;
+                    const label = isFull ? timBase.nama + ' (Penuh)' : timBase.nama + ' (Sisa: ' + realSisa + ')';
 
-                let o1 = new Option(label, tim.id, false, oldTim1 == tim.id);
-                o1.disabled = tim.is_full;
-                t1.add(o1);
+                    let o1 = new Option(label, timBase.id, false, oldTim1 == timBase.id);
+                    o1.disabled = isFull;
+                    t1.add(o1);
 
-                let o2 = new Option(label, tim.id, false, oldTim2 == tim.id);
-                o2.disabled = tim.is_full;
-                t2.add(o2);
-            });
+                    let o2 = new Option(label, timBase.id, false, oldTim2 == timBase.id);
+                    o2.disabled = isFull;
+                    t2.add(o2);
+                });
+            }
             syncTimKerjaDropdowns();
         } else {
             t1.disabled = true;
@@ -573,18 +686,20 @@
         const t2 = document.getElementById('select-tim-kerja-2');
         const v1 = t1.value, v2 = t2.value;
         const bidang = document.getElementById('select-bidang').value;
-        if (!bidang || !timKerjaData[bidang]) return;
+        const checkboxes = document.querySelectorAll('.periode-checkbox:checked');
+        const selectedTw = Array.from(checkboxes).map(cb => cb.value);
+        if (!bidang || selectedTw.length === 0) return;
 
         Array.from(t2.options).forEach(opt => {
             if (opt.value === "") return;
-            const tim = timKerjaData[bidang].find(t => t.id === opt.value);
-            opt.disabled = (opt.value === v1) || (tim && tim.is_full);
+            const realSisa = getSisaKuotaForTim(bidang, opt.value, selectedTw);
+            opt.disabled = (opt.value === v1) || (realSisa <= 0);
         });
 
         Array.from(t1.options).forEach(opt => {
             if (opt.value === "") return;
-            const tim = timKerjaData[bidang].find(t => t.id === opt.value);
-            opt.disabled = (opt.value === v2) || (tim && tim.is_full);
+            const realSisa = getSisaKuotaForTim(bidang, opt.value, selectedTw);
+            opt.disabled = (opt.value === v2) || (realSisa <= 0);
         });
     }
 
@@ -601,6 +716,7 @@
 
     // Restore on load
     document.addEventListener("DOMContentLoaded", function() {
+        handlePeriodeChange(); // initialize periods & date inputs
         if (document.getElementById('select-bidang').value !== "") {
             updateTimKerja();
         }

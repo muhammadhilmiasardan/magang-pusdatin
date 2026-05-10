@@ -128,8 +128,10 @@ class PusatDokumenController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Surat Keterangan Magang berhasil diunggah dan dikirim ke email peserta.',
+                'nama' => $peserta->nama,
+                'email' => $peserta->email,
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal mengirim email: ' . $e->getMessage(),
@@ -282,8 +284,10 @@ class PusatDokumenController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Surat Evaluasi berhasil diunggah dan dikirim ke email peserta.',
+                'nama' => $peserta->nama,
+                'email' => $peserta->email,
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal mengirim email: ' . $e->getMessage(),
@@ -417,8 +421,10 @@ class PusatDokumenController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Sertifikat berhasil diunggah dan dikirim ke email peserta.',
+                'nama' => $peserta->nama,
+                'email' => $peserta->email,
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal mengirim email: ' . $e->getMessage(),

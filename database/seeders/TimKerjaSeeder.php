@@ -18,7 +18,7 @@ class TimKerjaSeeder extends Seeder
             // BIDANG MANAJEMEN TEKNOLOGI INFORMASI (MTI)
             // =====================================================
             ['nama_tim' => 'Tim Kerja Tata Kelola dan Perizinan', 'bidang' => 'Bidang Manajemen Teknologi Informasi', 'kuota_maksimal' => 5, 'ketua_tim' => 'Widiastuti Kusumo Wardhani, S.Kom', 'nip_ketua_tim' => '198508232008122001'],
-            ['nama_tim' => 'Tim Kerja Keamanan Teknologi Informasi', 'bidang' => 'Bidang Manajemen Teknologi Informasi', 'kuota_maksimal' => 5, 'ketua_tim' => 'Alfonsus Sucahyo Hariaji, S.Kom', 'nip_ketua_tim' => '198808172015031003'],
+
             ['nama_tim' => 'Tim Kerja Infrastruktur Teknologi Informasi', 'bidang' => 'Bidang Manajemen Teknologi Informasi', 'kuota_maksimal' => 5, 'ketua_tim' => 'Rio Rasian Anggorobekti, S.Kom., M.T.I.', 'nip_ketua_tim' => '198309112010121003'],
             ['nama_tim' => 'Tim Kerja Sistem Informasi', 'bidang' => 'Bidang Manajemen Teknologi Informasi', 'kuota_maksimal' => 5, 'ketua_tim' => 'Falih Farhan, S.Kom', 'nip_ketua_tim' => '199711092022031008'],
             ['nama_tim' => 'Tim Kerja Korespondensi dan Kolaborasi', 'bidang' => 'Bidang Manajemen Teknologi Informasi', 'kuota_maksimal' => 5, 'ketua_tim' => 'Ramadhan Afwan Mutasodirin, S.Kom', 'nip_ketua_tim' => '199812282022031004'],

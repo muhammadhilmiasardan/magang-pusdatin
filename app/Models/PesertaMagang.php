@@ -26,6 +26,7 @@ class PesertaMagang extends Model
         'surat_penerimaan_final',
         'pas_foto',
         'status_magang',
+        'periode_magang',
         'is_sk_sent',
         'is_evaluasi_sent',
         'is_sertifikat_sent',
@@ -34,6 +35,10 @@ class PesertaMagang extends Model
         'surat_evaluasi',
         'sertifikat_data',
         'surat_sertifikat',
+    ];
+
+    protected $casts = [
+        'periode_magang' => 'array',
     ];
 
     /**
