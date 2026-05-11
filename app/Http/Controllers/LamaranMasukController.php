@@ -93,6 +93,8 @@ class LamaranMasukController extends Controller
         $peserta->status_magang = 'Belum Aktif';
         $peserta->save();
 
+        \App\Models\ActivityLog::log('terima_lamaran', 'menerima lamaran magang dan menerbitkan surat untuk **' . $peserta->nama . '**.');
+
         return response()->json([
             'success' => true,
             'message' => "Email berhasil dikirim ke {$peserta->email}. Status {$peserta->nama} sekarang: Belum Aktif.",
@@ -105,6 +107,8 @@ class LamaranMasukController extends Controller
 
         $peserta->status_magang = 'Ditolak';
         $peserta->save();
+
+        \App\Models\ActivityLog::log('tolak_lamaran', 'menolak lamaran magang dari **' . $peserta->nama . '**.');
 
         return redirect()->route('admin.lamaran.index')
             ->with('success', "Lamaran {$peserta->nama} telah ditolak.");

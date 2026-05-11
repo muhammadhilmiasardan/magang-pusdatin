@@ -43,6 +43,8 @@ class ManajemenMagangController extends Controller
         $peserta->status_magang = 'Anulir';
         $peserta->save();
 
+        \App\Models\ActivityLog::log('anulir', 'menganulir peserta magang atas nama **' . $peserta->nama . '**.');
+
         return response()->json(['success' => true, 'message' => "{$peserta->nama} telah mengundurkan diri (Anulir)."]);
     }
 }

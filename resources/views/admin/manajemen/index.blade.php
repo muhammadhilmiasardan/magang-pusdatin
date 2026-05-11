@@ -28,6 +28,29 @@
         @endforeach
     </div>
 
+    {{-- Controls: Search & Sort --}}
+    <div style="padding: 16px 22px; border-bottom: 1px solid var(--border); display: flex; gap: 16px; flex-wrap: wrap; align-items: center; justify-content: space-between; background: #fafbfc;">
+        {{-- Search Bar --}}
+        <div style="width: 100%; max-width: 340px; position: relative;">
+            <i class="fas fa-search" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px;"></i>
+            <input type="text" id="globalSearchInput" placeholder="Cari nama peserta atau institusi..." 
+                   style="width: 100%; padding: 10px 14px 10px 38px; border-radius: 8px; background: #ffffff; border: 1px solid #cbd5e1; font-size: 13px; color: var(--text-primary); transition: all 0.2s; outline: none;"
+                   onfocus="this.style.borderColor='var(--primary)';"
+                   onblur="this.style.borderColor='#cbd5e1';">
+        </div>
+
+        {{-- Sort Dropdown --}}
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <label style="font-size: 11.5px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;"><i class="fas fa-sort-amount-down" style="margin-right: 4px;"></i> Urutkan</label>
+            <select id="globalSortSelect" style="padding: 9px 32px 9px 12px; border-radius: 8px; border: 1px solid #cbd5e1; background: #fff; font-size: 13px; color: var(--text-primary); outline: none; cursor: pointer; appearance: auto; font-family: 'Inter', sans-serif;">
+                <option value="name_asc">Sesuai Abjad (A - Z)</option>
+                <option value="name_desc">Sesuai Abjad (Z - A)</option>
+                <option value="date_nearest">Segera Berakhir (Tanggal Terdekat)</option>
+                <option value="date_farthest">Waktu Tersisa Paling Lama</option>
+            </select>
+        </div>
+    </div>
+
     {{-- Tab Contents --}}
     @foreach($tabs as $id => $tab)
     <div class="tab-panel {{ $loop->first ? '' : 'hidden' }}" id="tab-{{ $id }}" role="tabpanel">
@@ -50,7 +73,10 @@
                     </thead>
                     <tbody>
                         @foreach($tab['data'] as $item)
-                        <tr>
+                        <tr class="manajemen-row" 
+                            data-name="{{ strtolower($item->nama) }}" 
+                            data-institusi="{{ strtolower($item->nama_institusi) }}" 
+                            data-date="{{ \Carbon\Carbon::parse($item->tanggal_selesai)->timestamp }}">
                             <td>
                                 <a href="#" class="link-name view-detail" data-id="{{ $item->id }}">
                                     {{ $item->nama }}
@@ -62,7 +88,7 @@
                                     {{ $item->timKerja1->nama_tim ?? 'Belum ditentukan' }}
                                 </span>
                             </td>
-                            <td style="white-space: nowrap; font-size: 13px;">
+                            <td style="white-space: nowrap; font-size: 13px;" class="cell-date">
                                 {{ \Carbon\Carbon::parse($item->tanggal_selesai)->format('d M Y') }}
                             </td>
                             <td style="text-align: center;">
@@ -346,6 +372,54 @@
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') closeModal();
     });
+
+    // Fitur Search dan Sort Client-Side
+    const globalSearchInput = document.getElementById('globalSearchInput');
+    const globalSortSelect = document.getElementById('globalSortSelect');
+
+    function filterAndSort() {
+        const searchTerm = globalSearchInput.value.toLowerCase();
+        const sortValue = globalSortSelect.value;
+        
+        document.querySelectorAll('.table-clean tbody').forEach(tbody => {
+            let rows = Array.from(tbody.querySelectorAll('.manajemen-row'));
+            
+            // 1. Filter
+            rows.forEach(row => {
+                const name = row.getAttribute('data-name');
+                const institusi = row.getAttribute('data-institusi');
+                
+                if (name.includes(searchTerm) || institusi.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            // 2. Sort
+            rows.sort((a, b) => {
+                const nameA = a.getAttribute('data-name');
+                const nameB = b.getAttribute('data-name');
+                const dateA = parseInt(a.getAttribute('data-date')) || 0;
+                const dateB = parseInt(b.getAttribute('data-date')) || 0;
+                
+                if (sortValue === 'name_asc') return nameA.localeCompare(nameB);
+                if (sortValue === 'name_desc') return nameB.localeCompare(nameA);
+                if (sortValue === 'date_nearest') return dateA - dateB;
+                if (sortValue === 'date_farthest') return dateB - dateA;
+                return 0;
+            });
+            
+            // 3. Re-append ke DOM sesuai urutan
+            rows.forEach(row => tbody.appendChild(row));
+        });
+    }
+
+    if (globalSearchInput) globalSearchInput.addEventListener('input', filterAndSort);
+    if (globalSortSelect) globalSortSelect.addEventListener('change', filterAndSort);
+    
+    // Inisialisasi awal agar urut
+    if (globalSortSelect) filterAndSort();
 
     $(document).ready(function() {
         $('.view-detail').click(function(e) {

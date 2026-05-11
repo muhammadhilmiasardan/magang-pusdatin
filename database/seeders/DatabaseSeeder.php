@@ -15,6 +15,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Buat akun admin default
+        User::firstOrCreate(
+            ['email' => 'admin@gmail.com'],
+            [
+                'name' => 'Admin',
+                'password' => bcrypt('adminmagang'),
+            ]
+        );
+
         $this->call([
             TimKerjaSeeder::class,
             PesertaMagangSeeder::class,

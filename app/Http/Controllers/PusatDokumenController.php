@@ -121,6 +121,8 @@ class PusatDokumenController extends Controller
         $peserta->is_sk_sent = 1;
         $peserta->save();
 
+        \App\Models\ActivityLog::log('kirim_dokumen', 'menerbitkan dan mengirim SK Magang untuk **' . $peserta->nama . '**.');
+
         // Kirim Email dengan lampiran
         try {
             Mail::to($peserta->email)->send(new SuratKeteranganMail($peserta, $request->pesan_email));
@@ -277,6 +279,8 @@ class PusatDokumenController extends Controller
 
         $peserta->save();
 
+        \App\Models\ActivityLog::log('kirim_dokumen', 'mengirimkan Surat Evaluasi Nilai untuk **' . $peserta->nama . '**.');
+
         // Kirim Email dengan lampiran
         try {
             Mail::to($peserta->email)->send(new SuratEvaluasiMail($peserta, $request->pesan_email));
@@ -412,6 +416,8 @@ class PusatDokumenController extends Controller
             }
 
             $peserta->save();
+            
+            \App\Models\ActivityLog::log('kirim_dokumen', 'menerbitkan dan mengirim Sertifikat Kelulusan untuk **' . $peserta->nama . '**.');
         }
 
         // Kirim Email

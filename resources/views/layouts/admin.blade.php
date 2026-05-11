@@ -715,6 +715,10 @@
             color: var(--primary);
             border-color: var(--primary);
         }
+
+        .hidden {
+            display: none !important;
+        }
     </style>
     @stack('styles')
 </head>
@@ -768,6 +772,24 @@
                         <span>Pusat Dokumen</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('admin.arsip-dokumen.index') }}" class="{{ request()->is('admin/arsip-dokumen*') ? 'active' : '' }}">
+                        <i class="fas fa-archive"></i>
+                        <span>Arsip Dokumen</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-label">Pengaturan</div>
+            <ul class="sidebar-nav">
+                <li>
+                    <a href="{{ route('admin.users.index') }}" class="{{ request()->is('admin/users*') ? 'active' : '' }}">
+                        <i class="fas fa-user-shield"></i>
+                        <span>Manajemen Admin</span>
+                    </a>
+                </li>
             </ul>
         </div>
 
@@ -779,10 +801,86 @@
         <header class="topbar">
             <h1 class="page-title">@yield('title')</h1>
             <div class="topbar-actions">
-                <button class="topbar-btn" title="Notifikasi">
-                    <i class="fas fa-bell"></i>
-                </button>
-                <div class="topbar-avatar">A</div>
+                {{-- Notification Dropdown --}}
+                <div style="position: relative;" id="notifDropdownContainer">
+                    <button id="notifDropdownBtn" class="topbar-btn" style="position: relative; border: none; cursor: pointer;" title="Notifikasi Aktivitas">
+                        <i class="fas fa-bell"></i>
+                        @if(isset($globalNotifications) && $globalNotifications->count() > 0)
+                            <span style="position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; background-color: #ef4444; border-radius: 50%; border: 2px solid #fff;"></span>
+                        @endif
+                    </button>
+                    
+                    {{-- Dropdown Menu Notifikasi --}}
+                    <div id="notifDropdownMenu" class="hidden" style="position: absolute; right: 0; top: 100%; margin-top: 8px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius-sm); box-shadow: var(--shadow-md); width: 320px; z-index: 100; overflow: hidden; animation: slideIn 0.2s ease;">
+                        <div style="padding: 12px 16px; border-bottom: 1px solid var(--border); background: #f8fafc; display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 13px; font-weight: 600; color: var(--text-primary);">Aktivitas Terbaru</span>
+                        </div>
+                        <ul style="list-style: none; padding: 0; margin: 0; max-height: 350px; overflow-y: auto;">
+                            @if(isset($globalNotifications) && $globalNotifications->count() > 0)
+                                @foreach($globalNotifications as $notif)
+                                    <li style="padding: 12px 16px; border-bottom: 1px solid var(--border); transition: background 0.2s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='none'">
+                                        <div style="display: flex; gap: 12px; align-items: flex-start;">
+                                            @php
+                                                // Tentukan ikon berdasarkan tipe_aksi
+                                                $icon = 'fa-info-circle';
+                                                $color = 'var(--text-muted)';
+                                                if ($notif->tipe_aksi === 'terima_lamaran') { $icon = 'fa-check-circle'; $color = '#10b981'; }
+                                                if ($notif->tipe_aksi === 'tolak_lamaran' || $notif->tipe_aksi === 'anulir') { $icon = 'fa-times-circle'; $color = '#ef4444'; }
+                                                if ($notif->tipe_aksi === 'kirim_dokumen') { $icon = 'fa-envelope-open-text'; $color = '#3b82f6'; }
+                                                if ($notif->tipe_aksi === 'manajemen_admin') { $icon = 'fa-user-shield'; $color = '#8b5cf6'; }
+                                            @endphp
+                                            <div style="margin-top: 2px;">
+                                                <i class="fas {{ $icon }}" style="color: {{ $color }}; font-size: 14px;"></i>
+                                            </div>
+                                            <div style="flex: 1;">
+                                                <p style="margin: 0; font-size: 12px; color: var(--text-primary); line-height: 1.4;">
+                                                    <b>{{ $notif->user->name ?? 'Admin' }}</b> {!! $notif->deskripsi !!}
+                                                </p>
+                                                <span style="font-size: 10px; color: var(--text-muted); margin-top: 4px; display: block;">
+                                                    {{ $notif->created_at->diffForHumans() }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                @endforeach
+                            @else
+                                <li style="padding: 24px 16px; text-align: center; color: var(--text-muted); font-size: 12px;">
+                                    Belum ada aktivitas.
+                                </li>
+                            @endif
+                        </ul>
+                    </div>
+                </div>
+
+                {{-- Profile Dropdown --}}
+                <div style="position: relative;" id="profileDropdownContainer">
+                    <button id="profileDropdownBtn" class="topbar-avatar" style="border: none; cursor: pointer;" title="Menu Profil">
+                        {{ Auth::check() ? strtoupper(substr(Auth::user()->name, 0, 1)) : 'A' }}
+                    </button>
+                    
+                    {{-- Dropdown Menu --}}
+                    <div id="profileDropdownMenu" class="hidden" style="position: absolute; right: 0; top: 100%; margin-top: 8px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius-sm); box-shadow: var(--shadow-md); width: 200px; z-index: 100; overflow: hidden; animation: slideIn 0.2s ease;">
+                        <div style="padding: 12px 16px; border-bottom: 1px solid var(--border); background: #f8fafc;">
+                            <div style="font-size: 13px; font-weight: 600; color: var(--text-primary);">{{ Auth::check() ? Auth::user()->name : 'Admin' }}</div>
+                            <div style="font-size: 11px; color: var(--text-secondary); text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ Auth::check() ? Auth::user()->email : 'admin@pusdatin.go.id' }}</div>
+                        </div>
+                        <ul style="list-style: none; padding: 0; margin: 0;">
+                            <li>
+                                <a href="{{ route('admin.profile.index') }}" style="display: flex; align-items: center; gap: 8px; padding: 10px 16px; color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: all 0.2s;" onmouseover="this.style.background='#f1f5f9'; this.style.color='var(--primary)'" onmouseout="this.style.background='none'; this.style.color='var(--text-secondary)'">
+                                    <i class="fas fa-user-circle"></i> Profil Saya
+                                </a>
+                            </li>
+                            <li style="border-top: 1px solid var(--border);">
+                                <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
+                                    @csrf
+                                    <button type="submit" style="display: flex; align-items: center; gap: 8px; padding: 10px 16px; color: #dc2626; text-decoration: none; font-size: 13px; transition: all 0.2s; background: none; border: none; width: 100%; text-align: left; cursor: pointer; font-family: inherit;" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='none'">
+                                        <i class="fas fa-sign-out-alt"></i> Keluar
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -814,6 +912,42 @@
 
 {{-- jQuery --}}
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+    // Profile & Notif Dropdown Logic
+    document.addEventListener('DOMContentLoaded', function() {
+        const profileBtn = document.getElementById('profileDropdownBtn');
+        const profileMenu = document.getElementById('profileDropdownMenu');
+        const notifBtn = document.getElementById('notifDropdownBtn');
+        const notifMenu = document.getElementById('notifDropdownMenu');
+        
+        if (profileBtn && profileMenu) {
+            profileBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if(notifMenu) notifMenu.classList.add('hidden'); // Close other
+                profileMenu.classList.toggle('hidden');
+            });
+        }
+
+        if (notifBtn && notifMenu) {
+            notifBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if(profileMenu) profileMenu.classList.add('hidden'); // Close other
+                notifMenu.classList.toggle('hidden');
+            });
+        }
+            
+        document.addEventListener('click', function(e) {
+            if (profileBtn && !profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+                profileMenu.classList.add('hidden');
+            }
+            if (notifBtn && !notifBtn.contains(e.target) && !notifMenu.contains(e.target)) {
+                notifMenu.classList.add('hidden');
+            }
+        });
+    });
+</script>
+
 @stack('scripts')
 </body>
 </html>
