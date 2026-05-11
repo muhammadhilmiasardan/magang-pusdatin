@@ -1,32 +1,44 @@
 <script>
-const CAPTION_TEMPLATE = (nama, institusi, jamNow, tglMulai) => {
-    const jam = parseInt(jamNow);
-    const sapa = jam < 11 ? 'pagi' : jam < 15 ? 'siang' : 'sore';
-    return `Selamat ${sapa} Sdr. ${nama}, berikut terlampir surat tanggapan dari kami terkait permohonan magang dari ${institusi}:
+// Template default isi pesan email — admin bisa edit sesuai kebutuhan
+const CAPTION_TEMPLATE = (nama, institusi, tglMulaiText, periodeMulai, periodeSelesai) => {
+    return `Yth. Saudara/i ${nama},
 
-Ketentuan Magang di Pusdatin Kementerian PU:
+Menindaklanjuti permohonan Magang/PKL yang diajukan, dengan ini kami sampaikan bahwa Saudara/i telah diterima untuk melaksanakan Program Magang/PKL di Pusat Data dan Teknologi Informasi, Kementerian Pekerjaan Umum untuk periode ${periodeMulai} s.d. ${periodeSelesai}.
+
+Bersama ini kami lampirkan Surat Konfirmasi Magang/PKL resmi sebagai dokumen administratif untuk dipergunakan sebagaimana mestinya.
+
+Selama masa Pelaksanaan Magang/PKL, mohon kiranya Saudara/i memperhatikan beberapa ketentuan sebagai berikut:
 
 1. Ketentuan Waktu:
-a. Masuk Pukul 07.30 dan Pulang Pukul 16.00 (senin-kamis) dan Pukul 16.30 (jumat)
-PS: Apabila Ketua TIM meminta untuk perpanjangan waktu pulang tolong diinfokan di group (sebutkan Nama dan Tim).
-
-b. Apabila H-2 akan selesai magang harap diinformasikan ke saya dan pada hari H bertemu dengan saya Kembali.
-
-c. Pusdatin tidak akan mengeluarkan surat keterangan magang apabila periode magang sudah lewat H+1 dst.
+a. Masuk Pukul 07.30 dan Pulang Pukul 16.00 (Senin s.d. Kamis) dan 07.30 s.d. 16.30 (Jumat).
+b. Harap memberikan konfirmasi kepada kami H-2 sebelum masa Magang/PKL berakhir dan diwajibkan untuk melapor kembali pada hari terakhir pelaksanaan Magang/PKL.
 
 2. Ketentuan Pakaian:
 a. Mahasiswa/i
-Senin - Kamis : Atasan Kemeja Putih Lengan Panjang/Pendek dan Bawahan Celana/Rok Hitam Sopan dilengkapi dengan Almamater Universitas dan Sepatu Hitam
-Jumat : Pakaian Batik Semi Formal dilengkapi dengan Almamater dan Sepatu Hitam
-
+   Senin - Kamis : Atasan Kemeja Putih Lengan Panjang/Pendek dan Bawahan Celana/Rok Hitam Sopan.
+   Jumat : Pakaian Batik Semi Formal dilengkapi dengan Almamater dan Sepatu Hitam.
 b. Siswa/i
-Senin - Jumat : Memakai seragam SMK/SMA sesuai dengan ketentuan sekolah dan Sepatu Hitam (dilengkapi Almamater apabila ada)
+   Senin - Jumat : Memakai seragam SMK/SMA sesuai dengan ketentuan sekolah dan Sepatu Hitam (dilengkapi Almamater apabila ada).
 
-3. Membawa Laptop
-4. Tidak Membawa Barang Terlarang
-5. Dilarang keras merokok/pods diruang kerja dan/atau ruangan tertutup serta menimbulkan terganggunya aktivitas pegawai lain
-6. Mentaati dan Melakukan segala Ketentuan yang berlaku di Lingkungan Pusdatin dan Kementerian PU
-7. Dapat bertemu dengan narahubung pada tanggal ${tglMulai} pukul 08.00 WIB di Gedung Pusdatin Kementerian PU`;
+3. Terdapat kewajiban bagi seluruh Peserta Magang/PKL untuk memaparkan (presentasi) hasil pekerjaan atau kegiatan selama masa Magang/PKL. Adapun ketentuan pelaksanaannya:
+a. Mahasiswa (Perguruan Tinggi) : Presentasi dilaksanakan satu minggu sebelum masa magang berakhir.
+b. Siswa/i (Sekolah): Presentasi dilaksanakan bersamaan dengan jadwal kunjungan monitoring guru pembimbing ke Pusdatin. Catatan: Guru pembimbing wajib menginformasikan jadwal kedatangannya terlebih dahulu.
+
+4. Di akhir masa magang, peserta berhak mendapatkan:
+a. Surat Keterangan Magang;
+b. Sertifikat Magang; dan
+c. Surat Evaluasi Magang (yang akan dikirim langsung ke pihak Sekolah/Universitas).
+Mohon menjadi perhatian bahwa pemenuhan kewajiban laporan bulanan dan presentasi akhir merupakan syarat mutlak bagi diterbitkannya ketiga dokumen tersebut.
+
+5. Membawa Laptop;
+6. Tidak Membawa Barang Terlarang;
+7. Dilarang keras merokok/pods di ruang kerja dan/atau ruangan tertutup serta menimbulkan terganggunya aktivitas pegawai lain;
+8. Mentaati dan melakukan segala ketentuan yang berlaku di Lingkungan Pusdatin dan Kementerian PU;
+9. Dapat bertemu dengan narahubung pada tanggal ${tglMulaiText} pukul 08.00 WIB di Gd. Pusat Data dan Teknologi Informasi, Kementerian PU.
+
+Hormat Kami,
+Pusat Data dan Teknologi Informasi
+Kementerian Pekerjaan Umum`;
 };
 
 // ── State ──────────────────────────────────────────
@@ -218,11 +230,15 @@ function openEmailModal(){
     const jam=new Date().getHours();
     
     // Format tanggal mulai ke format Indonesia (contoh: 11 Mei 2026)
-    const tglMulaiObj = new Date(_data.tanggal_mulai);
-    const formatter = new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-    const tglMulaiText = formatter.format(tglMulaiObj);
+    const tglMulaiObj  = new Date(_data.tanggal_mulai);
+    const tglSelesaiObj = new Date(_data.tanggal_selesai);
+    const fmtFull      = new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+    const fmtPeriode   = new Intl.DateTimeFormat('id-ID', { month: 'long', year: 'numeric' });
+    const tglMulaiText  = fmtFull.format(tglMulaiObj);
+    const periodeMulai  = fmtPeriode.format(tglMulaiObj);
+    const periodeSelesai = fmtPeriode.format(tglSelesaiObj);
     
-    document.getElementById('em-caption').value=CAPTION_TEMPLATE(_data.nama, _data.nama_institusi, jam, tglMulaiText);
+    document.getElementById('em-caption').value = CAPTION_TEMPLATE(_data.nama, _data.nama_institusi, tglMulaiText, periodeMulai, periodeSelesai);
     
     // Set flag anti-ghost click
     _emailJustOpened=true;
@@ -234,7 +250,7 @@ function openEmailModal(){
 function submitKirimEmail(){
     const caption=document.getElementById('em-caption').value.trim();
     if(!caption){ alert('Isi pesan email tidak boleh kosong.'); return; }
-    if(!confirm(`Kirim email penerimaan ke ${_data.email}?\n\nStatus ${_data.nama} akan berubah menjadi "Belum Aktif".`)) return;
+    if(!confirm(`Kirim email konfirmasi penerimaan ke ${_data.email}?\n\nStatus ${_data.nama} akan berubah menjadi "Belum Aktif".`)) return;
     const btn = document.getElementById('btn-kirim-email');
     btn.disabled=true;
     document.getElementById('em-sending-indicator').style.display='flex';

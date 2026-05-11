@@ -26,7 +26,7 @@ class SuratPenerimaanMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Surat Penerimaan Magang – Pusat Data dan Teknologi Informasi Kementerian PU',
+            subject: 'Konfirmasi Penerimaan Magang/PKL - Pusat Data dan Teknologi Informasi, Kementerian PU',
         );
     }
 
@@ -35,7 +35,8 @@ class SuratPenerimaanMail extends Mailable
         return new Content(
             view: 'emails.surat-penerimaan',
             with: [
-                'logoUrl' => config('app.url') . '/logo_pu.png',
+                'peserta'        => $this->peserta,
+                'captionBody'    => $this->captionBody, // pesan tambahan opsional dari admin
             ],
         );
     }

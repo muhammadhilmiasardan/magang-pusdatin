@@ -8,7 +8,7 @@
             <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
                 <div>
                     <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">Langkah 4 dari 4 — Final</div>
-                    <h3 style="font-size:16px;font-weight:700;color:var(--text-primary);margin:0;"><i class="fas fa-paper-plane" style="color:var(--accent);margin-right:8px;"></i>Kirim Email Penerimaan</h3>
+                    <h3 style="font-size:16px;font-weight:700;color:var(--text-primary);margin:0;"><i class="fas fa-paper-plane" style="color:var(--accent);margin-right:8px;"></i>Kirim Email Konfirmasi Penerimaan</h3>
                 </div>
                 <button onclick="closeEmailModal()" style="background:none;border:none;cursor:pointer;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:16px;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'"><i class="fas fa-times"></i></button>
             </div>
