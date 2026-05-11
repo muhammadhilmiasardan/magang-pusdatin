@@ -10,37 +10,53 @@ class PendaftaranController extends Controller
 {
     public function create()
     {
-        $triwulans = ['Triwulan 1', 'Triwulan 2', 'Triwulan 3', 'Triwulan 4'];
-        $timKerjaList = TimKerja::all();
-        $quotaData = [];
-
-        foreach ($triwulans as $tw) {
-            $quotaData[$tw] = [];
-            foreach ($timKerjaList as $tim) {
-                // Hitung yang aktif di triwulan ini
-                $count = PesertaMagang::whereIn('status_magang', ['Belum Aktif', 'Aktif'])
-                    ->where('id_tim_kerja_1', $tim->id)
-                    ->whereJsonContains('periode_magang', $tw)
-                    ->count();
-                
-                $sisa = max(0, $tim->kuota_maksimal - $count);
-                
-                if (!isset($quotaData[$tw][$tim->bidang])) {
-                    $quotaData[$tw][$tim->bidang] = [];
-                }
-                
-                $quotaData[$tw][$tim->bidang][] = [
-                    'id' => $tim->id,
-                    'nama' => $tim->nama_tim,
-                    'sisa' => $sisa,
-                    'is_full' => $sisa <= 0 ? true : false
-                ];
+        $currentMonth = (int) date('n');
+        $currentYear = (int) date('Y');
+        
+        $currentQuarter = ceil($currentMonth / 3);
+        $triwulans = [];
+        
+        for ($i = 0; $i < 4; $i++) {
+            $q = $currentQuarter + $i;
+            $y = $currentYear;
+            if ($q > 4) {
+                $q -= 4;
+                $y++;
             }
+            
+            $bulan = '';
+            $start_month = str_pad(($q - 1) * 3 + 1, 2, '0', STR_PAD_LEFT);
+            $end_month = str_pad($q * 3, 2, '0', STR_PAD_LEFT);
+            $end_day = ($q == 1 || $q == 4) ? '31' : '30';
+            
+            $start_date = "$y-$start_month-01";
+            $end_date = "$y-$end_month-$end_day";
+
+            if ($q == 1) $bulan = '(Januari - Maret)';
+            elseif ($q == 2) $bulan = '(April - Juni)';
+            elseif ($q == 3) $bulan = '(Juli - September)';
+            elseif ($q == 4) $bulan = '(Oktober - Desember)';
+
+            $triwulans[] = [
+                'value' => "Triwulan $q $y",
+                'label' => "Triwulan $q",
+                'year'  => $y,
+                'bulan' => $bulan,
+                'q'     => $q,
+                'index' => $i,
+                'start_date' => $start_date,
+                'end_date'   => $end_date
+            ];
         }
+
+        $timKerjaList = TimKerja::all();
+        $activePeserta = PesertaMagang::whereIn('status_magang', ['Belum Aktif', 'Aktif'])
+            ->select('id', 'id_tim_kerja_1', 'tanggal_mulai', 'tanggal_selesai')
+            ->get();
 
         $groupedTimKerja = $timKerjaList->groupBy('bidang');
 
-        return view('pendaftaran.form', compact('quotaData', 'groupedTimKerja'));
+        return view('pendaftaran.form', compact('triwulans', 'groupedTimKerja', 'activePeserta', 'timKerjaList'));
     }
 
     // Fungsi untuk memproses data saat tombol "Kirim" ditekan
@@ -59,7 +75,7 @@ class PendaftaranController extends Controller
             'email'               => 'required|email|max:255',
             'email_institusi'     => 'required|email|max:255',
             'periode_magang'      => 'required|array|min:1',
-            'periode_magang.*'    => 'in:Triwulan 1,Triwulan 2,Triwulan 3,Triwulan 4',
+            'periode_magang.*'    => 'regex:/^Triwulan [1-4] \d{4}$/',
             'bidang'              => 'required|string',
             'id_tim_kerja_1'      => 'required|exists:tim_kerja,id',
             'id_tim_kerja_2'      => 'required|exists:tim_kerja,id|different:id_tim_kerja_1',

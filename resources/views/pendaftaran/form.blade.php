@@ -394,22 +394,12 @@
                 <div class="form-group">
                     <label>Pilih Periode (Triwulan) <span class="required">*</span></label>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px;">
+                        @foreach($triwulans as $tw)
                         <label style="display:flex; align-items:center; gap:8px; padding:10px 14px; border:1px solid var(--border); border-radius:var(--radius-sm); cursor:pointer;" class="periode-label">
-                            <input type="checkbox" name="periode_magang[]" value="Triwulan 1" class="periode-checkbox" onchange="handlePeriodeChange()" {{ is_array(old('periode_magang')) && in_array('Triwulan 1', old('periode_magang')) ? 'checked' : '' }}> 
-                            <span>Triwulan 1 <small style="color:var(--text-muted);display:block;">(Januari - Maret)</small></span>
+                            <input type="checkbox" name="periode_magang[]" value="{{ $tw['value'] }}" class="periode-checkbox" onchange="handlePeriodeChange()" {{ is_array(old('periode_magang')) && in_array($tw['value'], old('periode_magang')) ? 'checked' : '' }}> 
+                            <span>{{ $tw['label'] }} {{ $tw['year'] }} <small style="color:var(--text-muted);display:block;">{{ $tw['bulan'] }}</small></span>
                         </label>
-                        <label style="display:flex; align-items:center; gap:8px; padding:10px 14px; border:1px solid var(--border); border-radius:var(--radius-sm); cursor:pointer;" class="periode-label">
-                            <input type="checkbox" name="periode_magang[]" value="Triwulan 2" class="periode-checkbox" onchange="handlePeriodeChange()" {{ is_array(old('periode_magang')) && in_array('Triwulan 2', old('periode_magang')) ? 'checked' : '' }}> 
-                            <span>Triwulan 2 <small style="color:var(--text-muted);display:block;">(April - Juni)</small></span>
-                        </label>
-                        <label style="display:flex; align-items:center; gap:8px; padding:10px 14px; border:1px solid var(--border); border-radius:var(--radius-sm); cursor:pointer;" class="periode-label">
-                            <input type="checkbox" name="periode_magang[]" value="Triwulan 3" class="periode-checkbox" onchange="handlePeriodeChange()" {{ is_array(old('periode_magang')) && in_array('Triwulan 3', old('periode_magang')) ? 'checked' : '' }}> 
-                            <span>Triwulan 3 <small style="color:var(--text-muted);display:block;">(Juli - September)</small></span>
-                        </label>
-                        <label style="display:flex; align-items:center; gap:8px; padding:10px 14px; border:1px solid var(--border); border-radius:var(--radius-sm); cursor:pointer;" class="periode-label">
-                            <input type="checkbox" name="periode_magang[]" value="Triwulan 4" class="periode-checkbox" onchange="handlePeriodeChange()" {{ is_array(old('periode_magang')) && in_array('Triwulan 4', old('periode_magang')) ? 'checked' : '' }}> 
-                            <span>Triwulan 4 <small style="color:var(--text-muted);display:block;">(Oktober - Desember)</small></span>
-                        </label>
+                        @endforeach
                     </div>
                     <div id="periode-error" class="form-error" style="display:none;"><i class="fas fa-exclamation-circle"></i> Pilihan Triwulan harus berurutan.</div>
                     @error('periode_magang') <div class="form-error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div> @enderror
@@ -418,11 +408,11 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>Tanggal Mulai Magang <span class="required">*</span></label>
-                        <input type="date" name="tanggal_mulai" id="tanggal_mulai" class="form-input @error('tanggal_mulai') is-invalid @enderror" value="{{ old('tanggal_mulai') }}" required disabled>
+                        <input type="date" name="tanggal_mulai" id="tanggal_mulai" class="form-input @error('tanggal_mulai') is-invalid @enderror" value="{{ old('tanggal_mulai') }}" onchange="updateTimKerja()" required disabled>
                     </div>
                     <div class="form-group">
                         <label>Tanggal Selesai Magang <span class="required">*</span></label>
-                        <input type="date" name="tanggal_selesai" id="tanggal_selesai" class="form-input @error('tanggal_selesai') is-invalid @enderror" value="{{ old('tanggal_selesai') }}" required disabled>
+                        <input type="date" name="tanggal_selesai" id="tanggal_selesai" class="form-input @error('tanggal_selesai') is-invalid @enderror" value="{{ old('tanggal_selesai') }}" onchange="updateTimKerja()" required disabled>
                     </div>
                 </div>
 
@@ -526,23 +516,30 @@
 </div>
 
 <script>
-    // Quota data from backend
-    const quotaData = @json($quotaData);
+    // Real-time quota calculation data from backend
+    const activePeserta = @json($activePeserta);
+    const timKerjaList = @json($timKerjaList);
+    const groupedTimKerja = @json($groupedTimKerja);
     
-    // Map triwulan ke nomor untuk validasi berurutan
+    // Map triwulan ke index dinamis untuk validasi berurutan lintas tahun
     const triwulanMap = {
-        "Triwulan 1": 1,
-        "Triwulan 2": 2,
-        "Triwulan 3": 3,
-        "Triwulan 4": 4
+        @foreach($triwulans as $tw)
+        "{{ $tw['value'] }}": {{ $tw['index'] }},
+        @endforeach
     };
     
-    // Map triwulan ke rentang bulan (MM-DD)
+    // Map triwulan ke rentang tanggal
     const triwulanDates = {
-        1: { start: "01-01", end: "03-31" },
-        2: { start: "04-01", end: "06-30" },
-        3: { start: "07-01", end: "09-30" },
-        4: { start: "10-01", end: "12-31" }
+        @foreach($triwulans as $tw)
+        @php
+            $s_m = ""; $e_m = "";
+            if ($tw['q'] == 1) { $s_m = "01-01"; $e_m = "03-31"; }
+            elseif ($tw['q'] == 2) { $s_m = "04-01"; $e_m = "06-30"; }
+            elseif ($tw['q'] == 3) { $s_m = "07-01"; $e_m = "09-30"; }
+            elseif ($tw['q'] == 4) { $s_m = "10-01"; $e_m = "12-31"; }
+        @endphp
+        {{ $tw['index'] }}: { start: "{{ $tw['year'] }}-{{ $s_m }}", end: "{{ $tw['year'] }}-{{ $e_m }}" },
+        @endforeach
     };
 
     // ── Toggle labels based on tingkat pendidikan ──
@@ -608,15 +605,14 @@
             tMulai.disabled = false; tSelesai.disabled = false;
             sBidang.disabled = false;
             
-            // Setup Min Max Dates based on current year (or next year if Q1 is selected in December, but let's keep it simple: current year)
-            const currentYear = new Date().getFullYear();
-            const minMonthDay = triwulanDates[selected[0]].start;
-            const maxMonthDay = triwulanDates[selected[selected.length - 1]].end;
+            // Setup Min Max Dates using dynamically generated years in triwulanDates
+            const minDate = triwulanDates[selected[0]].start;
+            const maxDate = triwulanDates[selected[selected.length - 1]].end;
             
-            tMulai.min = `${currentYear}-${minMonthDay}`;
-            tMulai.max = `${currentYear}-${maxMonthDay}`;
-            tSelesai.min = `${currentYear}-${minMonthDay}`;
-            tSelesai.max = `${currentYear}-${maxMonthDay}`;
+            tMulai.min = minDate;
+            tMulai.max = maxDate;
+            tSelesai.min = minDate;
+            tSelesai.max = maxDate;
             
         } else {
             errorMsg.style.display = 'none';
@@ -627,17 +623,31 @@
         updateTimKerja();
     }
 
-    function getSisaKuotaForTim(bidang, timId, selectedTriwulans) {
-        let minSisa = Infinity;
-        selectedTriwulans.forEach(tw => {
-            if (quotaData[tw] && quotaData[tw][bidang]) {
-                const tim = quotaData[tw][bidang].find(t => t.id == timId);
-                if (tim && tim.sisa < minSisa) {
-                    minSisa = tim.sisa;
+    function getSisaKuotaForTim(timId, fallbackStart, fallbackEnd) {
+        let tMulai = document.getElementById('tanggal_mulai').value;
+        let tSelesai = document.getElementById('tanggal_selesai').value;
+        
+        // Use fallback if dates are not completely filled by user yet
+        if (!tMulai || !tSelesai) {
+            if (!fallbackStart || !fallbackEnd) return 0;
+            tMulai = fallbackStart;
+            tSelesai = fallbackEnd;
+        }
+
+        const tim = timKerjaList.find(t => t.id == timId);
+        if (!tim) return 0;
+
+        let overlapCount = 0;
+        activePeserta.forEach(p => {
+            if (p.id_tim_kerja_1 == timId) {
+                // Check if active participant date range overlaps with user's selected date range
+                if (p.tanggal_mulai <= tSelesai && p.tanggal_selesai >= tMulai) {
+                    overlapCount++;
                 }
             }
         });
-        return minSisa === Infinity ? 0 : minSisa;
+
+        return Math.max(0, tim.kuota_maksimal - overlapCount);
     }
 
     function updateTimKerja() {
@@ -656,14 +666,17 @@
         if (selectedBidang && selectedTw.length > 0 && document.getElementById('periode-error').style.display === 'none') {
             t1.disabled = false;
             t2.disabled = false;
+            
+            // Calculate fallback dates from selected Triwulans
+            const sortedTw = Array.from(checkboxes).map(cb => triwulanMap[cb.value]).sort((a,b) => a - b);
+            const fallbackStart = triwulanDates[sortedTw[0]].start;
+            const fallbackEnd = triwulanDates[sortedTw[sortedTw.length - 1]].end;
 
-            // Ambil salah satu Triwulan untuk looping list tim kerjanya
-            const firstTw = selectedTw[0];
-            if (quotaData[firstTw] && quotaData[firstTw][selectedBidang]) {
-                quotaData[firstTw][selectedBidang].forEach(timBase => {
-                    const realSisa = getSisaKuotaForTim(selectedBidang, timBase.id, selectedTw);
+            if (groupedTimKerja[selectedBidang]) {
+                groupedTimKerja[selectedBidang].forEach(timBase => {
+                    const realSisa = getSisaKuotaForTim(timBase.id, fallbackStart, fallbackEnd);
                     const isFull = realSisa <= 0;
-                    const label = isFull ? timBase.nama + ' (Penuh)' : timBase.nama + ' (Sisa: ' + realSisa + ')';
+                    const label = isFull ? timBase.nama_tim + ' (Penuh)' : timBase.nama_tim + ' (Sisa: ' + realSisa + ')';
 
                     let o1 = new Option(label, timBase.id, false, oldTim1 == timBase.id);
                     o1.disabled = isFull;
@@ -689,16 +702,21 @@
         const checkboxes = document.querySelectorAll('.periode-checkbox:checked');
         const selectedTw = Array.from(checkboxes).map(cb => cb.value);
         if (!bidang || selectedTw.length === 0) return;
+        
+        // Get fallback dates
+        const sortedTw = Array.from(checkboxes).map(cb => triwulanMap[cb.value]).sort((a,b) => a - b);
+        const fallbackStart = triwulanDates[sortedTw[0]].start;
+        const fallbackEnd = triwulanDates[sortedTw[sortedTw.length - 1]].end;
 
         Array.from(t2.options).forEach(opt => {
             if (opt.value === "") return;
-            const realSisa = getSisaKuotaForTim(bidang, opt.value, selectedTw);
+            const realSisa = getSisaKuotaForTim(opt.value, fallbackStart, fallbackEnd);
             opt.disabled = (opt.value === v1) || (realSisa <= 0);
         });
 
         Array.from(t1.options).forEach(opt => {
             if (opt.value === "") return;
-            const realSisa = getSisaKuotaForTim(bidang, opt.value, selectedTw);
+            const realSisa = getSisaKuotaForTim(opt.value, fallbackStart, fallbackEnd);
             opt.disabled = (opt.value === v2) || (realSisa <= 0);
         });
     }
