@@ -24,12 +24,16 @@
 
     /* Body email dirender dari textarea — preserve whitespace */
     .email-body-text {
-        font-size: 13px;
+        font-size: 13.5px;
         color: #1a1a1a;
-        line-height: 1.8;
-        white-space: pre-line;
-        word-break: break-word;
+        line-height: 1.7;
     }
+    .email-body-text p { margin-bottom: 14px; }
+    .email-body-text h3 { font-size: 15px; font-weight: 700; color: #1a3a6e; margin-top: 20px; margin-bottom: 8px; border-bottom: 1px solid #e8eaf0; padding-bottom: 4px; }
+    .email-body-text ul { padding-left: 20px; margin-bottom: 14px; }
+    .email-body-text li { margin-bottom: 6px; }
+    .email-body-text strong { font-weight: 600; color: #111827; }
+    .email-body-text em { color: #4b5563; font-style: italic; }
 
     /* Attachment note */
     .attachment-note { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px 16px; margin-top: 20px; display: table; width: 100%; }
@@ -74,11 +78,10 @@
     {{-- ══ BODY ══ --}}
     <div class="body">
 
-        {{--
-            Render isi email langsung dari captionBody yang ditulis/diedit admin.
-            white-space: pre-line akan menjaga semua baris dan spasi yang ada di textarea.
+        {{-- 
+            Render isi email dengan Markdown agar bisa diberi style h3, bold, dll.
         --}}
-        <div class="email-body-text">{{ $captionBody }}</div>
+        <div class="email-body-text">{!! Str::markdown($captionBody) !!}</div>
 
         {{-- Attachment note --}}
         <div class="attachment-note" style="margin-top: 24px;">

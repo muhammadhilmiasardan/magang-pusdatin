@@ -841,8 +841,10 @@
         const tglSelesai = new Date(data.tanggal_selesai).toLocaleDateString('id-ID', opt);
         const tp = (data.tingkat_pendidikan || '').toUpperCase();
         const isSiswa    = (tp === 'SMK' || tp === 'SLTA' || tp === 'SMA');
+        const sebutanYth = isSiswa ? 'Saudara/i' : 'Saudara/i';
+        const sebutanId  = isSiswa ? 'siswa/i' : 'mahasiswa/i';
         const nimLabel   = isSiswa ? 'NIS' : 'NIM';
-        return `Dengan hormat,\n\nBersama ini kami sampaikan lembar nilai evaluasi Peserta Magang/PKL atas nama ${data.nama} (${nimLabel}. ${data.nim_nis || '-'} - ${data.jurusan || '-'}) yang telah melaksanakan kegiatan Magang/PKL di Pusat Data dan Teknologi Informasi, Sekretariat Jenderal, Kementerian Pekerjaan Umum selama periode ${tglMulai} s.d. ${tglSelesai}.\n\nPenilaian ini disusun berdasarkan pengamatan dan evaluasi terhadap kinerja, kedisiplinan, sikap, serta kemampuan peserta magang selama menjalankan tugas dan tanggung jawabnya. Kami berharap lembar evaluasi ini dapat menjadi bahan pertimbangan dan dokumentasi bagi guru/dosen pembimbing dalam proses penilaian akademik.\n\nSelanjutnya, dalam menunjang pembangunan Zona Integritas menuju Wilayah Birokrasi Bersih dan Melayani, PUSDATIN Kementerian PU berkomitmen meningkatkan kualitas pelayanan publik yang bebas dari korupsi dan memberikan pelayanan prima.\n\nDemikian lembar nilai evaluasi ini kami sampaikan. Atas perhatian dan kerja samanya, kami ucapkan terima kasih.\n\nHormat kami,\nPusat Data dan Teknologi Informasi\nKementerian Pekerjaan Umum`;
+        return `Yth. ${sebutanYth} ${data.nama},\n\nBersama ini kami sampaikan Lembar Evaluasi Magang/PKL atas nama ${data.nama} (${nimLabel} ${data.nim_nis || '-'}), ${sebutanId} program studi ${data.jurusan || '-'}, yang telah melaksanakan kegiatan Magang/PKL di Pusat Data dan Teknologi Informasi, Sekretariat Jenderal, Kementerian Pekerjaan Umum untuk periode ${tglMulai} s.d. ${tglSelesai}.\n\nKami mengucapkan terima kasih atas dedikasi dan kontribusi yang telah diberikan selama masa Magang/PKL di Pusdatin. Semoga pengalaman dan ilmu yang didapatkan dapat bermanfaat untuk pengembangan diri di masa mendatang.\n\nSelanjutnya, dalam menunjang pembangunan Zona Integritas menuju Wilayah Birokrasi Bersih dan Melayani, PUSDATIN Kementerian PU berkomitmen meningkatkan kualitas pelayanan publik yang bebas dari korupsi dan memberikan pelayanan prima.\n\nDemikian lembar evaluasi magang/PKL ini kami sampaikan. Atas perhatian dan kerja samanya, kami ucapkan terima kasih.\n\nHormat kami,\nPusat Data dan Teknologi Informasi\nKementerian Pekerjaan Umum`;
     };
 
     // Iframe Scaling to fit without scrolling
@@ -979,6 +981,7 @@
                 document.getElementById('sk-modal-header').style.display = 'none';
                 document.getElementById('sk-modal-body').style.display = 'none';
                 document.getElementById('sk-success-state').style.display = 'flex';
+                document.getElementById('skModal').querySelector('.modal-content').style.maxWidth = '500px';
                 document.getElementById('sk-success-to').textContent = data.nama || '-';
                 document.getElementById('sk-success-email').textContent = data.email || '-';
             } else {
@@ -1002,13 +1005,17 @@
     function openEvaluasiModal(id) {
         document.getElementById('evaluasi_peserta_id').value = id;
         document.getElementById('evaluasiModal').classList.remove('hidden');
+        
+        // Reset download status
         document.getElementById('btnDownloadEvaluasi').dataset.downloaded = 'false';
-        // Reset caption dan info penerima
-        document.getElementById('ev-caption').value = '';
-        document.getElementById('ev-em-nama').textContent = '-';
-        document.getElementById('ev-em-email').textContent = '-';
+        
+        // Reset form inputs
         document.getElementById('formEvaluasiData').reset();
+        
+        // Load default preview
         reloadEvaluasiPreview(id);
+
+        // Reset Steps
         nextEvStep(1);
         document.getElementById('formUploadEvaluasi').reset();
     }
@@ -1128,22 +1135,22 @@
     }
 
     function submitEvaluasi() {
-        const id        = document.getElementById('evaluasi_peserta_id').value;
+        const id = document.getElementById('evaluasi_peserta_id').value;
         const fileInput = document.getElementById('ev_surat_ttd');
-        const caption   = document.getElementById('ev-caption').value.trim();
+        const pesan = document.getElementById('ev-caption').value.trim();
 
         if (!fileInput.files.length) {
             alert('Silakan pilih file PDF evaluasi yang sudah ditandatangani.');
             return;
         }
-        if (!caption) {
+        if (!pesan) {
             alert('Isi pesan email tidak boleh kosong.');
             return;
         }
 
         const formData = new FormData();
         formData.append('surat_ttd', fileInput.files[0]);
-        formData.append('caption', caption);
+        formData.append('caption', pesan);
         const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
         const btn = document.getElementById('btnSubmitEvaluasi');
@@ -1165,6 +1172,7 @@
                 document.getElementById('ev-modal-header').style.display = 'none';
                 document.getElementById('ev-modal-body').style.display = 'none';
                 document.getElementById('ev-success-state').style.display = 'flex';
+                document.getElementById('evaluasiModal').querySelector('.modal-content').style.maxWidth = '500px';
                 document.getElementById('ev-success-to').textContent = data.nama || '-';
                 document.getElementById('ev-success-email').textContent = data.email || '-';
             } else {
@@ -1334,6 +1342,7 @@
                 document.getElementById('sr-modal-header').style.display = 'none';
                 document.getElementById('sr-modal-body').style.display = 'none';
                 document.getElementById('sr-success-state').style.display = 'flex';
+                document.getElementById('sertifikatModal').querySelector('.modal-content').style.maxWidth = '500px';
                 document.getElementById('sr-success-to').textContent = data.nama || '-';
                 document.getElementById('sr-success-email').textContent = data.email || '-';
             } else {
