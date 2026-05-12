@@ -20,12 +20,16 @@
 
     /* Body */
     .body { padding: 28px 28px 20px; }
-    .greeting { font-size: 13.5px; color: #1a1a1a; line-height: 1.7; margin-bottom: 20px; }
     .divider { border: none; border-top: 1px solid #e8eaf0; margin: 20px 0; }
-    .section-title { font-size: 13px; font-weight: bold; color: #1a3a6e; margin-bottom: 12px; }
 
-    /* Info box pesan tambahan */
-    .pesan-box { background: #f0f4ff; border-left: 3px solid #2d5bab; border-radius: 0 6px 6px 0; padding: 10px 14px; margin: 16px 0; font-size: 12.5px; color: #333; line-height: 1.6; font-style: italic; }
+    /* Body email dirender dari textarea — preserve whitespace */
+    .email-body-text {
+        font-size: 13px;
+        color: #1a1a1a;
+        line-height: 1.8;
+        white-space: pre-line;
+        word-break: break-word;
+    }
 
     /* Attachment note */
     .attachment-note { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px 16px; margin-top: 20px; display: table; width: 100%; }
@@ -70,33 +74,17 @@
     {{-- ══ BODY ══ --}}
     <div class="body">
 
-        <p class="greeting">
-            Kepada Yth.<br>
-            <strong>{{ $peserta->nama }}</strong>,<br><br>
-            Dengan hormat,<br><br>
-            Terlampir adalah <strong>Sertifikat Magang</strong> Anda dari Pusat Data dan Teknologi Informasi, 
-            Sekretariat Jenderal, Kementerian Pekerjaan Umum. Sertifikat ini merupakan bukti resmi penghargaan atas kontribusi 
-            Anda selama mengikuti program magang.
-        </p>
-
-        @if(!empty($pesan_tambahan))
-        <hr class="divider">
-        <div class="section-title">Pesan dari Admin:</div>
-        <div class="pesan-box">{!! nl2br(e($pesan_tambahan)) !!}</div>
-        @endif
-
-        <hr class="divider">
-
-        <p style="font-size: 13px; color: #333; line-height: 1.7;">
-            Terima kasih atas dedikasi dan kontribusi Anda selama menjalani program magang. 
-            Semoga pengalaman ini bermanfaat bagi pengembangan karir Anda ke depan.
-        </p>
+        {{--
+            Render isi email langsung dari captionBody yang ditulis/diedit admin.
+            white-space: pre-line akan menjaga semua baris dan spasi yang ada di textarea.
+        --}}
+        <div class="email-body-text">{{ $captionBody }}</div>
 
         {{-- Attachment note --}}
-        <div class="attachment-note">
+        <div class="attachment-note" style="margin-top: 24px;">
             <div class="attachment-icon">📎</div>
             <div class="attachment-text">
-                <strong>Sertifikat Magang Terlampir</strong>
+                <strong>Surat Keterangan & Sertifikat Magang Terlampir</strong>
                 <span>Mohon disimpan sebagai dokumen resmi bukti partisipasi magang Anda.</span>
             </div>
         </div>

@@ -114,16 +114,25 @@
 
                 <div style="margin-bottom: 16px;">
                     <label style="font-size: 13px; font-weight: 500; color: var(--text-primary); display: block; margin-bottom: 6px;">Password <span style="color: red;">*</span></label>
-                    <input type="password" name="password" class="form-input" required placeholder="Minimal 8 karakter" minlength="8" style="width: 100%; padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                    <div style="position: relative;">
+                        <input type="password" name="password" id="addPassword" class="form-input" required placeholder="Minimal 8 karakter" minlength="8" style="width: 100%; padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border); padding-right: 40px;">
+                        <button type="button" onclick="togglePassword('addPassword', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 0; outline: none;">
+                            <i class="far fa-eye-slash"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div style="margin-bottom: 8px;">
                     <label style="font-size: 13px; font-weight: 500; color: var(--text-primary); display: block; margin-bottom: 6px;">Konfirmasi Password <span style="color: red;">*</span></label>
-                    <input type="password" name="password_confirmation" class="form-input" required placeholder="Ulangi password" minlength="8" style="width: 100%; padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                    <div style="position: relative;">
+                        <input type="password" name="password_confirmation" id="addPasswordConfirm" class="form-input" required placeholder="Ulangi password" minlength="8" style="width: 100%; padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border); padding-right: 40px;">
+                        <button type="button" onclick="togglePassword('addPasswordConfirm', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 0; outline: none;">
+                            <i class="far fa-eye-slash"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div class="modal-footer" style="padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 12px; background: #f8fafc;">
-                <button type="button" onclick="closeModal('addModal')" class="btn-outline-custom">Batal</button>
+            <div class="modal-footer" style="padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; background: #f8fafc;">
                 <button type="submit" class="btn-primary-custom">Simpan Admin</button>
             </div>
         </form>
@@ -159,17 +168,26 @@
                     </p>
                     <div style="margin-bottom: 12px;">
                         <label style="font-size: 13px; font-weight: 500; color: var(--text-primary); display: block; margin-bottom: 6px;">Password Baru</label>
-                        <input type="password" name="password" class="form-input" placeholder="Opsional" minlength="8" style="width: 100%; padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                        <div style="position: relative;">
+                            <input type="password" name="password" id="editPassword" class="form-input" placeholder="Kosongkan jika tidak ingin diubah" minlength="8" style="width: 100%; padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border); padding-right: 40px;">
+                            <button type="button" onclick="togglePassword('editPassword', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 0; outline: none;">
+                                <i class="far fa-eye-slash"></i>
+                            </button>
+                        </div>
                     </div>
     
                     <div>
                         <label style="font-size: 13px; font-weight: 500; color: var(--text-primary); display: block; margin-bottom: 6px;">Konfirmasi Password Baru</label>
-                        <input type="password" name="password_confirmation" class="form-input" placeholder="Opsional" minlength="8" style="width: 100%; padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                        <div style="position: relative;">
+                            <input type="password" name="password_confirmation" id="editPasswordConfirm" class="form-input" placeholder="Ulangi password baru" minlength="8" style="width: 100%; padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border); padding-right: 40px;">
+                            <button type="button" onclick="togglePassword('editPasswordConfirm', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 0; outline: none;">
+                                <i class="far fa-eye-slash"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer" style="padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 12px; background: #f8fafc;">
-                <button type="button" onclick="closeModal('editModal')" class="btn-outline-custom">Batal</button>
+            <div class="modal-footer" style="padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; background: #f8fafc;">
                 <button type="submit" class="btn-primary-custom">Update Admin</button>
             </div>
         </form>
@@ -277,6 +295,21 @@
             });
         }
     });
+
+    // Toggle Password Visibility
+    function togglePassword(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const icon = btn.querySelector('i');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        }
+    }
 </script>
 
 {{-- Show Validation Errors as Sweet Alerts or standard alert if any --}}

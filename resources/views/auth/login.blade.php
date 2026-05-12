@@ -152,14 +152,14 @@
             </div>
 
             @if($errors->any())
-                <div class="alert-error">
+                <div class="alert-error auto-hide-toast">
                     <i class="fas fa-exclamation-circle" style="margin-right: 6px;"></i>
                     {{ $errors->first() }}
                 </div>
             @endif
 
             @if(session('success'))
-                <div class="alert-success">
+                <div class="alert-success auto-hide-toast">
                     <i class="fas fa-check-circle" style="margin-right: 6px;"></i>
                     {{ session('success') }}
                 </div>
@@ -174,7 +174,12 @@
 
                 <div class="form-group">
                     <label class="form-label">Password</label>
-                    <input type="password" name="password" class="form-input" required placeholder="••••••••">
+                    <div style="position: relative;">
+                        <input type="password" name="password" id="password" class="form-input" required style="padding-right: 40px;">
+                        <button type="button" onclick="togglePassword('password', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 0; outline: none;">
+                            <i class="far fa-eye-slash"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn-login">
@@ -186,6 +191,36 @@
             &copy; {{ date('Y') }} PUSDATIN Kementerian PUPR.
         </p>
     </div>
+
+    <script>
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            }
+        }
+
+        // Auto Hide Flash Messages
+        document.addEventListener('DOMContentLoaded', function() {
+            const toasts = document.querySelectorAll('.auto-hide-toast');
+            if (toasts.length > 0) {
+                setTimeout(function() {
+                    toasts.forEach(toast => {
+                        toast.style.transition = 'opacity 0.5s ease';
+                        toast.style.opacity = '0';
+                        setTimeout(() => toast.remove(), 500);
+                    });
+                }, 5000);
+            }
+        });
+    </script>
 
 </body>
 </html>

@@ -315,9 +315,22 @@
 
             {{-- STEP 3: KIRIM EMAIL --}}
             <div id="step-3-content" class="step-content hidden">
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
-                    <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px;">Pesan Email Tambahan (Opsional)</label>
-                    <textarea id="pesan_email" form="formUploadSk" class="form-input" rows="4" placeholder="Terlampir adalah Surat Keterangan Magang..."></textarea>
+                {{-- Info Penerima --}}
+                <div style="background:#f8fafc;border-radius:10px;padding:14px 16px;margin-bottom:16px;border:1px solid var(--border);">
+                    <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">Informasi Pengiriman</div>
+                    <div style="display:flex;gap:24px;flex-wrap:wrap;">
+                        <div><span style="font-size:12px;color:var(--text-secondary);">Kepada:</span><br><span id="sk-em-nama" style="font-size:13px;font-weight:600;color:var(--text-primary);">-</span></div>
+                        <div><span style="font-size:12px;color:var(--text-secondary);">Email:</span><br><span id="sk-em-email" style="font-size:13px;font-weight:600;color:var(--primary);">-</span></div>
+                        <div><span style="font-size:12px;color:var(--text-secondary);">Lampiran:</span><br><span style="font-size:13px;font-weight:600;color:#16a34a;"><i class="fas fa-paperclip"></i> Surat Keterangan &amp; Sertifikat Magang</span></div>
+                    </div>
+                </div>
+                {{-- Caption / Body Email --}}
+                <div style="margin-bottom:16px;">
+                    <label style="font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:8px;">
+                        Isi Pesan Email <span style="color:#ef4444;">*</span>
+                        <span style="font-size:10px;color:var(--text-muted);text-transform:none;font-weight:400;margin-left:6px;">(dapat diedit sesuai kebutuhan)</span>
+                    </label>
+                    <textarea id="sk-caption" rows="18" style="width:100%;padding:12px;border:1px solid var(--border);border-radius:8px;font-size:12.5px;font-family:'Courier New',monospace;line-height:1.6;resize:vertical;outline:none;color:var(--text-primary);box-sizing:border-box;"></textarea>
                 </div>
                 <div style="display: flex; justify-content: space-between;">
                     <button class="btn-outline-custom" onclick="nextStep(2)" style="padding-left: 20px; padding-right: 20px;">
@@ -507,9 +520,22 @@
 
             {{-- STEP 3: KIRIM EMAIL --}}
             <div id="ev-step-3-content" class="step-content hidden">
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
-                    <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px;">Pesan Email Tambahan (Opsional)</label>
-                    <textarea id="ev_pesan_email" form="formUploadEvaluasi" class="form-input" rows="4" placeholder="Terlampir adalah Lembar Evaluasi Magang Anda..."></textarea>
+                {{-- Info Penerima --}}
+                <div style="background:#f8fafc;border-radius:10px;padding:14px 16px;margin-bottom:16px;border:1px solid var(--border);">
+                    <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">Informasi Pengiriman</div>
+                    <div style="display:flex;gap:24px;flex-wrap:wrap;">
+                        <div><span style="font-size:12px;color:var(--text-secondary);">Kepada:</span><br><span id="ev-em-nama" style="font-size:13px;font-weight:600;color:var(--text-primary);">-</span></div>
+                        <div><span style="font-size:12px;color:var(--text-secondary);">Email:</span><br><span id="ev-em-email" style="font-size:13px;font-weight:600;color:var(--primary);">-</span></div>
+                        <div><span style="font-size:12px;color:var(--text-secondary);">Lampiran:</span><br><span style="font-size:13px;font-weight:600;color:#16a34a;"><i class="fas fa-paperclip"></i> Lembar Evaluasi Magang</span></div>
+                    </div>
+                </div>
+                {{-- Caption / Body Email --}}
+                <div style="margin-bottom:16px;">
+                    <label style="font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:8px;">
+                        Isi Pesan Email <span style="color:#ef4444;">*</span>
+                        <span style="font-size:10px;color:var(--text-muted);text-transform:none;font-weight:400;margin-left:6px;">(dapat diedit sesuai kebutuhan)</span>
+                    </label>
+                    <textarea id="ev-caption" rows="18" style="width:100%;padding:12px;border:1px solid var(--border);border-radius:8px;font-size:12.5px;font-family:'Courier New',monospace;line-height:1.6;resize:vertical;outline:none;color:var(--text-primary);box-sizing:border-box;"></textarea>
                 </div>
                 <div style="display: flex; justify-content: space-between;">
                     <button class="btn-outline-custom" onclick="nextEvStep(2)" style="padding-left: 20px; padding-right: 20px;">
@@ -659,9 +685,22 @@
 
             {{-- STEP 3: KIRIM EMAIL --}}
             <div id="sert-step-3-content" class="step-content hidden">
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
-                    <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px;">Pesan Email Tambahan (Opsional)</label>
-                    <textarea id="sert_pesan_email" class="form-input" rows="4" placeholder="Terlampir adalah Sertifikat Magang Anda dari PUSDATIN PUPR..."></textarea>
+                {{-- Info Penerima --}}
+                <div style="background:#f8fafc;border-radius:10px;padding:14px 16px;margin-bottom:16px;border:1px solid var(--border);">
+                    <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">Informasi Pengiriman</div>
+                    <div style="display:flex;gap:24px;flex-wrap:wrap;">
+                        <div><span style="font-size:12px;color:var(--text-secondary);">Kepada:</span><br><span id="sert-em-nama" style="font-size:13px;font-weight:600;color:var(--text-primary);">-</span></div>
+                        <div><span style="font-size:12px;color:var(--text-secondary);">Email:</span><br><span id="sert-em-email" style="font-size:13px;font-weight:600;color:var(--primary);">-</span></div>
+                        <div><span style="font-size:12px;color:var(--text-secondary);">Lampiran:</span><br><span style="font-size:13px;font-weight:600;color:#16a34a;"><i class="fas fa-paperclip"></i> Surat Keterangan &amp; Sertifikat Magang</span></div>
+                    </div>
+                </div>
+                {{-- Caption / Body Email --}}
+                <div style="margin-bottom:16px;">
+                    <label style="font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:8px;">
+                        Isi Pesan Email <span style="color:#ef4444;">*</span>
+                        <span style="font-size:10px;color:var(--text-muted);text-transform:none;font-weight:400;margin-left:6px;">(dapat diedit sesuai kebutuhan)</span>
+                    </label>
+                    <textarea id="sert-caption" rows="18" style="width:100%;padding:12px;border:1px solid var(--border);border-radius:8px;font-size:12.5px;font-family:'Courier New',monospace;line-height:1.6;resize:vertical;outline:none;color:var(--text-primary);box-sizing:border-box;"></textarea>
                 </div>
                 <div style="display: flex; justify-content: space-between;">
                     <button class="btn-outline-custom" onclick="nextSertStep(2)" style="padding-left: 20px; padding-right: 20px;">
@@ -783,6 +822,29 @@
         document.getElementById('tab-' + tabId).classList.remove('hidden');
     }
 
+    // Template caption untuk SK Magang & Sertifikat
+    const SK_SERT_CAPTION_TEMPLATE = (data) => {
+        const opt = { day: 'numeric', month: 'long', year: 'numeric' };
+        const tglMulai   = new Date(data.tanggal_mulai).toLocaleDateString('id-ID', opt);
+        const tglSelesai = new Date(data.tanggal_selesai).toLocaleDateString('id-ID', opt);
+        const tp = (data.tingkat_pendidikan || '').toUpperCase();
+        const isSiswa    = (tp === 'SMK' || tp === 'SLTA' || tp === 'SMA');
+        const sebutanYth = isSiswa ? 'Saudara/i' : 'Saudara/i';
+        const sebutanId  = isSiswa ? 'siswa/i' : 'mahasiswa/i';
+        const nimLabel   = isSiswa ? 'NIS' : 'NIM';
+        return `Yth. ${sebutanYth} ${data.nama},\n\nBersama ini kami sampaikan Surat Keterangan dan Sertifikat Magang/PKL atas nama ${data.nama} (${nimLabel} ${data.nim_nis || '-'}), ${sebutanId} program studi ${data.jurusan || '-'}, yang telah menyelesaikan kegiatan Magang/PKL di Pusat Data dan Teknologi Informasi, Sekretariat Jenderal, Kementerian Pekerjaan Umum untuk periode ${tglMulai} s.d. ${tglSelesai}.\n\nKami mengucapkan terima kasih atas dedikasi dan kontribusi yang telah diberikan selama masa Magang/PKL di Pusdatin. Semoga pengalaman dan ilmu yang didapatkan dapat bermanfaat untuk pengembangan diri di masa mendatang.\n\nSelanjutnya, dalam menunjang pembangunan Zona Integritas menuju Wilayah Birokrasi Bersih dan Melayani, PUSDATIN Kementerian PU berkomitmen meningkatkan kualitas pelayanan publik yang bebas dari korupsi dan memberikan pelayanan prima.\n\nDemikian surat keterangan dan sertifikat magang/PKL ini kami sampaikan. Atas perhatian dan kerja samanya, kami ucapkan terima kasih.\n\nHormat kami,\nPusat Data dan Teknologi Informasi\nKementerian Pekerjaan Umum`;
+    };
+
+    const EVALUASI_CAPTION_TEMPLATE = (data) => {
+        const opt = { day: 'numeric', month: 'long', year: 'numeric' };
+        const tglMulai   = new Date(data.tanggal_mulai).toLocaleDateString('id-ID', opt);
+        const tglSelesai = new Date(data.tanggal_selesai).toLocaleDateString('id-ID', opt);
+        const tp = (data.tingkat_pendidikan || '').toUpperCase();
+        const isSiswa    = (tp === 'SMK' || tp === 'SLTA' || tp === 'SMA');
+        const nimLabel   = isSiswa ? 'NIS' : 'NIM';
+        return `Dengan hormat,\n\nBersama ini kami sampaikan lembar nilai evaluasi Peserta Magang/PKL atas nama ${data.nama} (${nimLabel}. ${data.nim_nis || '-'} - ${data.jurusan || '-'}) yang telah melaksanakan kegiatan Magang/PKL di Pusat Data dan Teknologi Informasi, Sekretariat Jenderal, Kementerian Pekerjaan Umum selama periode ${tglMulai} s.d. ${tglSelesai}.\n\nPenilaian ini disusun berdasarkan pengamatan dan evaluasi terhadap kinerja, kedisiplinan, sikap, serta kemampuan peserta magang selama menjalankan tugas dan tanggung jawabnya. Kami berharap lembar evaluasi ini dapat menjadi bahan pertimbangan dan dokumentasi bagi guru/dosen pembimbing dalam proses penilaian akademik.\n\nSelanjutnya, dalam menunjang pembangunan Zona Integritas menuju Wilayah Birokrasi Bersih dan Melayani, PUSDATIN Kementerian PU berkomitmen meningkatkan kualitas pelayanan publik yang bebas dari korupsi dan memberikan pelayanan prima.\n\nDemikian lembar nilai evaluasi ini kami sampaikan. Atas perhatian dan kerja samanya, kami ucapkan terima kasih.\n\nHormat kami,\nPusat Data dan Teknologi Informasi\nKementerian Pekerjaan Umum`;
+    };
+
     // Iframe Scaling to fit without scrolling
     function fitIframe(iframe) {
         if (!iframe || iframe.offsetParent === null) return; // if hidden
@@ -802,14 +864,12 @@
     function openSkModal(id) {
         document.getElementById('peserta_id').value = id;
         document.getElementById('skModal').classList.remove('hidden');
-        
-        // Reset download status
         document.getElementById('btnDownloadSk').dataset.downloaded = 'false';
-        
-        // Use default nomor surat initially
+        // Reset caption dan info penerima
+        document.getElementById('sk-caption').value = '';
+        document.getElementById('sk-em-nama').textContent = '-';
+        document.getElementById('sk-em-email').textContent = '-';
         reloadPreview(id);
-
-        // Reset Steps
         nextStep(1);
         document.getElementById('formUploadSk').reset();
     }
@@ -867,23 +927,37 @@
         } else if(step === 3) {
             titleText.textContent = 'Kirim Email';
             icon.className = 'fas fa-paper-plane';
+            // Fetch peserta data & populate caption jika belum diisi
+            const skId = document.getElementById('peserta_id').value;
+            fetch(`/admin/manajemen/${skId}`)
+                .then(r => r.json())
+                .then(data => {
+                    document.getElementById('sk-em-nama').textContent  = data.nama;
+                    document.getElementById('sk-em-email').textContent = data.email;
+                    if (!document.getElementById('sk-caption').value.trim()) {
+                        document.getElementById('sk-caption').value = SK_SERT_CAPTION_TEMPLATE(data);
+                    }
+                });
         }
     }
 
     function submitSkMagang() {
-        const id = document.getElementById('peserta_id').value;
+        const id        = document.getElementById('peserta_id').value;
         const fileInput = document.getElementById('surat_ttd');
-        const pesan = document.getElementById('pesan_email').value;
+        const caption   = document.getElementById('sk-caption').value.trim();
 
         if (!fileInput.files.length) {
             alert('Silakan pilih file PDF surat yang sudah ditandatangani.');
             return;
         }
+        if (!caption) {
+            alert('Isi pesan email tidak boleh kosong.');
+            return;
+        }
 
         const formData = new FormData();
         formData.append('surat_ttd', fileInput.files[0]);
-        formData.append('pesan_email', pesan);
-        // Laravel CSRF token
+        formData.append('caption', caption);
         const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
         const btn = document.getElementById('btnSubmitSk');
@@ -928,17 +1002,13 @@
     function openEvaluasiModal(id) {
         document.getElementById('evaluasi_peserta_id').value = id;
         document.getElementById('evaluasiModal').classList.remove('hidden');
-        
-        // Reset download status
         document.getElementById('btnDownloadEvaluasi').dataset.downloaded = 'false';
-        
-        // Reset form inputs
+        // Reset caption dan info penerima
+        document.getElementById('ev-caption').value = '';
+        document.getElementById('ev-em-nama').textContent = '-';
+        document.getElementById('ev-em-email').textContent = '-';
         document.getElementById('formEvaluasiData').reset();
-        
-        // Load default preview
         reloadEvaluasiPreview(id);
-
-        // Reset Steps
         nextEvStep(1);
         document.getElementById('formUploadEvaluasi').reset();
     }
@@ -994,6 +1064,17 @@
         } else if(step === 3) {
             titleText.textContent = 'Kirim Email';
             icon.className = 'fas fa-paper-plane';
+            // Fetch peserta data & populate caption jika belum diisi
+            const evId = document.getElementById('evaluasi_peserta_id').value;
+            fetch(`/admin/manajemen/${evId}`)
+                .then(r => r.json())
+                .then(data => {
+                    document.getElementById('ev-em-nama').textContent  = data.nama;
+                    document.getElementById('ev-em-email').textContent = data.email;
+                    if (!document.getElementById('ev-caption').value.trim()) {
+                        document.getElementById('ev-caption').value = EVALUASI_CAPTION_TEMPLATE(data);
+                    }
+                });
         }
     }
 
@@ -1047,18 +1128,22 @@
     }
 
     function submitEvaluasi() {
-        const id = document.getElementById('evaluasi_peserta_id').value;
+        const id        = document.getElementById('evaluasi_peserta_id').value;
         const fileInput = document.getElementById('ev_surat_ttd');
-        const pesan = document.getElementById('ev_pesan_email').value;
+        const caption   = document.getElementById('ev-caption').value.trim();
 
         if (!fileInput.files.length) {
             alert('Silakan pilih file PDF evaluasi yang sudah ditandatangani.');
             return;
         }
+        if (!caption) {
+            alert('Isi pesan email tidak boleh kosong.');
+            return;
+        }
 
         const formData = new FormData();
         formData.append('surat_ttd', fileInput.files[0]);
-        formData.append('pesan_email', pesan);
+        formData.append('caption', caption);
         const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
         const btn = document.getElementById('btnSubmitEvaluasi');
@@ -1103,10 +1188,11 @@
     function openSertifikatModal(id) {
         document.getElementById('sertifikat_peserta_id').value = id;
         document.getElementById('sertifikatModal').classList.remove('hidden');
-        
-        // Reset download status
         document.getElementById('btnDownloadSertifikat').dataset.downloaded = 'false';
-        
+        // Reset caption dan info penerima
+        document.getElementById('sert-caption').value = '';
+        document.getElementById('sert-em-nama').textContent = '-';
+        document.getElementById('sert-em-email').textContent = '-';
         document.getElementById('formSertifikatData').reset();
         document.getElementById('formUploadSertifikat').reset();
         nextSertStep(1);
@@ -1134,7 +1220,7 @@
         } else if (step === 3) {
             const sertUpload = document.getElementById('sert_ttd');
             if (!sertUpload.files || sertUpload.files.length === 0) {
-                alert('Silakan upload file Sertifikat yang sudah di-TTE terlebih dahulu.');
+                alert('Silakan upload file Sertifikat yang sudah ber-TTE terlebih dahulu.');
                 return;
             }
         }
@@ -1155,6 +1241,17 @@
         } else if(step === 3) {
             titleText.textContent = 'Kirim Email';
             icon.className = 'fas fa-paper-plane';
+            // Fetch peserta data & populate caption jika belum diisi
+            const sertId = document.getElementById('sertifikat_peserta_id').value;
+            fetch(`/admin/manajemen/${sertId}`)
+                .then(r => r.json())
+                .then(data => {
+                    document.getElementById('sert-em-nama').textContent  = data.nama;
+                    document.getElementById('sert-em-email').textContent = data.email;
+                    if (!document.getElementById('sert-caption').value.trim()) {
+                        document.getElementById('sert-caption').value = SK_SERT_CAPTION_TEMPLATE(data);
+                    }
+                });
         }
     }
 
@@ -1200,18 +1297,22 @@
     }
 
     function submitSertifikat() {
-        const id = document.getElementById('sertifikat_peserta_id').value;
+        const id        = document.getElementById('sertifikat_peserta_id').value;
         const fileInput = document.getElementById('sert_ttd');
-        const pesan = document.getElementById('sert_pesan_email').value;
+        const caption   = document.getElementById('sert-caption').value.trim();
 
         if (!fileInput.files.length) {
             alert('Silakan pilih file PDF sertifikat yang sudah ber-TTE.');
             return;
         }
+        if (!caption) {
+            alert('Isi pesan email tidak boleh kosong.');
+            return;
+        }
 
         const formData = new FormData();
         formData.append('surat_ttd', fileInput.files[0]);
-        formData.append('pesan_email', pesan);
+        formData.append('caption', caption);
         const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
         const btn = document.getElementById('btnSubmitSertifikat');

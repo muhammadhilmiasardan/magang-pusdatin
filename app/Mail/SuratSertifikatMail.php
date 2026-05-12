@@ -15,12 +15,12 @@ class SuratSertifikatMail extends Mailable
     use Queueable, SerializesModels;
 
     public PesertaMagang $peserta;
-    public ?string $pesanTambahan;
+    public string $captionBody;
 
-    public function __construct(PesertaMagang $peserta, ?string $pesanTambahan = null)
+    public function __construct(PesertaMagang $peserta, string $captionBody)
     {
-        $this->peserta       = $peserta;
-        $this->pesanTambahan = $pesanTambahan;
+        $this->peserta     = $peserta;
+        $this->captionBody = $captionBody;
     }
 
     public function envelope(): Envelope
@@ -35,8 +35,8 @@ class SuratSertifikatMail extends Mailable
         return new Content(
             view: 'emails.sertifikat',
             with: [
-                'peserta'        => $this->peserta,
-                'pesan_tambahan' => $this->pesanTambahan,
+                'peserta'     => $this->peserta,
+                'captionBody' => $this->captionBody,
             ],
         );
     }

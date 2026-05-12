@@ -887,21 +887,15 @@
         {{-- Page Content --}}
         <main class="content-area">
             @if(session('success'))
-                <div class="alert-toast alert-success" role="alert">
+                <div class="alert-toast alert-success auto-hide-toast" role="alert">
                     <i class="fas fa-check-circle"></i>
                     <span>{{ session('success') }}</span>
-                    <button type="button" style="margin-left:auto; background:none; border:none; cursor:pointer; opacity:0.6;" onclick="this.parentElement.remove()">
-                        <i class="fas fa-times"></i>
-                    </button>
                 </div>
             @endif
             @if(session('error'))
-                <div class="alert-toast alert-danger" role="alert">
+                <div class="alert-toast alert-danger auto-hide-toast" role="alert">
                     <i class="fas fa-exclamation-circle"></i>
                     <span>{{ session('error') }}</span>
-                    <button type="button" style="margin-left:auto; background:none; border:none; cursor:pointer; opacity:0.6;" onclick="this.parentElement.remove()">
-                        <i class="fas fa-times"></i>
-                    </button>
                 </div>
             @endif
 
@@ -945,6 +939,18 @@
                 notifMenu.classList.add('hidden');
             }
         });
+
+        // Auto Hide Flash Messages
+        const toasts = document.querySelectorAll('.auto-hide-toast');
+        if (toasts.length > 0) {
+            setTimeout(function() {
+                toasts.forEach(toast => {
+                    toast.style.transition = 'opacity 0.5s ease';
+                    toast.style.opacity = '0';
+                    setTimeout(() => toast.remove(), 500);
+                });
+            }, 5000);
+        }
     });
 </script>
 

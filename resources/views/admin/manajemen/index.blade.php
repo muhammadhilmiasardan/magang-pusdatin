@@ -42,7 +42,7 @@
         {{-- Sort Dropdown --}}
         <div style="display: flex; align-items: center; gap: 10px;">
             <label style="font-size: 11.5px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;"><i class="fas fa-sort-amount-down" style="margin-right: 4px;"></i> Urutkan</label>
-            <select id="globalSortSelect" style="padding: 9px 32px 9px 12px; border-radius: 8px; border: 1px solid #cbd5e1; background: #fff; font-size: 13px; color: var(--text-primary); outline: none; cursor: pointer; appearance: auto; font-family: 'Inter', sans-serif;">
+            <select id="globalSortSelect" style="padding: 6px 28px 6px 10px; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; font-size: 12px; color: var(--text-primary); outline: none; cursor: pointer; appearance: auto; font-family: 'Inter', sans-serif;">
                 <option value="name_asc">Sesuai Abjad (A - Z)</option>
                 <option value="name_desc">Sesuai Abjad (Z - A)</option>
                 <option value="date_nearest">Segera Berakhir (Tanggal Terdekat)</option>
@@ -122,6 +122,9 @@
         border-radius: 16px;
         width: 90%;
         max-width: 860px;
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
         overflow: hidden;
         box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
         animation: scaleIn 0.2s ease;
@@ -131,6 +134,7 @@
             padding: 20px 24px;
             border-bottom: 1px solid var(--border);
             display: flex; align-items: center; justify-content: space-between;
+            flex-shrink: 0;
         ">
             <h3 style="font-size: 16px; font-weight: 700; color: var(--text-primary); margin: 0;">
                 Detail Peserta Magang
@@ -157,7 +161,7 @@
         </div>
 
         {{-- Modal Body --}}
-        <div id="modalContent" style="display: none; padding: 20px 24px;">
+        <div id="modalContent" style="display: none; padding: 20px 24px; overflow-y: auto;">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
                 {{-- Left Column: Biodata --}}
                 <div>
@@ -314,7 +318,7 @@
         </div>
 
         {{-- Modal Footer --}}
-        <div style="padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+        <div style="padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
             <div id="m-resign-area" style="display: none;">
                 <button onclick="confirmAnulir()" class="btn-sm-custom" style="
                     background: #fef2f2; color: #dc2626; border: 1px solid #fecaca;

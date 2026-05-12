@@ -100,8 +100,8 @@ class PusatDokumenController extends Controller
     public function uploadDanKirimSkMagang(Request $request, $id)
     {
         $request->validate([
-            'surat_ttd'   => 'required|mimes:pdf|max:5120',
-            'pesan_email' => 'nullable|string',
+            'surat_ttd' => 'required|mimes:pdf|max:5120',
+            'caption'   => 'required|string',
         ]);
 
         $peserta = PesertaMagang::findOrFail($id);
@@ -125,7 +125,7 @@ class PusatDokumenController extends Controller
 
         // Kirim Email dengan lampiran
         try {
-            Mail::to($peserta->email)->send(new SuratKeteranganMail($peserta, $request->pesan_email));
+            Mail::to($peserta->email)->send(new SuratKeteranganMail($peserta, $request->caption));
 
             return response()->json([
                 'success' => true,
@@ -254,8 +254,8 @@ class PusatDokumenController extends Controller
     public function uploadDanKirimEvaluasi(Request $request, $id)
     {
         $request->validate([
-            'surat_ttd'   => 'required|mimes:pdf|max:5120',
-            'pesan_email' => 'nullable|string',
+            'surat_ttd' => 'required|mimes:pdf|max:5120',
+            'caption'   => 'required|string',
         ]);
 
         $peserta = PesertaMagang::findOrFail($id);
@@ -283,7 +283,7 @@ class PusatDokumenController extends Controller
 
         // Kirim Email dengan lampiran
         try {
-            Mail::to($peserta->email)->send(new SuratEvaluasiMail($peserta, $request->pesan_email));
+            Mail::to($peserta->email)->send(new SuratEvaluasiMail($peserta, $request->caption));
 
             return response()->json([
                 'success' => true,
@@ -395,8 +395,8 @@ class PusatDokumenController extends Controller
     public function uploadDanKirimSertifikat(Request $request, $id)
     {
         $request->validate([
-            'surat_ttd'   => 'required|mimes:pdf|max:5120',
-            'pesan_email' => 'nullable|string',
+            'surat_ttd' => 'required|mimes:pdf|max:5120',
+            'caption'   => 'required|string',
         ]);
 
         $peserta = PesertaMagang::findOrFail($id);
@@ -422,7 +422,7 @@ class PusatDokumenController extends Controller
 
         // Kirim Email
         try {
-            Mail::to($peserta->email)->send(new SuratSertifikatMail($peserta, $request->pesan_email));
+            Mail::to($peserta->email)->send(new SuratSertifikatMail($peserta, $request->caption));
 
             return response()->json([
                 'success' => true,
