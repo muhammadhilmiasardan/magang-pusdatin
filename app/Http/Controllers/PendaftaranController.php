@@ -74,7 +74,7 @@ class PendaftaranController extends Controller
             'nomor_telp'          => 'required|string|max:20',
             'email'               => 'required|email|max:255',
             'email_institusi'     => 'required|email|max:255',
-            'periode_magang'      => 'required|array|min:1',
+            'periode_magang'      => 'required|array|min:1|max:2',
             'periode_magang.*'    => 'regex:/^Triwulan [1-4] \d{4}$/',
             'bidang'              => 'required|string',
             'id_tim_kerja_1'      => 'required|exists:tim_kerja,id',
@@ -83,6 +83,7 @@ class PendaftaranController extends Controller
             'cv'                  => 'nullable|file|mimes:pdf|max:2048',
             'pas_foto'            => 'required|image|mimes:jpg,jpeg,png|max:1024',
         ], [
+            'periode_magang.max'        => 'Maksimal hanya dapat memilih 2 periode (6 bulan).',
             'tanggal_selesai.after'     => 'Tanggal selesai harus setelah tanggal mulai.',
             'id_tim_kerja_2.different'  => 'Pilihan Tim Kerja 2 harus berbeda dari Pilihan 1.',
             'surat_rekomendasi.required'=> 'Surat Permohonan Magang wajib dilampirkan.',

@@ -585,11 +585,18 @@
         const sBidang = document.getElementById('select-bidang');
         
         let isValid = true;
-        if (selected.length > 0) {
+        let errorMessage = '';
+
+        if (selected.length > 2) {
+            isValid = false;
+            errorMessage = 'Maksimal hanya dapat memilih 2 periode (6 bulan).';
+        } else if (selected.length > 0) {
             // Check if consecutive
             for(let i=0; i<selected.length-1; i++) {
                 if (selected[i+1] - selected[i] !== 1) {
-                    isValid = false; break;
+                    isValid = false; 
+                    errorMessage = 'Pilihan Triwulan harus berurutan.';
+                    break;
                 }
             }
         } else {
@@ -597,6 +604,7 @@
         }
 
         if (selected.length > 0 && !isValid) {
+            errorMsg.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + errorMessage;
             errorMsg.style.display = 'block';
             tMulai.disabled = true; tSelesai.disabled = true;
             sBidang.disabled = true;
