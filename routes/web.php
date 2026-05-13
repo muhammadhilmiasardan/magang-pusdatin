@@ -12,8 +12,8 @@ Route::get('/', function () {
 // Route untuk menampilkan form pendaftaran
 Route::get('/pendaftaran', [PendaftaranController::class, 'create'])->name('pendaftaran.create');
 
-// Route untuk menangani submit form (Method POST)
-Route::post('/pendaftaran', [PendaftaranController::class, 'store'])->name('pendaftaran.store');
+// Route untuk menangani submit form (Method POST) dengan proteksi spam (maks 5 request per menit per IP)
+Route::post('/pendaftaran', [PendaftaranController::class, 'store'])->name('pendaftaran.store')->middleware('throttle:5,1');
 
 // Route halaman sukses setelah submit
 Route::get('/pendaftaran/sukses', function () {

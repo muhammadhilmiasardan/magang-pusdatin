@@ -189,19 +189,19 @@ class PesertaMagangSeeder extends Seeder
                 continue;
             }
 
-            $nama = trim($row[1] ?? '');
-            $nim_nis = trim($row[2] ?? '');
-            $tingkatPendidikan = trim($row[3] ?? '');
-            $namaInstitusi = trim($row[4] ?? '');
-            $jurusan = trim($row[5] ?? '');
-            $tanggalMulai = trim($row[6] ?? '');
-            $tanggalSelesai = trim($row[7] ?? '');
-            $nomorTelp = trim($row[8] ?? '');
-            $emailRaw = trim($row[9] ?? '');
-            $emailInstitusiRaw = trim($row[10] ?? '');
-            $bidang = trim($row[11] ?? '');
-            $timKerja = trim($row[12] ?? '');
-            $statusMagang = trim($row[13] ?? 'Aktif');
+            $nama = preg_replace('/[^\x20-\x7E]/', '', trim($row[1] ?? ''));
+            $nim_nis = preg_replace('/[^\x20-\x7E]/', '', trim($row[2] ?? ''));
+            $tingkatPendidikan = preg_replace('/[^\x20-\x7E]/', '', trim($row[3] ?? ''));
+            $namaInstitusi = preg_replace('/[^\x20-\x7E]/', '', trim($row[4] ?? ''));
+            $jurusan = preg_replace('/[^\x20-\x7E]/', '', trim($row[5] ?? ''));
+            $tanggalMulai = preg_replace('/[^\x20-\x7E]/', '', trim($row[6] ?? ''));
+            $tanggalSelesai = preg_replace('/[^\x20-\x7E]/', '', trim($row[7] ?? ''));
+            $nomorTelp = preg_replace('/[^\x20-\x7E]/', '', trim($row[8] ?? ''));
+            $emailRaw = preg_replace('/[^\x20-\x7E]/', '', trim($row[9] ?? ''));
+            $emailInstitusiRaw = preg_replace('/[^\x20-\x7E]/', '', trim($row[10] ?? ''));
+            $bidang = preg_replace('/[^\x20-\x7E]/', '', trim($row[11] ?? ''));
+            $timKerja = preg_replace('/[^\x20-\x7E]/', '', trim($row[12] ?? ''));
+            $statusMagang = preg_replace('/[^\x20-\x7E]/', '', trim($row[13] ?? 'Aktif'));
 
             $penempatan = !empty($timKerja) ? $timKerja : $bidang;
 
