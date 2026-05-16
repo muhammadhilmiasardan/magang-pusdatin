@@ -390,33 +390,25 @@
         }
 
         .bidang-header-bar {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 24px
+            margin-bottom: 32px;
+            padding-left: 16px;
+            border-left: 4px solid var(--primary-dark);
         }
 
         .bidang-icon-wrap {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            color: #fff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, .1)
+            display: none;
         }
 
         .bidang-header-text h3 {
-            font-size: 20px;
+            font-size: 28px;
             font-weight: 800;
-            color: var(--primary-dark)
+            color: var(--primary-dark);
+            margin-bottom: 4px;
         }
 
         .bidang-header-text p {
-            font-size: 14px;
-            color: var(--text-secondary)
+            font-size: 16px;
+            color: var(--text-secondary);
         }
 
         .tim-grid {
@@ -425,135 +417,132 @@
             gap: 24px
         }
 
+        /* Card Container */
         .tim-card {
             background: #fff;
             border: 1px solid var(--border);
             border-radius: 16px;
-            padding: 24px;
-            cursor: pointer;
-            transition: all .3s ease;
-            position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
             display: flex;
             flex-direction: column;
-            height: 100%
-        }
-
-        .tim-card:hover {
-            border-color: var(--primary-light);
-            box-shadow: 0 12px 24px rgba(30, 58, 138, .08);
-            transform: translateY(-4px)
-        }
-
-        .tim-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
             height: 100%;
-            background: var(--border);
-            transition: all .3s ease
+        }
+        .tim-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
         }
 
-        .tim-card:hover::before {
-            background: var(--primary)
+        /* Header Area */
+        .tim-card-header {
+            height: 140px;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            position: relative;
+            background-image: radial-gradient(circle at right top, rgba(255,255,255,0.1) 0%, transparent 50%), linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
         }
 
-        .tim-name-wrap {
-            margin-bottom: 20px;
-            flex-grow: 1
-        }
-
-        .tim-name {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text);
-            line-height: 1.4;
-            margin-bottom: 8px;
-            transition: color .2s
-        }
-
-        .tim-card:hover .tim-name {
-            color: var(--primary)
-        }
-
-        .tim-preview-text {
-            font-size: 13px;
-            color: var(--text-secondary);
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            line-height: 1.5
-        }
-
-        .tim-card-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-top: 16px;
-            border-top: 1px dashed var(--border);
-            margin-top: auto
-        }
-
-        .kuota-indicator {
-            display: flex;
-            align-items: center;
-            gap: 12px
-        }
-
-        .kuota-circle {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+        /* Floating Icon */
+        .tim-card-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--primary-dark);
+            color: #fff;
+            border: 4px solid #fff;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 16px;
-            font-weight: 800;
-            background: #f1f5f9;
-            color: var(--text)
+            position: absolute;
+            top: 118px;
+            left: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        .kuota-text {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px
+        /* Body Area */
+        .tim-card-body {
+            padding: 36px 20px 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
-
-        .status-ok .kuota-circle {
-            background: #dcfce7;
-            color: #166534
+        .tim-name {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+            line-height: 1.3;
         }
-
-        .status-warn .kuota-circle {
-            background: #fef3c7;
-            color: #92400e
-        }
-
-        .status-full .kuota-circle {
-            background: #fee2e2;
-            color: #991b1b
-        }
-
-        .btn-detail {
-            background: transparent;
-            border: none;
-            color: var(--primary);
+        .tim-preview-text {
             font-size: 13px;
-            font-weight: 600;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        /* Footer */
+        .tim-card-footer {
             display: flex;
             align-items: center;
-            gap: 6px;
-            cursor: pointer;
-            transition: gap .2s
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-top: 1px solid var(--border);
+            margin-top: auto;
         }
+        
+        .footer-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .kuota-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .kuota-circle {
+            background: #f1f5f9;
+            color: var(--text);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 12px;
+        }
+        
+        .status-ok .kuota-circle { background: #dcfce7; color: #166534; }
+        .status-warn .kuota-circle { background: #fef3c7; color: #92400e; }
+        .status-full .kuota-circle { background: #fee2e2; color: #991b1b; }
 
+        .btn-detail {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: gap 0.2s;
+            padding: 0;
+        }
         .tim-card:hover .btn-detail {
-            gap: 8px
+            gap: 6px;
         }
 
         /* ── MODAL DETAIL TIM ── */
@@ -903,11 +892,8 @@
                             $info = $bidangInfo[$namaBidang] ?? ['icon' => 'fa-building', 'color' => '#64748b', 'description' => ''];
                             $teams = $timKerjaBidang[$namaBidang];
                         @endphp
-                        <div class="bidang-section">
+                        <div class="bidang-section reveal-up">
                             <div class="bidang-header-bar">
-                                <div class="bidang-icon-wrap" style="background:{{ $info['color'] }}">
-                                    <i class="fas {{ $info['icon'] }}"></i>
-                                </div>
                                 <div class="bidang-header-text">
                                     <h3>{{ $namaBidang }}</h3>
                                     <p>{{ $info['description'] }}</p>
@@ -925,19 +911,24 @@
                                     @endphp
                                     <div class="tim-card"
                                         onclick="openTimModal('{{ $safeNamaTim }}', '{{ $safeJobdesk }}', '{{ $safeProdi }}', {{ $tim->id }}, {{ $tim->kuota_maksimal }})">
-                                        <div class="tim-name-wrap">
+                                        
+                                        <div class="tim-card-header"></div>
+                                        
+                                        <div class="tim-card-icon">
+                                            <i class="fas {{ $info['icon'] }}"></i>
+                                        </div>
+                                        
+                                        <div class="tim-card-body">
                                             <div class="tim-name">{{ $tim->nama_tim }}</div>
                                             <div class="tim-preview-text">{{ $info2['jobdesk'] }}</div>
                                         </div>
 
                                         <div class="tim-card-footer">
-                                            <div class="kuota-indicator" id="ind-{{ $tim->id }}" data-tim-id="{{ $tim->id }}"
-                                                data-kuota="{{ $tim->kuota_maksimal }}">
-                                                <div class="kuota-circle" id="circle-{{ $tim->id }}">{{ $tim->kuota_maksimal }}
-                                                </div>
-                                                <div class="kuota-text">Sisa<br>Kuota</div>
+                                            <div class="footer-label kuota-indicator" id="ind-{{ $tim->id }}" data-tim-id="{{ $tim->id }}" data-kuota="{{ $tim->kuota_maksimal }}">
+                                                <div class="kuota-circle" id="circle-{{ $tim->id }}">{{ $tim->kuota_maksimal }}</div>
+                                                <span>Sisa Kuota</span>
                                             </div>
-                                            <button class="btn-detail">Lihat Detail <i class="fas fa-arrow-right"></i></button>
+                                            <button class="btn-detail">Akses Layanan <i class="fas fa-arrow-right"></i></button>
                                         </div>
                                     </div>
                                 @endforeach
