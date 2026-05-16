@@ -3,11 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\PusatDokumenController;
+use App\Http\Controllers\LandingPageController;
 
-// Redirect root URL ke halaman pendaftaran
-Route::get('/', function () {
-    return redirect('/pendaftaran');
-});
+// Landing page portal magang
+Route::get('/', [LandingPageController::class, 'index'])->name('landing');
+Route::get('/api/quota-status', [LandingPageController::class, 'getQuotaStatus'])->name('api.quota-status');
 
 // Route untuk menampilkan form pendaftaran
 Route::get('/pendaftaran', [PendaftaranController::class, 'create'])->name('pendaftaran.create');
