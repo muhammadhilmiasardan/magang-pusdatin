@@ -192,10 +192,10 @@
         }
 
         .hero-content h1 span {
-            background: linear-gradient(135deg, #fde68a 0%, #f59e0b 100%);
+            background: linear-gradient(135deg, #FFD700 0%, #FFA000 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 2px 8px rgba(245,158,11,0.4));
+            filter: drop-shadow(0 2px 8px rgba(255,160,0,0.4));
         }
 
         .hero-content p {
@@ -800,18 +800,18 @@
 
             <div class="hero-stats">
                 <div class="hero-stat">
-                    <div class="hero-stat-num">{{ $pesertaAktifCount }}</div>
+                    <div class="hero-stat-num count-up" data-target="{{ $pesertaAktifCount }}">0</div>
                     <div class="hero-stat-label">Peserta Aktif</div>
                 </div>
                 <div class="hero-stat">
-                    <div class="hero-stat-num">{{ $totalAlumni }}</div>
+                    <div class="hero-stat-num count-up" data-target="{{ $totalAlumni }}">0</div>
                     <div class="hero-stat-label">Total Alumni</div>
                 </div>
                 @php
                     $totalKuota = $allTeams->sum('kuota_maksimal');
                 @endphp
                 <div class="hero-stat">
-                    <div class="hero-stat-num">{{ $totalKuota }}</div>
+                    <div class="hero-stat-num count-up" data-target="{{ $totalKuota }}">0</div>
                     <div class="hero-stat-label">Total Kuota</div>
                 </div>
             </div>
@@ -1114,6 +1114,24 @@
             }, { threshold: 0.1 });
 
             revealElements.forEach(el => revealObserver.observe(el));
+
+            // ── COUNT UP ANIMATION FOR STATS ──
+            const counters = document.querySelectorAll('.count-up');
+            const speed = 200; // The lower the faster
+            counters.forEach(counter => {
+                const updateCount = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText;
+                    const inc = target / speed;
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + inc);
+                        setTimeout(updateCount, 15);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+                updateCount();
+            });
 
             const first = document.querySelector('.tw-btn.active');
             if (first) {
