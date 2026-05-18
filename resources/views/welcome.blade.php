@@ -905,6 +905,10 @@
                     <div class="hero-stat-num count-up" data-target="{{ $totalAlumni }}">0</div>
                     <div class="hero-stat-label">Total Alumni</div>
                 </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-num count-up" data-target="{{ $allTeams->count() }}">0</div>
+                    <div class="hero-stat-label">Tim Kerja</div>
+                </div>
                 @php
                     $totalKuota = $allTeams->sum('kuota_maksimal');
                 @endphp
