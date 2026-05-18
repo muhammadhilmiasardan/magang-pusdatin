@@ -192,10 +192,7 @@
         }
 
         .hero-content h1 span {
-            background: linear-gradient(135deg, #FFD700 0%, #FFA000 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 2px 8px rgba(255,160,0,0.4));
+            color: #fbbf24;
         }
 
         .hero-content p {
@@ -438,10 +435,31 @@
 
         /* Header Area */
         .tim-card-header {
-            height: 140px;
+            height: 160px;
             background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
             position: relative;
             background-image: radial-gradient(circle at right top, rgba(255,255,255,0.1) 0%, transparent 50%), linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            overflow: hidden;
+        }
+
+        .tim-card-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .tim-card:hover .tim-card-header img {
+            transform: scale(1.05);
+        }
+
+        .tim-card-header-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(15,29,61,0.15) 0%, rgba(15,29,61,0.5) 100%);
+            pointer-events: none;
         }
 
         /* Floating Icon */
@@ -457,9 +475,10 @@
             justify-content: center;
             font-size: 16px;
             position: absolute;
-            top: 118px;
+            top: 138px;
             left: 20px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 2;
         }
 
         /* Body Area */
@@ -710,8 +729,87 @@
 
         /* ── CTA SECTION ── */
         .bottom-section{min-height:100vh;display:flex;flex-direction:column}
-        .cta-section{background:linear-gradient(135deg,var(--primary-dark) 0%,var(--primary) 100%);padding:80px 32px;text-align:center;color:#fff;flex-grow:1;display:flex;align-items:center;justify-content:center}
-        .cta-inner{max-width:700px;margin:0 auto}
+        .cta-section{
+            background:
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") center center,
+                linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 60%, #1a3a8a 100%);
+            padding: 80px 32px;
+            text-align: center;
+            color: #fff;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Diagonal stripe overlay */
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                -45deg,
+                transparent,
+                transparent 40px,
+                rgba(255,255,255,0.012) 40px,
+                rgba(255,255,255,0.012) 41px
+            );
+            pointer-events: none;
+        }
+
+        /* Top-left accent glow */
+        .cta-section::after {
+            content: '';
+            position: absolute;
+            top: -120px;
+            left: -120px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(251,191,36,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .cta-inner{max-width:700px;margin:0 auto;position:relative;z-index:1}
+
+        /* Decorative blurred circles */
+        .cta-deco-circle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .cta-deco-1 {
+            width: 320px;
+            height: 320px;
+            bottom: -100px;
+            right: -80px;
+            background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
+        }
+        .cta-deco-2 {
+            width: 180px;
+            height: 180px;
+            top: 30px;
+            right: 15%;
+            background: radial-gradient(circle, rgba(251,191,36,0.07) 0%, transparent 70%);
+        }
+        .cta-deco-3 {
+            width: 100px;
+            height: 100px;
+            bottom: 40px;
+            left: 10%;
+            border: 1px solid rgba(255,255,255,0.05);
+            background: transparent;
+        }
+        .cta-deco-4 {
+            width: 50px;
+            height: 50px;
+            top: 50px;
+            left: 8%;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: transparent;
+        }
 
         .cta-section h2 {
             font-size: 32px;
@@ -864,24 +962,42 @@
 
                 // Tim kerja data dari MD file — key sesuai nama di DB (dengan prefix "Tim Kerja ")
                 $timInfo = [
-                    'Tim Kerja Tata Kelola dan Perizinan' => ['jobdesk' => 'Koordinasi dan supervisi pelaksanaan tata kelola TI dan perizinan Kementerian PU', 'prodi' => 'Informatika, Sistem Informasi, Manajemen TI'],
-                    'Tim Kerja Keamanan Teknologi Informasi' => ['jobdesk' => 'Koordinasi kegiatan keamanan TI, update & monitoring uji kerentanan, penanganan insiden siber', 'prodi' => 'Cybersecurity, Informatika, Sistem Komputer'],
-                    'Tim Kerja Infrastruktur Teknologi Informasi' => ['jobdesk' => 'Pengelolaan infrastruktur jaringan TI, supervisi dan koordinasi pemeliharaan jaringan', 'prodi' => 'Teknik Elektro, Jaringan Komputer'],
-                    'Tim Kerja Sistem Informasi' => ['jobdesk' => 'Pengembangan, standarisasi, koordinasi dan supervisi sistem informasi PU', 'prodi' => 'Informatika, Sistem Informasi'],
-                    'Tim Kerja Korespondensi dan Kolaborasi' => ['jobdesk' => 'Pengelolaan aplikasi korespondensi, kolaborasi, verifikasi permohonan sertifikat elektronik', 'prodi' => 'Informatika, Administrasi, Manajemen'],
-                    'Tim Kerja Sistem Kendali Otomatis dan Kecerdasan Buatan' => ['jobdesk' => 'Koordinasi dan supervisi kegiatan teknologi IoT, pembuatan SOP, laporan kegiatan sistem kendali otomatis', 'prodi' => 'Mekatronika, Informatika, AI & Robotics'],
-                    'Tim Kerja Layanan dan Integrasi Data Infrastruktur' => ['jobdesk' => 'Integrasi dan layanan data PU, pemantauan sistem informasi', 'prodi' => 'Statistika, Informatika, Geodesi'],
-                    'Tim Kerja Sistem Informasi Geografis dan Portal GIS PU' => ['jobdesk' => 'Pengelolaan dan pengembangan WebGIS & Portal GIS PU, update data spasial', 'prodi' => 'Geodesi, Geografi, Informatika'],
-                    'Tim Kerja Data dan Informasi Statistik Infrastruktur Pekerjaan Umum' => ['jobdesk' => 'Analisis dan pemutakhiran data statistik PU, penulisan buku informasi', 'prodi' => 'Statistika, Matematika Terapan'],
-                    'Tim Kerja Digitalisasi Infrastruktur Pekerjaan Umum' => ['jobdesk' => 'Koordinasi digitalisasi infrastruktur PU, BIM, pengembangan platform digital', 'prodi' => 'Informatika, Teknik Sipil, Arsitektur'],
-                    'Tim Kerja Analisis Data dan Informasi Geospasial Infrastruktur dan Kebencanaan' => ['jobdesk' => 'Koordinasi analisis data geospasial & informasi kebencanaan', 'prodi' => 'Geodesi, Statistika, Informatika'],
-                    'Tim Kerja Pelaporan Kebencanaan' => ['jobdesk' => 'Monitoring dan rekapitulasi penanganan bencana, laporan mingguan & bulanan', 'prodi' => 'Administrasi Publik, Statistika, Informatika'],
-                    'Tim Kerja Manajemen Data dan Bencana' => ['jobdesk' => 'Koordinasi sistem & manajemen data & informasi bencana', 'prodi' => 'Informatika, Manajemen Risiko, Teknik Sipil'],
-                    'Tim Kerja Kepegawaian dan Jabatan Fungsional' => ['jobdesk' => 'Supervisi dan koordinasi kegiatan kepegawaian & jabatan fungsional', 'prodi' => 'Administrasi Publik, Manajemen'],
-                    'Tim Kerja Keuangan' => ['jobdesk' => 'Koordinasi dan supervisi pengelolaan keuangan PU', 'prodi' => 'Akuntansi, Keuangan'],
-                    'Tim Kerja Pengelolaan BMN dan Arsip' => ['jobdesk' => 'Supervisi kegiatan BMN & arsip', 'prodi' => 'Administrasi, Arsiparis'],
-                    'Tim Kerja Monitoring dan Evaluasi' => ['jobdesk' => 'Koordinasi & supervisi kegiatan monitoring dan evaluasi', 'prodi' => 'Manajemen, Statistik'],
-                    'Tim Kerja Sarana dan Prasarana Perkantoran' => ['jobdesk' => 'Pemenuhan dan pengelolaan sarana & prasarana perkantoran', 'prodi' => 'Teknik Sipil, Manajemen'],
+                    // DATA NYATA: Peserta tercatat dari Humas/Ilmu Komunikasi, dikembangkan ke bidang terkait perizinan & tata kelola TI
+                    'Tim Kerja Tata Kelola dan Perizinan' => ['jobdesk' => 'Koordinasi dan supervisi pelaksanaan tata kelola TI dan perizinan Kementerian PU', 'prodi' => 'Ilmu Komunikasi, Informatika, Hukum, Administrasi Publik, Sistem Informasi', 'image' => 'Tata kelola dan perizinan.png'],
+                    // REKOMENDASI: Tidak ada data peserta, disesuaikan dengan kebutuhan keamanan siber
+                    'Tim Kerja Keamanan Teknologi Informasi' => ['jobdesk' => 'Koordinasi kegiatan keamanan TI, update & monitoring uji kerentanan, penanganan insiden siber', 'prodi' => 'Teknik Informatika, Sistem Komputer, Teknik Komputer Jaringan, Keamanan Siber', 'image' => null],
+                    // DATA NYATA: Teknik Komputer Jaringan, Teknik Jaringan Komputer dan Telekomunikasi, Teknik Elektro
+                    'Tim Kerja Infrastruktur Teknologi Informasi' => ['jobdesk' => 'Pengelolaan infrastruktur jaringan TI, supervisi dan koordinasi pemeliharaan jaringan', 'prodi' => 'Teknik Komputer Jaringan, Teknik Jaringan Komputer dan Telekomunikasi, Teknik Elektro, Teknologi Rekayasa Komputer', 'image' => 'infrastruktur TI.png'],
+                    // DATA NYATA: Sistem Informasi (dari csv "Tim Kerja Sistem Informasi")
+                    'Tim Kerja Sistem Informasi' => ['jobdesk' => 'Pengembangan, standarisasi, koordinasi dan supervisi sistem informasi PU', 'prodi' => 'Sistem Informasi, Informatika, Rekayasa Perangkat Lunak, Ilmu Komputer', 'image' => 'Tim Sistem Informasi.png'],
+                    // REKOMENDASI: Tidak ada entri eksak, disesuaikan dengan kebutuhan korespondensi & aplikasi digital
+                    'Tim Kerja Korespondensi dan Kolaborasi' => ['jobdesk' => 'Pengelolaan aplikasi korespondensi, kolaborasi, verifikasi permohonan sertifikat elektronik', 'prodi' => 'Informatika, Sistem Informasi, Ilmu Komunikasi, Administrasi Perkantoran, Manajemen', 'image' => 'Korespondensi & Kolaborasi.png'],
+                    // DATA NYATA: Teknik Elektro, Teknik Komputer Jaringan, Teknik Jaringan Komputer dan Telekomunikasi
+                    'Tim Kerja Sistem Kendali Otomatis dan Kecerdasan Buatan' => ['jobdesk' => 'Koordinasi dan supervisi kegiatan teknologi IoT, pembuatan SOP, laporan kegiatan sistem kendali otomatis', 'prodi' => 'Teknik Elektro, Teknik Komputer Jaringan, Teknik Jaringan Komputer dan Telekomunikasi, Mekatronika, Robotika', 'image' => 'Sistem kendali otomatis & AI.png'],
+                    // DATA NYATA: Sistem Informasi (dari csv "Tim Kerja Layanan dan Integrasi Data Infrastruktur")
+                    'Tim Kerja Layanan dan Integrasi Data Infrastruktur' => ['jobdesk' => 'Integrasi dan layanan data PU, pemantauan sistem informasi', 'prodi' => 'Sistem Informasi, Informatika, Statistika, Teknik Geodesi', 'image' => 'Layanan & Integrasi data infrastruktur.png'],
+                    // DATA NYATA: Teknologi Survei dan Pemetaan Dasar, Geografi, Teknik Geodesi dan Geomatika, Teknik Geodesi
+                    'Tim Kerja Sistem Informasi Geografis dan Portal GIS PU' => ['jobdesk' => 'Pengelolaan dan pengembangan WebGIS & Portal GIS PU, update data spasial', 'prodi' => 'Teknik Geodesi dan Geomatika, Teknologi Survei dan Pemetaan, Geografi, Informatika', 'image' => 'Sistem informasi geografis & portal GIS PU.png'],
+                    // REKOMENDASI: Data CSV tidak match eksak, disesuaikan dengan kebutuhan statistik infrastruktur
+                    'Tim Kerja Data dan Informasi Statistik Infrastruktur Pekerjaan Umum' => ['jobdesk' => 'Analisis dan pemutakhiran data statistik PU, penulisan buku informasi', 'prodi' => 'Statistika, Matematika Terapan, Informatika, Teknik Sipil, Ekonomi Pembangunan', 'image' => 'Data & informasi statistik.png'],
+                    // DATA NYATA: Teknik Geodesi dan Geomatika (dari csv "Tim Kerja Digitalisasi Infrastruktur Pekerjaan Umum")
+                    'Tim Kerja Digitalisasi Infrastruktur Pekerjaan Umum' => ['jobdesk' => 'Koordinasi digitalisasi infrastruktur PU, BIM, pengembangan platform digital', 'prodi' => 'Teknik Geodesi dan Geomatika, Informatika, Teknik Sipil, Perencanaan Wilayah dan Kota, Arsitektur', 'image' => 'Digitalisasi infrastruktur PU.png'],
+                    // DATA NYATA: Teknologi Survei dan Pemetaan Dasar, Informatika, Geofisika, Geografi
+                    'Tim Kerja Analisis Data dan Informasi Geospasial Infrastruktur dan Kebencanaan' => ['jobdesk' => 'Koordinasi analisis data geospasial & informasi kebencanaan', 'prodi' => 'Teknik Geodesi dan Geomatika, Geografi, Geofisika, Informatika, Teknologi Survei dan Pemetaan', 'image' => 'Analisi Data Geospasial & Kebencanaan.png'],
+                    // DATA NYATA: Rekayasa Perangkat Lunak (dari csv), DKV; tambah rekomendasi relevan
+                    'Tim Kerja Pelaporan Kebencanaan' => ['jobdesk' => 'Monitoring dan rekapitulasi penanganan bencana, laporan mingguan & bulanan', 'prodi' => 'Rekayasa Perangkat Lunak, Informatika, Administrasi Publik, Komunikasi, Manajemen Bencana', 'image' => 'Laporan Kebencanaan.png'],
+                    // DATA NYATA: Teknologi Rekayasa Komputer, Teknik Komputer Jaringan (dari "Manajemen Data dan Bencana")
+                    'Tim Kerja Manajemen Data dan Bencana' => ['jobdesk' => 'Koordinasi sistem & manajemen data & informasi bencana', 'prodi' => 'Teknologi Rekayasa Komputer, Teknik Komputer Jaringan, Informatika, Manajemen Bencana, Teknik Sipil', 'image' => 'Manajemen data & Bencana.png'],
+                    // DATA NYATA: Teknik Informatika, Informatika (dari "Tim Kerja Kepegawaian dan Jabatan Fungsional")
+                    'Tim Kerja Kepegawaian dan Jabatan Fungsional' => ['jobdesk' => 'Supervisi dan koordinasi kegiatan kepegawaian & jabatan fungsional', 'prodi' => 'Informatika, Teknik Informatika, Administrasi Publik, Manajemen, Ilmu Komunikasi', 'image' => 'Kepegawaian & Jabatan Fungsional.png'],
+                    // DATA NYATA: Akuntansi (dari "Tim Kerja Keuangan")
+                    'Tim Kerja Keuangan' => ['jobdesk' => 'Koordinasi dan supervisi pengelolaan keuangan PU', 'prodi' => 'Akuntansi, Keuangan, Manajemen Keuangan, Ekonomi', 'image' => 'Keuangan.png'],
+                    // DATA NYATA: Akuntansi (dari "Tim Kerja Pengelolaan BMN dan Arsip"), Public Relations (dari "Tim Kerja BMN dan Arsip")
+                    'Tim Kerja Pengelolaan BMN dan Arsip' => ['jobdesk' => 'Supervisi kegiatan BMN & arsip', 'prodi' => 'Akuntansi, Ilmu Komunikasi, Administrasi Publik, Manajemen, Kearsipan', 'image' => 'Pengelolaan BMN & Arsip.png'],
+                    // REKOMENDASI: Tidak ada data eksak, disesuaikan dengan kebutuhan monitoring & evaluasi program
+                    'Tim Kerja Monitoring dan Evaluasi' => ['jobdesk' => 'Koordinasi & supervisi kegiatan monitoring dan evaluasi', 'prodi' => 'Manajemen, Statistika, Administrasi Publik, Ilmu Ekonomi Pembangunan, Informatika', 'image' => 'Monitoring & Evaluasi.png'],
+                    // DATA NYATA: Manajemen, Manajemen Perkantoran dan Layanan Bisnis (dari TU di csv)
+                    'Tim Kerja Sarana dan Prasarana Perkantoran' => ['jobdesk' => 'Pemenuhan dan pengelolaan sarana & prasarana perkantoran', 'prodi' => 'Manajemen, Manajemen Perkantoran dan Layanan Bisnis, Teknik Sipil, Administrasi Bisnis', 'image' => 'Sarana & Prasarana Perkantoran.png'],
                 ];
             @endphp
 
@@ -903,16 +1019,26 @@
                             <div class="tim-grid">
                                 @foreach($teams as $tim)
                                     @php
-                                        $info2 = $timInfo[$tim->nama_tim] ?? ['jobdesk' => '-', 'prodi' => '-'];
+                                        $info2 = $timInfo[$tim->nama_tim] ?? ['jobdesk' => '-', 'prodi' => '-', 'image' => null];
                                         // Escaping for JS injection
                                         $safeJobdesk = htmlspecialchars($info2['jobdesk'], ENT_QUOTES);
                                         $safeProdi = htmlspecialchars($info2['prodi'], ENT_QUOTES);
                                         $safeNamaTim = htmlspecialchars($tim->nama_tim, ENT_QUOTES);
+                                        $cardImage = $info2['image'] ?? null;
                                     @endphp
                                     <div class="tim-card"
                                         onclick="openTimModal('{{ $safeNamaTim }}', '{{ $safeJobdesk }}', '{{ $safeProdi }}', {{ $tim->id }}, {{ $tim->kuota_maksimal }})">
                                         
-                                        <div class="tim-card-header"></div>
+                                        <div class="tim-card-header">
+                                            @if($cardImage)
+                                                <img
+                                                    src="{{ asset('card_image/' . $cardImage) }}"
+                                                    alt="{{ $tim->nama_tim }}"
+                                                    loading="lazy"
+                                                >
+                                                <div class="tim-card-header-overlay"></div>
+                                            @endif
+                                        </div>
                                         
                                         <div class="tim-card-icon">
                                             <i class="fas {{ $info['icon'] }}"></i>
@@ -943,6 +1069,11 @@
         <div class="bottom-section">
             {{-- CTA --}}
             <section class="cta-section">
+                {{-- Decorative elements --}}
+                <div class="cta-deco-circle cta-deco-1"></div>
+                <div class="cta-deco-circle cta-deco-2"></div>
+                <div class="cta-deco-circle cta-deco-3"></div>
+                <div class="cta-deco-circle cta-deco-4"></div>
                 <div class="cta-inner">
                     <h2 class="reveal-up">Wujudkan Potensimu Bersama Kami</h2>
                     <p class="reveal-up" style="transition-delay: 0.1s">Jadilah bagian dari inovasi teknologi infrastruktur Indonesia. Daftarkan dirimu sekarang dan dapatkan
