@@ -16,6 +16,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'aktifkan.peserta' => \App\Http\Middleware\AktifkanPesertaMagang::class,
         ]);
+
+        // Jika user sudah login lalu mencoba akses halaman guest (e.g. /login),
+        // redirect ke dashboard admin, bukan ke landing page.
+        $middleware->redirectUsersTo('/admin/dashboard');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

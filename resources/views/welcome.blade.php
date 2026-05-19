@@ -1094,7 +1094,7 @@
                 <div class="footer-links">
                     <a href="https://pusdatin.pu.go.id" target="_blank" class="reveal-up" style="transition-delay: 0.3s"><i class="fas fa-globe"></i> pusdatin.pu.go.id</a>
                     <a href="mailto:info@pusdatin.pu.go.id" class="reveal-up" style="transition-delay: 0.4s"><i class="fas fa-envelope"></i> info@pusdatin.pu.go.id</a>
-                    <a href="{{ route('login') }}" class="reveal-up" style="transition-delay: 0.5s"><i class="fas fa-sign-in-alt"></i> Login Admin</a>
+                    <a href="{{ auth()->check() ? route('admin.dashboard.index') : route('login') }}" class="reveal-up" style="transition-delay: 0.5s"><i class="fas fa-sign-in-alt"></i> {{ auth()->check() ? 'Dashboard Admin' : 'Login Admin' }}</a>
                 </div>
                 <div class="reveal-up" style="transition-delay: 0.6s">© {{ date('Y') }} PUSDATIN Kementerian Pekerjaan Umum · Sistem Manajemen Magang</div>
             </footer>

@@ -40,6 +40,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'aktifkan.peserta'])
     Route::post('/lamaran/{id}/surat/preview', [\App\Http\Controllers\SuratPenerimaanController::class, 'preview'])->name('lamaran.surat.preview');
     Route::post('/lamaran/{id}/surat/download', [\App\Http\Controllers\SuratPenerimaanController::class, 'download'])->name('lamaran.surat.download');
     Route::get('/manajemen', [\App\Http\Controllers\ManajemenMagangController::class, 'index'])->name('manajemen.index');
+    Route::get('/manajemen/export/data', [\App\Http\Controllers\ManajemenMagangController::class, 'export'])->name('manajemen.export');
     Route::get('/manajemen/{id}', [\App\Http\Controllers\ManajemenMagangController::class, 'show'])->name('manajemen.show');
     Route::post('/manajemen/{id}/anulir', [\App\Http\Controllers\ManajemenMagangController::class, 'anulir'])->name('manajemen.anulir');
     

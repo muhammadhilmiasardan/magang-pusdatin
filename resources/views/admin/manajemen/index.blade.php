@@ -39,15 +39,23 @@
                    onblur="this.style.borderColor='#cbd5e1';">
         </div>
 
-        {{-- Sort Dropdown --}}
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <label style="font-size: 11.5px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;"><i class="fas fa-sort-amount-down" style="margin-right: 4px;"></i> Urutkan</label>
-            <select id="globalSortSelect" style="padding: 6px 28px 6px 10px; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; font-size: 12px; color: var(--text-primary); outline: none; cursor: pointer; appearance: auto; font-family: 'Inter', sans-serif;">
-                <option value="name_asc">Sesuai Abjad (A - Z)</option>
-                <option value="name_desc">Sesuai Abjad (Z - A)</option>
-                <option value="date_nearest">Segera Berakhir (Tanggal Terdekat)</option>
-                <option value="date_farthest">Waktu Tersisa Paling Lama</option>
-            </select>
+        {{-- Action Controls --}}
+        <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+            {{-- Sort Dropdown --}}
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <label style="font-size: 11.5px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;"><i class="fas fa-sort-amount-down" style="margin-right: 4px;"></i> Urutkan</label>
+                <select id="globalSortSelect" style="padding: 6px 28px 6px 10px; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; font-size: 12px; color: var(--text-primary); outline: none; cursor: pointer; appearance: auto; font-family: 'Inter', sans-serif;">
+                    <option value="name_asc">Sesuai Abjad (A - Z)</option>
+                    <option value="name_desc">Sesuai Abjad (Z - A)</option>
+                    <option value="date_nearest">Segera Berakhir (Tanggal Terdekat)</option>
+                    <option value="date_farthest">Waktu Tersisa Paling Lama</option>
+                </select>
+            </div>
+            
+            {{-- Export Button --}}
+            <button type="button" onclick="openExportModal()" class="btn-primary" style="padding: 7px 16px; font-size: 12.5px; border-radius: 6px; display: inline-flex; align-items: center; gap: 6px; border: none; cursor: pointer;">
+                <i class="fas fa-file-excel"></i> Unduh Laporan
+            </button>
         </div>
     </div>
 
@@ -347,6 +355,57 @@
 </style>
 @endpush
 
+    {{-- MODAL EXPORT --}}
+    <div id="exportModalOverlay" class="modal-overlay" style="display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.6); backdrop-filter: blur(4px); z-index: 1000;">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; width: 100%; max-width: 450px; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.15);">
+            <div style="padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="font-size: 16px; font-weight: 700; margin: 0;"><i class="fas fa-file-export" style="color: var(--primary); margin-right: 8px;"></i> Ekspor Laporan Magang</h3>
+                <button type="button" onclick="closeExportModal()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:18px;"><i class="fas fa-times"></i></button>
+            </div>
+            <form action="{{ route('admin.manajemen.export') }}" method="GET" style="padding: 24px;">
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 10px;">Status Peserta (Bisa pilih lebih dari satu)</label>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        <label style="display: flex; align-items: center; gap: 6px; font-size: 13px;"><input type="checkbox" name="statuses[]" value="Belum Aktif" checked> Belum Aktif</label>
+                        <label style="display: flex; align-items: center; gap: 6px; font-size: 13px;"><input type="checkbox" name="statuses[]" value="Aktif" checked> Aktif</label>
+                        <label style="display: flex; align-items: center; gap: 6px; font-size: 13px;"><input type="checkbox" name="statuses[]" value="Selesai" checked> Selesai</label>
+                        <label style="display: flex; align-items: center; gap: 6px; font-size: 13px;"><input type="checkbox" name="statuses[]" value="Ditolak"> Ditolak</label>
+                        <label style="display: flex; align-items: center; gap: 6px; font-size: 13px;"><input type="checkbox" name="statuses[]" value="Anulir"> Anulir</label>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px;">Rentang Waktu Laporan</label>
+                    <select id="exportRentang" name="rentang_waktu" onchange="toggleExportFields()" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border); font-size: 13px; background: #f8fafc; outline: none;">
+                        <option value="semua">Semua Waktu</option>
+                        <option value="triwulan">Per Triwulan</option>
+                        <option value="tahunan">Per Tahun</option>
+                    </select>
+                </div>
+
+                <div id="exportTriwulanWrapper" style="display: none; margin-bottom: 20px;">
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px;">Pilih Triwulan</label>
+                    <select name="triwulan" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border); font-size: 13px; background: #fff; outline: none;">
+                        <option value="1">Triwulan 1 (Jan - Mar)</option>
+                        <option value="2">Triwulan 2 (Apr - Jun)</option>
+                        <option value="3">Triwulan 3 (Jul - Sep)</option>
+                        <option value="4">Triwulan 4 (Okt - Des)</option>
+                    </select>
+                </div>
+
+                <div id="exportTahunWrapper" style="display: none; margin-bottom: 24px;">
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px;">Tahun</label>
+                    <input type="number" name="tahun" value="{{ date('Y') }}" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border); font-size: 13px; outline: none; text-align: center;">
+                </div>
+
+                <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                    <button type="button" onclick="closeExportModal()" class="btn-outline-custom" style="padding: 10px 20px; font-size: 13px; background: #fff; border: 1px solid var(--border); border-radius: 8px; cursor: pointer;">Batal</button>
+                    <button type="submit" class="btn-primary" style="padding: 10px 20px; font-size: 13px; border: none; cursor: pointer; border-radius: 8px;"><i class="fas fa-download"></i> Download CSV</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 @push('scripts')
 <script>
     // Tab switching
@@ -361,6 +420,32 @@
         document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
         document.getElementById('tab-' + tabId).classList.remove('hidden');
     }
+
+    // Modal Export
+    function openExportModal() {
+        document.getElementById('exportModalOverlay').style.display = 'block';
+    }
+    function closeExportModal() {
+        document.getElementById('exportModalOverlay').style.display = 'none';
+    }
+    function toggleExportFields() {
+        const val = document.getElementById('exportRentang').value;
+        const triwulanWrap = document.getElementById('exportTriwulanWrapper');
+        const tahunWrap = document.getElementById('exportTahunWrapper');
+        
+        if (val === 'semua') {
+            triwulanWrap.style.display = 'none';
+            tahunWrap.style.display = 'none';
+        } else if (val === 'triwulan') {
+            triwulanWrap.style.display = 'block';
+            tahunWrap.style.display = 'block';
+        } else if (val === 'tahunan') {
+            triwulanWrap.style.display = 'none';
+            tahunWrap.style.display = 'block';
+        }
+    }
+
+    // Modal Detail
 
     // Modal
     function closeModal() {
