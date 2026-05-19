@@ -824,6 +824,246 @@
             line-height: 1.6
         }
 
+        /* ── TENTANG PUSDATIN SECTION ── */
+        .tentang-section {
+            padding: 80px 0 72px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 72px;
+        }
+
+        .tentang-grid {
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 64px;
+            align-items: stretch;
+        }
+
+        /* Left Column */
+        .tentang-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .tentang-headline {
+            font-size: clamp(28px, 3.5vw, 42px);
+            font-weight: 900;
+            color: var(--primary-dark);
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+        }
+
+        .tentang-headline span {
+            color: var(--primary);
+        }
+
+        .tentang-desc {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.75;
+            margin-bottom: 40px;
+            max-width: 520px;
+        }
+
+        .tentang-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .tentang-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.25s, box-shadow 0.25s;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .tentang-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 14px 14px 0 0;
+        }
+
+        .tentang-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+        }
+
+        /* Icon + judul berdampingan horizontal */
+        .tentang-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .tentang-card-icon {
+            width: 34px;
+            height: 34px;
+            min-width: 34px;
+            background: var(--primary-lighter);
+            color: var(--primary);
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .tentang-card h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin: 0;
+        }
+
+        .tentang-card p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Right Column — Gedung Photo */
+        .tentang-photo-wrap {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tentang-photo-frame {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 48px rgba(15,29,61,0.15);
+            position: relative;
+            flex: 1;
+            min-height: 300px;
+        }
+
+        .tentang-photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            position: absolute;
+            inset: 0;
+            transition: transform 0.5s ease;
+        }
+
+        .tentang-photo-frame:hover img {
+            transform: scale(1.03);
+        }
+
+        /* Badge overlay di foto */
+        .tentang-photo-badge {
+            position: absolute;
+            bottom: 18px;
+            left: 18px;
+            right: 18px;
+            background: rgba(10, 22, 50, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 16px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: #fff;
+            text-decoration: none;
+            transition: background 0.25s, border-color 0.25s, transform 0.2s;
+        }
+
+        .tentang-photo-badge:hover {
+            background: rgba(10, 22, 50, 0.98);
+            border-color: rgba(255,255,255,0.22);
+            transform: translateY(-1px);
+        }
+
+        .tentang-photo-badge-icon {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            background: var(--primary);
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .tentang-photo-badge-text {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .tentang-photo-badge-text strong {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .tentang-photo-badge-text span {
+            font-size: 11.5px;
+            color: rgba(255,255,255,0.6);
+            display: flex;
+            align-items: flex-start;
+            gap: 5px;
+            line-height: 1.5;
+        }
+
+        .tentang-photo-badge-text span i {
+            font-size: 10px;
+            flex-shrink: 0;
+            color: var(--accent);
+            opacity: 0.8;
+            margin-top: 2px;
+        }
+
+        .tentang-photo-badge-arrow {
+            font-size: 11px;
+            color: rgba(255,255,255,0.35);
+            flex-shrink: 0;
+            transition: color 0.2s, transform 0.2s;
+        }
+
+        .tentang-photo-badge:hover .tentang-photo-badge-arrow {
+            color: rgba(255,255,255,0.7);
+            transform: translateX(2px);
+        }
+
+        @media (max-width: 900px) {
+            .tentang-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .tentang-photo-wrap { position: static; }
+            .tentang-cards { grid-template-columns: 1fr; }
+        }
+
         /* ── FOOTER ── */
         footer{background:#0a1226;color:rgba(255,255,255,.6);padding:40px 32px;text-align:center;font-size:14px}
 
@@ -928,6 +1168,86 @@
     {{-- MAIN CONTENT OVERLAY --}}
     <div class="main-wrapper" id="main-content">
         <div class="main-content">
+
+            {{-- ═══ SECTION: TENTANG PUSDATIN ═══ --}}
+            <section class="tentang-section reveal-up">
+                <div class="tentang-grid">
+
+                    {{-- KIRI: Teks --}}
+                    <div>
+                        <div class="tentang-label">
+                            <i class="fas fa-circle-info"></i>
+                            Tentang PUSDATIN
+                        </div>
+
+                        <h2 class="tentang-headline">
+                            Transformasi Digital untuk
+                            <span>Infrastruktur<br>Pekerjaan Umum</span>
+                        </h2>
+
+                        <p class="tentang-desc">
+                            Pusat Data dan Teknologi Informasi (PUSDATIN) Kementerian Pekerjaan Umum mendukung
+                            modernisasi birokrasi melalui inovasi berkelanjutan, memastikan setiap layanan publik
+                            berjalan secara efektif, efisien, dan transparan berbasis data.
+                        </p>
+
+                        <div class="tentang-cards">
+                            {{-- Visi --}}
+                            <div class="tentang-card">
+                                <div class="tentang-card-header">
+                                    <div class="tentang-card-icon">
+                                        <i class="fas fa-eye"></i>
+                                    </div>
+                                    <h4>Visi Kami</h4>
+                                </div>
+                                <p>Menjadi pusat informasi strategis yang andal dalam mendukung pengelolaan data infrastruktur nasional secara terintegrasi dan berkelanjutan.</p>
+                            </div>
+
+                            {{-- Misi --}}
+                            <div class="tentang-card">
+                                <div class="tentang-card-header">
+                                    <div class="tentang-card-icon">
+                                        <i class="fas fa-bullseye"></i>
+                                    </div>
+                                    <h4>Misi Prioritas</h4>
+                                </div>
+                                <p>Mengembangkan ekosistem digital yang terintegrasi, memperkuat layanan berbasis data, dan mendorong transformasi digital infrastruktur PU.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- KANAN: Foto Gedung --}}
+                    <div class="tentang-photo-wrap">
+                        <div class="tentang-photo-frame">
+                            <img
+                                src="{{ asset('gedung_pusdatin.png') }}"
+                                alt="Gedung PUSDATIN Kementerian Pekerjaan Umum"
+                                loading="lazy"
+                            >
+                            {{-- Badge: klik untuk Google Maps --}}
+                            <a
+                                href="https://maps.google.com/maps?vet=10CAAQoqAOahcKEwig-7ns6cSUAxUAAAAAHQAAAAAQCw..i&pvq=Cg0vZy8xMWh5a3R6M19wIhQKDnB1c2RhdGluIHB1c2F0EAIYAw&lqi=Cg5wdXNkYXRpbiBwdXNhdEj1n_yc9q-AgAhaGBAAEAEYABgBIg5wdXNkYXRpbiBwdXNhdJIBFmNpdHlfZ292ZXJubWVudF9vZmZpY2U&fvr=1&cs=1&um=1&ie=UTF-8&fb=1&gl=id&sa=X&ftid=0x2e69f1f738678eb5:0xf278895d9ede7ef3"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="tentang-photo-badge"
+                                title="Buka di Google Maps"
+                            >
+                                <div class="tentang-photo-badge-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="tentang-photo-badge-text">
+                                    <strong>Gedung PUSDATIN &mdash; Kementerian PU</strong>
+                                    <span>Jl. Pattimura No.20, Kebayoran Baru, Jakarta Selatan 12110</span>
+                                </div>
+                                <i class="fas fa-chevron-right tentang-photo-badge-arrow"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+            {{-- ═══════════════════════════════════ --}}
+
 
             <div class="section-header">
                 <h2 class="section-title">Eksplorasi Tim Kerja</h2>
