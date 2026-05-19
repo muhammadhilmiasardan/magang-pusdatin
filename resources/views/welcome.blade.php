@@ -163,7 +163,9 @@
 
         .hero-content {
             max-width: 1100px;
-            margin-top: 40px
+            width: 100%;
+            margin: 40px auto 0;
+            text-align: center;
         }
 
         .hero-badge {
@@ -189,6 +191,7 @@
             letter-spacing: -.02em;
             line-height: 1.2;
             text-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            word-break: break-word;
         }
 
         .hero-content h1 span {
@@ -1055,16 +1058,199 @@
             transform: translateX(2px);
         }
 
+        /* ════════════════════════════════════════
+           RESPONSIVE — Tablet  (≤ 900px)
+        ════════════════════════════════════════ */
         @media (max-width: 900px) {
+
+            /* Tentang section: stack vertikal */
             .tentang-grid {
                 grid-template-columns: 1fr;
-                gap: 40px;
+                gap: 36px;
             }
             .tentang-photo-wrap { position: static; }
-            .tentang-cards { grid-template-columns: 1fr; }
+            .tentang-cards { grid-template-columns: 1fr 1fr; }
+
+            /* Tim grid: 2 kolom */
+            .tim-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+
+            /* Main content padding */
+            .main-content { padding: 60px 24px; }
+
+            /* Tentang headline ukuran */
+            .tentang-headline { font-size: clamp(24px, 4vw, 34px); }
+
+            /* CTA section */
+            .cta-section { padding: 64px 24px; }
         }
 
-        /* ── FOOTER ── */
+        /* ════════════════════════════════════════
+           RESPONSIVE — Mobile  (≤ 768px)
+        ════════════════════════════════════════ */
+        @media (max-width: 768px) {
+
+            /* ── Navbar ── */
+            .navbar { padding: 0 20px; height: 64px; }
+            .nav-brand img { height: 32px; }
+            .nav-brand-text { font-size: 14px; }
+            .nav-brand-sub { display: none; }
+            .btn-nav { padding: 8px 14px; font-size: 12px; }
+
+            /* ── Hero ── */
+            .hero-wrapper {
+                padding: 64px 16px 0;  /* offset navbar */
+                justify-content: center;
+            }
+            .hero-content { margin-top: 0; }
+            .hero-badge { font-size: 11px; padding: 5px 12px; }
+            .hero-stats {
+                gap: 20px;
+                padding: 18px 20px;
+                flex-wrap: wrap;
+            }
+            .hero-stat-num { font-size: 28px; }
+            .scroll-indicator { display: none; }
+
+            /* ── Main wrapper rounded top ── */
+            .main-wrapper { border-radius: 24px 24px 0 0; }
+
+            /* ── Main content ── */
+            .main-content { padding: 48px 16px; }
+
+            /* ── Tentang PUSDATIN ── */
+            .tentang-section { padding: 48px 0 40px; margin-bottom: 48px; }
+            .tentang-headline { font-size: clamp(22px, 6vw, 30px); }
+            .tentang-desc { font-size: 15px; }
+            .tentang-cards { grid-template-columns: 1fr; gap: 12px; }
+            .tentang-label { font-size: 10px; }
+
+            /* ── Foto badge ── */
+            .tentang-photo-badge { padding: 10px 12px; gap: 10px; }
+            .tentang-photo-badge-icon { width: 34px; height: 34px; font-size: 14px; }
+            .tentang-photo-badge-text strong { font-size: 12px; }
+            .tentang-photo-badge-text span { font-size: 11px; }
+
+            /* ── Section title ── */
+            .section-title { font-size: 24px; }
+            .section-sub { font-size: 14px; }
+            .section-header { margin-bottom: 36px; }
+
+            /* ── Triwulan filter ── */
+            .triwulan-filter { gap: 8px; }
+            .tw-btn { padding: 10px 14px; font-size: 13px; }
+
+            /* ── Info banner ── */
+            .info-banner { font-size: 13px; padding: 12px 14px; }
+
+            /* ── Tim cards: 1 kolom ── */
+            .tim-grid { grid-template-columns: 1fr; gap: 16px; }
+            .bidang-header-text h3 { font-size: 22px; }
+            .bidang-section { margin-bottom: 48px; }
+
+            /* ── Modal ── */
+            .modal-overlay { padding: 12px; align-items: flex-end; }
+            .modal-content {
+                border-radius: 20px 20px 0 0;
+                max-height: 92vh;
+                max-width: 100%;
+            }
+            .modal-header { padding: 18px 20px; }
+            .modal-title { font-size: 17px; }
+            .modal-body { padding: 20px; }
+            .modal-footer { padding: 16px 20px; }
+
+            /* ── CTA section ── */
+            .cta-section { padding: 56px 20px; }
+            .cta-section h2 { font-size: 24px; }
+            .cta-section p { font-size: 15px; }
+            .cta-deco-1 { width: 200px; height: 200px; }
+            .cta-deco-2 { display: none; }
+
+            /* ── Footer ── */
+            footer { padding: 32px 20px; }
+            .footer-links { gap: 16px; flex-direction: column; align-items: center; }
+        }
+
+        /* ════════════════════════════════════════
+           RESPONSIVE — Small Mobile  (≤ 480px)
+        ════════════════════════════════════════ */
+        @media (max-width: 480px) {
+
+            /* Navbar: sembunyikan brand sub, perkecil logo */
+            .navbar { padding: 0 16px; height: 60px; }
+            .nav-brand img { height: 28px; }
+            .nav-brand { gap: 8px; }
+            .btn-nav { padding: 7px 12px; font-size: 11px; gap: 5px; }
+            .btn-nav i { display: none; }
+
+            /* Hero */
+            .hero-wrapper {
+                padding: 60px 16px 0; /* offset navbar 60px */
+            }
+            .hero-content { margin-top: 0; }
+            .hero-stats {
+                padding: 14px 12px;
+                gap: 8px 16px;
+                border-radius: 16px;
+            }
+            /* 2x2 grid untuk 4 stat item */
+            .hero-stat {
+                flex: 0 0 calc(50% - 8px);
+            }
+            .hero-stat-num { font-size: 26px; }
+            .hero-stat-label { font-size: 10px; margin-top: 4px; }
+
+            /* Main content */
+            .main-wrapper { border-radius: 18px 18px 0 0; }
+            .main-content { padding: 36px 14px; }
+
+            /* Tentang */
+            .tentang-section { padding: 36px 0 32px; margin-bottom: 36px; }
+            .tentang-grid { gap: 28px; }
+            .tentang-headline { font-size: clamp(20px, 7vw, 26px); line-height: 1.2; }
+            .tentang-card { padding: 16px; }
+            .tentang-card-icon { width: 30px; height: 30px; font-size: 13px; border-radius: 8px; }
+            .tentang-card h4 { font-size: 13px; }
+            .tentang-card p { font-size: 12px; }
+
+            /* Photo badge */
+            .tentang-photo-badge { bottom: 12px; left: 12px; right: 12px; border-radius: 12px; }
+            .tentang-photo-badge-arrow { display: none; }
+
+            /* Section */
+            .section-title { font-size: 21px; }
+            .section-header { margin-bottom: 28px; }
+
+            /* Triwulan */
+            .triwulan-filter { flex-direction: column; align-items: stretch; }
+            .tw-btn { text-align: left; width: 100%; }
+            .tw-btn .tw-sub { display: inline; margin-top: 0; margin-left: 4px; }
+
+            /* Tim grid */
+            .tim-grid { gap: 12px; }
+            .tim-card-header { height: 140px; }
+            .tim-card-icon { top: 118px; }
+            .tim-name { font-size: 15px; }
+
+            /* Modal */
+            .modal-overlay { padding: 0; }
+            .modal-content { border-radius: 16px 16px 0 0; max-height: 95vh; }
+            .modal-header { padding: 16px; }
+            .modal-title { font-size: 15px; }
+            .modal-body { padding: 16px; }
+            .modal-footer { padding: 14px 16px; }
+            .prodi-tag { font-size: 12px; padding: 5px 10px; }
+
+            /* CTA */
+            .cta-section { padding: 48px 16px; }
+            .cta-section h2 { font-size: 21px; }
+            .cta-section p { font-size: 14px; }
+            .btn-nav-accent[style] { font-size: 14px !important; padding: 12px 20px !important; }
+            .cta-deco-3, .cta-deco-4 { display: none; }
+        }
+
         footer{background:#0a1226;color:rgba(255,255,255,.6);padding:40px 32px;text-align:center;font-size:14px}
 
         footer a {
@@ -1089,21 +1275,6 @@
             display: inline-flex;
             align-items: center;
             gap: 8px
-        }
-
-        @media (max-width:768px) {
-            .hero-stats {
-                gap: 24px;
-                padding: 20px
-            }
-
-            .main-content {
-                padding: 56px 20px
-            }
-
-            .tim-grid {
-                grid-template-columns: 1fr
-            }
         }
     </style>
 </head>
