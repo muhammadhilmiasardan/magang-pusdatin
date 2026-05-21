@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login — Admin Magang PUSDATIN</title>
+    <link rel="icon" type="image/png" href="{{ asset('logo_pu.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -139,9 +140,65 @@
             margin-bottom: 20px;
             border: 1px solid #a7f3d0;
         }
+
+        /* ── BACK TO LANDING BUTTON ── */
+        .btn-back-landing {
+            position: fixed;
+            top: 20px;
+            right: 24px;
+            z-index: 999;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            background: #ffffff;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn-back-landing:hover {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 4px 16px rgba(30, 58, 138, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .btn-back-landing .close-icon {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            transition: background 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .btn-back-landing:hover .close-icon {
+            background: rgba(255, 255, 255, 0.2);
+        }
     </style>
 </head>
 <body>
+
+    {{-- Tombol Kembali ke Landing Page --}}
+    <a href="{{ route('landing') }}" class="btn-back-landing" title="Kembali ke Beranda">
+        <span class="close-icon">
+            <i class="fas fa-times"></i>
+        </span>
+        Kembali ke Beranda
+    </a>
 
     <div class="login-container">
         <div class="login-card">

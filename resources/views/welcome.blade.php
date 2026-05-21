@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal Magang — PUSDATIN Kementerian PU</title>
+    <link rel="icon" type="image/png" href="{{ asset('logo_pu.png') }}">
     <meta name="description"
         content="Portal resmi pendaftaran magang PUSDATIN Kementerian Pekerjaan Umum. Cek ketersediaan kuota dan daftar magang sekarang.">
     <link rel="preconnect" href="https://fonts.googleapis.com">

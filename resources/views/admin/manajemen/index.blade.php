@@ -53,8 +53,8 @@
             </div>
             
             {{-- Export Button --}}
-            <button type="button" onclick="openExportModal()" class="btn-primary" style="padding: 7px 16px; font-size: 12.5px; border-radius: 6px; display: inline-flex; align-items: center; gap: 6px; border: none; cursor: pointer;">
-                <i class="fas fa-file-excel"></i> Unduh Laporan
+            <button type="button" onclick="openExportModal()" style="padding: 9px 18px; font-size: 13px; font-weight: 600; font-family: 'Inter', sans-serif; background: linear-gradient(135deg, var(--primary), #2548a8); color: #fff; border: 1.5px solid transparent; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(30,58,138,0.3); transition: all 0.2s ease;" onmouseover="this.style.background='#fff'; this.style.color='var(--primary)'; this.style.borderColor='var(--primary)'; this.style.boxShadow='0 4px 14px rgba(30,58,138,0.15)';" onmouseout="this.style.background='linear-gradient(135deg, var(--primary), #2548a8)'; this.style.color='#fff'; this.style.borderColor='transparent'; this.style.boxShadow='0 4px 12px rgba(30,58,138,0.3)';">
+                <i class="fas fa-file-download"></i> Unduh Laporan
             </button>
         </div>
     </div>
@@ -355,56 +355,346 @@
 </style>
 @endpush
 
-    {{-- MODAL EXPORT --}}
-    <div id="exportModalOverlay" class="modal-overlay" style="display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.6); backdrop-filter: blur(4px); z-index: 1000;">
-        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; width: 100%; max-width: 450px; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.15);">
-            <div style="padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
-                <h3 style="font-size: 16px; font-weight: 700; margin: 0;"><i class="fas fa-file-export" style="color: var(--primary); margin-right: 8px;"></i> Ekspor Laporan Magang</h3>
-                <button type="button" onclick="closeExportModal()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:18px;"><i class="fas fa-times"></i></button>
+{{-- ═══ MODAL EXPORT LAPORAN (REDESIGNED) ═══ --}}
+<div id="exportModalOverlay" style="
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 20, 50, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 1050;
+    align-items: center;
+    justify-content: center;
+">
+    <div style="
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        width: calc(100% - 40px);
+        max-width: 480px;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 32px 64px rgba(0,0,0,0.18), 0 8px 24px rgba(0,0,0,0.1);
+        animation: exportModalIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    ">
+        {{-- Header --}}
+        <div style="
+            background: linear-gradient(135deg, var(--primary) 0%, #2548a8 100%);
+            padding: 22px 24px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        ">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="
+                    width: 38px; height: 38px;
+                    background: rgba(255,255,255,0.15);
+                    border-radius: 10px;
+                    display: flex; align-items: center; justify-content: center;
+                    font-size: 16px; color: #fff;
+                ">
+                    <i class="fas fa-file-export"></i>
+                </div>
+                <div>
+                    <div style="font-size: 16px; font-weight: 700; color: #fff; line-height: 1.2;">Unduh Laporan Magang</div>
+                    <div style="font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 2px;">Format Excel (.xls)</div>
+                </div>
             </div>
-            <form action="{{ route('admin.manajemen.export') }}" method="GET" style="padding: 24px;">
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 10px;">Status Peserta (Bisa pilih lebih dari satu)</label>
-                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                        <label style="display: flex; align-items: center; gap: 6px; font-size: 13px;"><input type="checkbox" name="statuses[]" value="Belum Aktif" checked> Belum Aktif</label>
-                        <label style="display: flex; align-items: center; gap: 6px; font-size: 13px;"><input type="checkbox" name="statuses[]" value="Aktif" checked> Aktif</label>
-                        <label style="display: flex; align-items: center; gap: 6px; font-size: 13px;"><input type="checkbox" name="statuses[]" value="Selesai" checked> Selesai</label>
-                        <label style="display: flex; align-items: center; gap: 6px; font-size: 13px;"><input type="checkbox" name="statuses[]" value="Ditolak"> Ditolak</label>
-                        <label style="display: flex; align-items: center; gap: 6px; font-size: 13px;"><input type="checkbox" name="statuses[]" value="Anulir"> Anulir</label>
+            <button type="button" onclick="closeExportModal()" style="
+                width: 32px; height: 32px;
+                background: rgba(255,255,255,0.15);
+                border: none; border-radius: 8px;
+                color: #fff; cursor: pointer;
+                display: flex; align-items: center; justify-content: center;
+                font-size: 14px;
+                transition: background 0.15s ease;
+            " onmouseover="this.style.background='rgba(255,255,255,0.25)'"
+               onmouseout="this.style.background='rgba(255,255,255,0.15)'">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        {{-- Form Body --}}
+        <form action="{{ route('admin.manajemen.export') }}" method="GET">
+            <div style="padding: 24px;">
+
+                {{-- Section: Status Peserta --}}
+                <div style="margin-bottom: 24px;">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                        <div style="
+                            width: 4px; height: 16px;
+                            background: var(--primary);
+                            border-radius: 2px;
+                        "></div>
+                        <span style="font-size: 12.5px; font-weight: 700; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.05em;">
+                            Filter Status Peserta
+                        </span>
+                    </div>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Pilih satu atau lebih status yang ingin disertakan dalam laporan.</p>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;" id="statusCheckboxGroup">
+                        <label class="export-status-pill" style="--pill-color: #92400e; --pill-bg: #fffbeb; --pill-border: #fcd34d;">
+                            <input type="checkbox" name="statuses[]" value="Belum Aktif" checked hidden>
+                            <span><i class="fas fa-hourglass-half" style="font-size: 10px;"></i> Belum Aktif</span>
+                        </label>
+                        <label class="export-status-pill" style="--pill-color: #065f46; --pill-bg: #ecfdf5; --pill-border: #6ee7b7;">
+                            <input type="checkbox" name="statuses[]" value="Aktif" checked hidden>
+                            <span><i class="fas fa-circle" style="font-size: 8px;"></i> Aktif</span>
+                        </label>
+                        <label class="export-status-pill" style="--pill-color: #1e3a8a; --pill-bg: #dbeafe; --pill-border: #93c5fd;">
+                            <input type="checkbox" name="statuses[]" value="Selesai" checked hidden>
+                            <span><i class="fas fa-graduation-cap" style="font-size: 10px;"></i> Selesai</span>
+                        </label>
+                        <label class="export-status-pill" style="--pill-color: #991b1b; --pill-bg: #fef2f2; --pill-border: #fca5a5;">
+                            <input type="checkbox" name="statuses[]" value="Ditolak" hidden>
+                            <span><i class="fas fa-times-circle" style="font-size: 10px;"></i> Ditolak</span>
+                        </label>
+                        <label class="export-status-pill" style="--pill-color: #6b21a8; --pill-bg: #f5f3ff; --pill-border: #c4b5fd;">
+                            <input type="checkbox" name="statuses[]" value="Anulir" hidden>
+                            <span><i class="fas fa-ban" style="font-size: 10px;"></i> Anulir</span>
+                        </label>
                     </div>
                 </div>
 
+                {{-- Divider --}}
+                <div style="height: 1px; background: var(--border); margin-bottom: 24px;"></div>
+
+                {{-- Section: Rentang Waktu --}}
                 <div style="margin-bottom: 20px;">
-                    <label style="display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px;">Rentang Waktu Laporan</label>
-                    <select id="exportRentang" name="rentang_waktu" onchange="toggleExportFields()" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border); font-size: 13px; background: #f8fafc; outline: none;">
-                        <option value="semua">Semua Waktu</option>
-                        <option value="triwulan">Per Triwulan</option>
-                        <option value="tahunan">Per Tahun</option>
-                    </select>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                        <div style="
+                            width: 4px; height: 16px;
+                            background: var(--accent);
+                            border-radius: 2px;
+                        "></div>
+                        <span style="font-size: 12.5px; font-weight: 700; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.05em;">
+                            Rentang Waktu
+                        </span>
+                    </div>
+                    <div style="position: relative;">
+                        <i class="fas fa-calendar-alt" style="
+                            position: absolute; left: 14px; top: 50%;
+                            transform: translateY(-50%);
+                            color: var(--text-muted); font-size: 13px;
+                            pointer-events: none;
+                        "></i>
+                        <select id="exportRentang" name="rentang_waktu" onchange="toggleExportFields()" style="
+                            width: 100%;
+                            padding: 11px 14px 11px 38px;
+                            border-radius: 10px;
+                            border: 1.5px solid var(--border);
+                            font-size: 13px;
+                            font-family: 'Inter', sans-serif;
+                            font-weight: 500;
+                            background: #f8fafc;
+                            color: var(--text-primary);
+                            outline: none;
+                            cursor: pointer;
+                            transition: border-color 0.15s ease;
+                            appearance: auto;
+                        " onfocus="this.style.borderColor='var(--primary)'"
+                           onblur="this.style.borderColor='var(--border)'">
+                            <option value="semua">Semua Waktu</option>
+                            <option value="triwulan">Per Triwulan</option>
+                            <option value="tahunan">Per Tahun</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div id="exportTriwulanWrapper" style="display: none; margin-bottom: 20px;">
-                    <label style="display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px;">Pilih Triwulan</label>
-                    <select name="triwulan" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border); font-size: 13px; background: #fff; outline: none;">
-                        <option value="1">Triwulan 1 (Jan - Mar)</option>
-                        <option value="2">Triwulan 2 (Apr - Jun)</option>
-                        <option value="3">Triwulan 3 (Jul - Sep)</option>
-                        <option value="4">Triwulan 4 (Okt - Des)</option>
-                    </select>
+                {{-- Sub-filters (Triwulan) --}}
+                <div id="exportTriwulanWrapper" style="display: none; margin-bottom: 16px; animation: fadeInDown 0.2s ease;">
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em;">Pilih Triwulan</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                        <label class="export-tw-option">
+                            <input type="radio" name="triwulan" value="1" hidden>
+                            <span>Triwulan 1 <small>Jan – Mar</small></span>
+                        </label>
+                        <label class="export-tw-option">
+                            <input type="radio" name="triwulan" value="2" hidden>
+                            <span>Triwulan 2 <small>Apr – Jun</small></span>
+                        </label>
+                        <label class="export-tw-option">
+                            <input type="radio" name="triwulan" value="3" hidden>
+                            <span>Triwulan 3 <small>Jul – Sep</small></span>
+                        </label>
+                        <label class="export-tw-option">
+                            <input type="radio" name="triwulan" value="4" hidden>
+                            <span>Triwulan 4 <small>Okt – Des</small></span>
+                        </label>
+                    </div>
                 </div>
 
-                <div id="exportTahunWrapper" style="display: none; margin-bottom: 24px;">
-                    <label style="display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px;">Tahun</label>
-                    <input type="number" name="tahun" value="{{ date('Y') }}" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border); font-size: 13px; outline: none; text-align: center;">
+                {{-- Sub-filters (Tahun) --}}
+                <div id="exportTahunWrapper" style="display: none; margin-bottom: 16px; animation: fadeInDown 0.2s ease;">
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em;">Tahun</label>
+                    <div style="position: relative;">
+                        <i class="fas fa-hashtag" style="
+                            position: absolute; left: 14px; top: 50%;
+                            transform: translateY(-50%);
+                            color: var(--text-muted); font-size: 13px;
+                            pointer-events: none;
+                        "></i>
+                        <input type="number" name="tahun" value="{{ date('Y') }}"
+                               min="2020" max="2099"
+                               style="
+                                   width: 100%;
+                                   padding: 11px 14px 11px 38px;
+                                   border-radius: 10px;
+                                   border: 1.5px solid var(--border);
+                                   font-size: 13px;
+                                   font-family: 'Inter', sans-serif;
+                                   font-weight: 600;
+                                   color: var(--primary);
+                                   background: #f8fafc;
+                                   outline: none;
+                                   text-align: left;
+                               "
+                               onfocus="this.style.borderColor='var(--primary)'"
+                               onblur="this.style.borderColor='var(--border)'">
+                    </div>
                 </div>
+            </div>
 
-                <div style="display: flex; gap: 12px; justify-content: flex-end;">
-                    <button type="button" onclick="closeExportModal()" class="btn-outline-custom" style="padding: 10px 20px; font-size: 13px; background: #fff; border: 1px solid var(--border); border-radius: 8px; cursor: pointer;">Batal</button>
-                    <button type="submit" class="btn-primary" style="padding: 10px 20px; font-size: 13px; border: none; cursor: pointer; border-radius: 8px;"><i class="fas fa-download"></i> Download CSV</button>
-                </div>
-            </form>
-        </div>
+            {{-- Footer --}}
+            <div style="
+                padding: 16px 24px;
+                border-top: 1px solid var(--border);
+                background: #fafbfc;
+                display: flex;
+                gap: 10px;
+                justify-content: flex-end;
+                align-items: center;
+            ">
+                <button type="button" onclick="closeExportModal()" style="
+                    padding: 10px 20px;
+                    font-size: 13px;
+                    font-weight: 500;
+                    font-family: 'Inter', sans-serif;
+                    background: #fff;
+                    border: 1.5px solid var(--border);
+                    border-radius: 10px;
+                    color: var(--text-secondary);
+                    cursor: pointer;
+                    transition: all 0.15s ease;
+                " onmouseover="this.style.borderColor='var(--primary)';this.style.color='var(--primary)'"
+                   onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-secondary)'">
+                    Batal
+                </button>
+                <button type="submit" style="
+                    padding: 10px 22px;
+                    font-size: 13px;
+                    font-weight: 600;
+                    font-family: 'Inter', sans-serif;
+                    background: linear-gradient(135deg, var(--primary), #2548a8);
+                    color: #fff;
+                    border: none;
+                    border-radius: 10px;
+                    cursor: pointer;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    box-shadow: 0 4px 12px rgba(30,58,138,0.3);
+                    transition: all 0.15s ease;
+                " onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 6px 16px rgba(30,58,138,0.4)'"
+                   onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 12px rgba(30,58,138,0.3)'">
+                    <i class="fas fa-file-download"></i>
+                    Unduh Laporan
+                </button>
+            </div>
+        </form>
     </div>
+</div>
+
+@push('styles')
+<style>
+    /* Export Modal Animation */
+    @keyframes exportModalIn {
+        from { opacity: 0; transform: translate(-50%, -48%) scale(0.96); }
+        to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+    @keyframes fadeInDown {
+        from { opacity: 0; transform: translateY(-6px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Pill-style status checkbox */
+    .export-status-pill {
+        display: inline-flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .export-status-pill span {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 6px 13px;
+        border-radius: 999px;
+        font-size: 12.5px;
+        font-weight: 500;
+        border: 1.5px solid #e2e8f0;
+        background: #f1f5f9;
+        color: #64748b;
+        transition: all 0.15s ease;
+        user-select: none;
+    }
+
+    .export-status-pill input:checked + span {
+        background: var(--pill-bg, #dbeafe);
+        color: var(--pill-color, #1e3a8a);
+        border-color: var(--pill-border, #93c5fd);
+        font-weight: 600;
+    }
+
+    .export-status-pill:hover span {
+        border-color: var(--pill-border, #93c5fd);
+        color: var(--pill-color, #1e3a8a);
+    }
+
+    /* Triwulan radio options */
+    .export-tw-option {
+        display: flex;
+        cursor: pointer;
+    }
+
+    .export-tw-option span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        width: 100%;
+        padding: 10px 14px;
+        border-radius: 10px;
+        border: 1.5px solid var(--border);
+        font-size: 12.5px;
+        font-weight: 500;
+        color: var(--text-secondary);
+        background: #fff;
+        transition: all 0.15s ease;
+        user-select: none;
+    }
+
+    .export-tw-option span small {
+        display: block;
+        font-size: 10.5px;
+        color: var(--text-muted);
+        font-weight: 400;
+        margin-top: 1px;
+    }
+
+    .export-tw-option input:checked + span {
+        background: var(--primary-lighter);
+        border-color: var(--primary);
+        color: var(--primary);
+        font-weight: 600;
+    }
+
+    .export-tw-option:hover span {
+        border-color: var(--primary);
+        color: var(--primary);
+    }
+</style>
+@endpush
 
 @push('scripts')
 <script>
