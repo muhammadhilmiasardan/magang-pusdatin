@@ -1,0 +1,65 @@
+###############################################################################
+# Docker Compose — Sistem Magang PUSDATIN
+#
+# Services:
+#   app  — PHP 8.3 + Apache (Laravel)   → localhost:8080
+#   db   — MySQL 8.0                     → localhost:3307
+#
+# Vite/Tailwind build is handled inside the Dockerfile (multi-stage build)
+#
+# Usage:
+#   docker compose up --build        (first time / after code changes)
+#   docker compose up                (subsequent runs)
+#   docker compose down              (stop all)
+#   docker compose down -v           (stop + delete volumes/data)
+###############################################################################
+
+services:
+  # ──────────────────────────────────────────────
+  # App: PHP 8.3 + Apache (includes Vite build)
+  # ──────────────────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: magang-app
+    ports:
+      - "8080:80"
+    volumes:
+      - app_storage:/var/www/html/storage/app/public
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env.docker
+    restart: unless-stopped
+
+  # ──────────────────────────────────────────────
+  # Database: MySQL 8.0
+  # ──────────────────────────────────────────────
+  db:
+    image: mysql:8.0
+    container_name: magang-db
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: magang_pusdatin
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+      start_period: 120s
+    restart: unless-stopped
+
+# ──────────────────────────────────────────────
+# Named Volumes (persistent data)
+# ──────────────────────────────────────────────
+volumes:
+  app_storage:
+    driver: local
+  db_data:
+    driver: local

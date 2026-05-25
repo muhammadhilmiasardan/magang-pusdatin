@@ -1,0 +1,62 @@
+# Git
+.git
+.gitattributes
+.gitignore
+
+# Dependencies (will be installed inside container)
+node_modules
+vendor
+
+# Environment files (use .env.docker via env_file in compose)
+.env
+.env.backup
+.env.production
+.env.docker
+
+# IDE & Editor
+.idea
+.vscode
+.cursor
+.zed
+.nova
+.phpactor.json
+.editorconfig
+.npmrc
+
+# Storage temp files
+storage/logs/*
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/pail
+
+# Test & Debug
+tests
+phpunit.xml
+.phpunit.cache
+.phpunit.result.cache
+
+# Documentation & data files (root level)
+*.md
+*.csv
+*.log
+Data_Ketua_Tim.csv
+anak magang.csv
+data magang final.csv
+data orang magang.csv
+
+# Root-level images & PDFs (not public/ assets)
+/contoh sertifikat.png
+/template sertifikat.png
+/logo_pu.png
+/FORMAT LEMBAR EVALUASI MAGANG.pdf
+/FORMAT SURAT KETERANGAN MAGANG.pdf
+/FORMAT SURAT KONFIRMASI MAGANG UNTUK ANAK UNNES.pdf
+
+# Misc
+create_db.php
+test_csv.php
+Homestead.json
+Homestead.yaml
+Thumbs.db
+.DS_Store
