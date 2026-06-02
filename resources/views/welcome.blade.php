@@ -1550,7 +1550,7 @@
                                                 <div class="kuota-circle" id="circle-{{ $tim->id }}">{{ $tim->kuota_maksimal }}</div>
                                                 <span>Sisa Kuota</span>
                                             </div>
-                                            <button class="btn-detail">Akses Layanan <i class="fas fa-arrow-right"></i></button>
+                                            <button class="btn-detail">Lihat Detail <i class="fas fa-arrow-right"></i></button>
                                         </div>
                                     </div>
                                 @endforeach

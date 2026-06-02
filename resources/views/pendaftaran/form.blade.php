@@ -326,12 +326,17 @@
 
 {{-- Header --}}
 <div class="form-header">
-    <div class="header-inner">
-        <img src="/images/logo-pu.png" alt="Logo PUPR" style="width: 44px; height: 44px; flex-shrink: 0; object-fit: cover;">
-        <div>
-            <h1>Formulir Pendaftaran Magang</h1>
-            <p>Pusat Data dan Teknologi Informasi — Kementerian PUPR</p>
+    <div class="header-inner" style="justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 14px;">
+            <img src="/images/logo-pu.png" alt="Logo PUPR" style="width: 44px; height: 44px; flex-shrink: 0; object-fit: cover;">
+            <div>
+                <h1>Formulir Pendaftaran Magang</h1>
+                <p>Pusat Data dan Teknologi Informasi — Kementerian PUPR</p>
+            </div>
         </div>
+        <a href="{{ route('landing') }}" style="color: white; text-decoration: none; display: flex; align-items: center; gap: 6px; font-size: 13.5px; background: rgba(255,255,255,0.15); padding: 8px 14px; border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </a>
     </div>
 </div>
 
