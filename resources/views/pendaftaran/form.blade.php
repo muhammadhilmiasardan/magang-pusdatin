@@ -55,6 +55,54 @@
             gap: 14px;
         }
 
+        /* Tombol Kembali — kanan atas, sejajar form */
+        .btn-kembali {
+            position: absolute;
+            top: 112px;
+            right: 24px;
+            z-index: 999;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            background: #ffffff;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn-kembali:hover {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 4px 16px rgba(30, 58, 138, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .btn-kembali .close-icon {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            transition: background 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .btn-kembali:hover .close-icon {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
         .form-header .header-icon {
             width: 44px; height: 44px; border-radius: 10px;
             background: rgba(255,255,255,0.15);
@@ -324,19 +372,22 @@
 {{-- Accent Bar --}}
 <div class="accent-bar"></div>
 
+{{-- Tombol Kembali — pojok kanan atas halaman --}}
+<a href="{{ route('landing') }}" class="btn-kembali" title="Kembali ke Beranda">
+    <span class="close-icon">
+        <i class="fas fa-times"></i>
+    </span>
+    Kembali ke Beranda
+</a>
+
 {{-- Header --}}
 <div class="form-header">
-    <div class="header-inner" style="justify-content: space-between;">
-        <div style="display: flex; align-items: center; gap: 14px;">
-            <img src="/images/logo-pu.png" alt="Logo PUPR" style="width: 44px; height: 44px; flex-shrink: 0; object-fit: cover;">
-            <div>
-                <h1>Formulir Pendaftaran Magang</h1>
-                <p>Pusat Data dan Teknologi Informasi — Kementerian PUPR</p>
-            </div>
+    <div class="header-inner">
+        <img src="/images/logo-pu.png" alt="Logo PUPR" style="width: 44px; height: 44px; flex-shrink: 0; object-fit: cover;">
+        <div>
+            <h1>Formulir Pendaftaran Magang</h1>
+            <p>Pusat Data dan Teknologi Informasi — Kementerian PUPR</p>
         </div>
-        <a href="{{ route('landing') }}" style="color: white; text-decoration: none; display: flex; align-items: center; gap: 6px; font-size: 13.5px; background: rgba(255,255,255,0.15); padding: 8px 14px; border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">
-            <i class="fas fa-arrow-left"></i> Kembali
-        </a>
     </div>
 </div>
 

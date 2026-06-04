@@ -85,24 +85,47 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 storage bootstrap/cache
 
 # ============================================================
-# 9. Create storage symlink (public/storage -> storage/app/public)
+# 9. Configure OPcache — bisa di-override via environment var
+#    PHP_OPCACHE_VALIDATE_TIMESTAMPS=1 → file changes langsung aktif (dev)
+#    PHP_OPCACHE_VALIDATE_TIMESTAMPS=0 → cache agresif (prod)
+# ============================================================
+RUN { \
+    echo 'opcache.enable=1'; \
+    echo 'opcache.memory_consumption=128'; \
+    echo 'opcache.interned_strings_buffer=8'; \
+    echo 'opcache.max_accelerated_files=10000'; \
+    echo 'opcache.validate_timestamps=${PHP_OPCACHE_VALIDATE_TIMESTAMPS:-0}'; \
+    echo 'opcache.revalidate_freq=${PHP_OPCACHE_REVALIDATE_FREQ:-2}'; \
+    echo 'opcache.save_comments=1'; \
+} > /usr/local/etc/php/conf.d/opcache.ini
+
+# ============================================================
+# 10. Create storage symlink (public/storage -> storage/app/public)
 # ============================================================
 RUN php artisan storage:link
 
 # ============================================================
-# 10. Create entrypoint script for runtime initialization
+# 11. Create entrypoint script for runtime initialization
 #     (migrations run at container start, not build time)
 # ============================================================
 RUN echo '#!/bin/bash\n\
 set -e\n\
 \n\
+# Apply OPcache settings from environment variables\n\
+sed -i "s/opcache.validate_timestamps=.*/opcache.validate_timestamps=${PHP_OPCACHE_VALIDATE_TIMESTAMPS:-0}/" /usr/local/etc/php/conf.d/opcache.ini\n\
+sed -i "s/opcache.revalidate_freq=.*/opcache.revalidate_freq=${PHP_OPCACHE_REVALIDATE_FREQ:-2}/" /usr/local/etc/php/conf.d/opcache.ini\n\
+\n\
+# Refresh composer autoload (agar class baru langsung ke-detect)\n\
+composer dump-autoload --optimize --no-interaction 2>/dev/null || true\n\
+\n\
 # Run migrations\n\
 php artisan migrate --force\n\
 \n\
-# Clear & cache config for performance\n\
+# Clear all caches\n\
 php artisan config:clear\n\
 php artisan route:clear\n\
 php artisan view:clear\n\
+php artisan cache:clear\n\
 \n\
 # Start Apache in foreground\n\
 exec apache2-foreground' > /usr/local/bin/entrypoint.sh \

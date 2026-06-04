@@ -27,6 +27,16 @@ services:
       - "8080:80"
     volumes:
       - app_storage:/var/www/html/storage/app/public
+      # Bind mount — perubahan file lokal langsung masuk container tanpa rebuild
+      - ./resources/views:/var/www/html/resources/views
+      - ./app:/var/www/html/app
+      - ./routes:/var/www/html/routes
+      - ./config:/var/www/html/config
+      - ./database:/var/www/html/database
+    environment:
+      # Matikan OPcache revalidation delay agar perubahan file PHP langsung aktif
+      PHP_OPCACHE_VALIDATE_TIMESTAMPS: "1"
+      PHP_OPCACHE_REVALIDATE_FREQ: "0"
     depends_on:
       db:
         condition: service_healthy

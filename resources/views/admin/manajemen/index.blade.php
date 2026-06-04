@@ -13,6 +13,22 @@
     ];
 @endphp
 
+
+@if($errors->any())
+<div id="flashError" style="margin-bottom:16px;padding:14px 20px;background:#fee2e2;border:1px solid #fca5a5;border-radius:12px;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+        <i class="fas fa-exclamation-circle" style="color:#dc2626;font-size:18px;flex-shrink:0;"></i>
+        <span style="font-size:13.5px;font-weight:600;color:#7f1d1d;">Gagal menyimpan data. Periksa kembali isian berikut:</span>
+        <button onclick="document.getElementById('flashError').remove()" style="margin-left:auto;background:none;border:none;cursor:pointer;color:#dc2626;font-size:16px;padding:0;"><i class="fas fa-times"></i></button>
+    </div>
+    <ul style="margin:0;padding-left:32px;font-size:13px;color:#7f1d1d;">
+        @foreach($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
+
 <div class="card-clean">
     {{-- Tab Navigation --}}
     <div class="tab-nav-clean" role="tablist">
@@ -26,6 +42,14 @@
             <span class="tab-count">{{ $tab['data']->count() }}</span>
         </a>
         @endforeach
+
+        {{-- Tab Tambah Data — paling kanan --}}
+        <a class="tab-item" href="#" role="tab"
+           onclick="event.preventDefault(); openTambahModal()"
+           style="color: var(--primary); font-weight: 600; margin-left: auto;">
+            <i class="fas fa-plus" style="font-size: 12px;"></i>
+            Tambah Data
+        </a>
     </div>
 
     {{-- Controls: Search & Sort --}}
@@ -53,7 +77,7 @@
             </div>
             
             {{-- Export Button --}}
-            <button type="button" onclick="openExportModal()" style="padding: 9px 18px; font-size: 13px; font-weight: 600; font-family: 'Inter', sans-serif; background: linear-gradient(135deg, var(--primary), #2548a8); color: #fff; border: 1.5px solid transparent; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(30,58,138,0.3); transition: all 0.2s ease;" onmouseover="this.style.background='#fff'; this.style.color='var(--primary)'; this.style.borderColor='var(--primary)'; this.style.boxShadow='0 4px 14px rgba(30,58,138,0.15)';" onmouseout="this.style.background='linear-gradient(135deg, var(--primary), #2548a8)'; this.style.color='#fff'; this.style.borderColor='transparent'; this.style.boxShadow='0 4px 12px rgba(30,58,138,0.3)';">
+            <button type="button" onclick="openExportModal()" style="padding: 9px 18px; font-size: 13px; font-weight: 600; font-family: 'Inter', sans-serif; background: linear-gradient(135deg, var(--primary), #2548a8); color: #fff; border: 1.5px solid transparent; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(30,58,138,0.3); transition: all 0.2s ease;" onmouseover="this.style.background='#fff'; this.style.color='var(--primary)'; this.style.borderColor='var(--primary)'; this.style.boxShadow='0 4px 14px rgba(30,58,138,0.15)';" onmouseout="this.style.background='linear-gradient(135deg, var(--primary), #2548a8)'; this.style.color='#fff'; this.style.borderColor='transparent'; this.style.boxShadow='0 4px 12px rgba(30,58,138,0.3)'">
                 <i class="fas fa-file-download"></i> Unduh Laporan
             </button>
         </div>
@@ -326,16 +350,27 @@
         </div>
 
         {{-- Modal Footer --}}
-        <div style="padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
-            <div id="m-resign-area" style="display: none;">
-                <button onclick="confirmAnulir()" class="btn-sm-custom" style="
+        <div style="padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-shrink: 0;">
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <div id="m-resign-area" style="display: none;">
+                    <button onclick="confirmAnulir()" class="btn-sm-custom" style="
+                        background: #fff; color: #d97706; border: 1px solid #f59e0b;
+                        padding: 8px 16px; border-radius: 8px; cursor: pointer;
+                        font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500;
+                        display: inline-flex; align-items: center; gap: 6px;
+                        transition: all 150ms ease;
+                    " onmouseover="this.style.background='#fef3c7'" onmouseout="this.style.background='#fff'">
+                        <i class="fas fa-door-open"></i> Mengundurkan Diri
+                    </button>
+                </div>
+                <button onclick="confirmDelete()" class="btn-sm-custom" style="
                     background: #fef2f2; color: #dc2626; border: 1px solid #fecaca;
                     padding: 8px 16px; border-radius: 8px; cursor: pointer;
                     font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500;
                     display: inline-flex; align-items: center; gap: 6px;
                     transition: all 150ms ease;
                 " onmouseover="this.style.background='#fee2e2'" onmouseout="this.style.background='#fef2f2'">
-                    <i class="fas fa-door-open"></i> Mengundurkan Diri
+                    <i class="fas fa-trash-alt"></i> Hapus Permanen
                 </button>
             </div>
             <div style="margin-left: auto;">
@@ -345,6 +380,272 @@
     </div>
 </div>
 @endsection
+
+{{-- ═══ MODAL PILIH METODE TAMBAH DATA ═══ --}}
+<div id="tambahModalOverlay" style="
+    display: none;
+    position: fixed; inset: 0; z-index: 1060;
+    background: rgba(10,20,50,0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+">
+    <div style="
+        position: absolute; top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        width: calc(100% - 40px);
+        max-width: 440px;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 32px 64px rgba(0,0,0,0.18);
+        animation: exportModalIn 0.25s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    ">
+        {{-- Header --}}
+        <div style="background: linear-gradient(135deg, var(--primary), #2548a8); padding: 22px 24px 20px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width:38px;height:38px;background:rgba(255,255,255,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;">
+                    <i class="fas fa-plus-circle"></i>
+                </div>
+                <div>
+                    <div style="font-size:16px;font-weight:700;color:#fff;line-height:1.2;">Tambahkan Data Peserta</div>
+                    <div style="font-size:12px;color:rgba(255,255,255,0.65);margin-top:2px;">Pilih metode penambahan data</div>
+                </div>
+            </div>
+            <button type="button" onclick="closeTambahModal()" style="width:32px;height:32px;background:rgba(255,255,255,0.15);border:none;border-radius:8px;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        {{-- Body --}}
+        <div style="padding: 28px 24px; display: flex; flex-direction: column; gap: 14px;">
+            {{-- Import Data Card --}}
+            <button type="button" onclick="closeTambahModal(); openImportModal()" style="
+                width: 100%; padding: 18px 20px; border-radius: 14px;
+                border: 2px solid var(--border);
+                background: #f8fafc; cursor: pointer; text-align: left;
+                display: flex; align-items: center; gap: 16px;
+                transition: all 0.2s ease; font-family: 'Inter', sans-serif;
+            " onmouseover="this.style.borderColor='var(--primary)';this.style.background='#eef2ff';" onmouseout="this.style.borderColor='var(--border)';this.style.background='#f8fafc';">
+                <div style="width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#dbeafe,#bfdbfe);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--primary);flex-shrink:0;">
+                    <i class="fas fa-file-import"></i>
+                </div>
+                <div>
+                    <div style="font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:3px;">Import Data</div>
+                    <div style="font-size:12.5px;color:var(--text-secondary);">Unggah file CSV untuk menambahkan banyak data sekaligus</div>
+                </div>
+                <i class="fas fa-chevron-right" style="margin-left:auto;color:var(--text-muted);font-size:13px;"></i>
+            </button>
+
+            {{-- Tambah Manual Card --}}
+            <button type="button" onclick="closeTambahModal(); openManualModal()" style="
+                width: 100%; padding: 18px 20px; border-radius: 14px;
+                border: 2px solid var(--border);
+                background: #f8fafc; cursor: pointer; text-align: left;
+                display: flex; align-items: center; gap: 16px;
+                transition: all 0.2s ease; font-family: 'Inter', sans-serif;
+            " onmouseover="this.style.borderColor='var(--primary)';this.style.background='#eef2ff';" onmouseout="this.style.borderColor='var(--border)';this.style.background='#f8fafc';">
+                <div style="width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#d1fae5,#a7f3d0);display:flex;align-items:center;justify-content:center;font-size:20px;color:#059669;flex-shrink:0;">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <div>
+                    <div style="font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:3px;">Tambah Manual</div>
+                    <div style="font-size:12.5px;color:var(--text-secondary);">Isi formulir untuk menambahkan satu peserta secara langsung</div>
+                </div>
+                <i class="fas fa-chevron-right" style="margin-left:auto;color:var(--text-muted);font-size:13px;"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+{{-- ═══ MODAL IMPORT DATA (CSV) ═══ --}}
+<div id="importModalOverlay" style="display:none;position:fixed;inset:0;z-index:1060;background:rgba(10,20,50,0.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);">
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;width:calc(100% - 40px);max-width:480px;border-radius:20px;overflow:hidden;box-shadow:0 32px 64px rgba(0,0,0,0.18);animation:exportModalIn 0.25s cubic-bezier(0.34,1.56,0.64,1) forwards;">
+        <div style="background:linear-gradient(135deg,var(--primary),#2548a8);padding:22px 24px 20px;display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:12px;">
+                <div style="width:38px;height:38px;background:rgba(255,255,255,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;">
+                    <i class="fas fa-file-import"></i>
+                </div>
+                <div>
+                    <div style="font-size:16px;font-weight:700;color:#fff;">Import Data CSV</div>
+                    <div style="font-size:12px;color:rgba(255,255,255,0.65);margin-top:2px;">Unggah file .csv peserta magang</div>
+                </div>
+            </div>
+            <button type="button" onclick="closeImportModal()" style="width:32px;height:32px;background:rgba(255,255,255,0.15);border:none;border-radius:8px;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <form action="{{ route('admin.manajemen.import') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div style="padding:24px;">
+                {{-- Download Template --}}
+                <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+                    <i class="fas fa-info-circle" style="color:var(--primary);font-size:16px;flex-shrink:0;"></i>
+                    <div style="font-size:12.5px;color:var(--primary);">
+                        Gunakan template CSV yang sudah disediakan. <a href="{{ route('admin.manajemen.import.template') }}" style="font-weight:600;color:var(--primary);"><i class="fas fa-download" style="margin-right:3px;"></i>Unduh Template</a>
+                    </div>
+                </div>
+                {{-- Drop Zone --}}
+                <div id="importDropZone" style="border:2px dashed #cbd5e1;border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all 0.2s;background:#f8fafc;" onclick="document.getElementById('importFileInput').click()" ondragover="event.preventDefault();this.style.borderColor='var(--primary)';this.style.background='#eff6ff';" ondragleave="this.style.borderColor='#cbd5e1';this.style.background='#f8fafc';" ondrop="handleImportDrop(event)">
+                    <input type="file" id="importFileInput" name="csv_file" accept=".csv,.xls" style="display:none;" onchange="handleImportFile(this)">
+                    <i class="fas fa-cloud-upload-alt" style="font-size:32px;color:#94a3b8;display:block;margin-bottom:10px;"></i>
+                    <div id="importFileName" style="font-size:13.5px;font-weight:600;color:var(--text-secondary);">Klik atau seret file CSV / Excel (.xls) ke sini</div>
+                    <div style="font-size:11.5px;color:var(--text-muted);margin-top:4px;">Format .csv atau .xls, maksimal 5MB</div>
+                </div>
+            </div>
+            <div style="padding:16px 24px;border-top:1px solid var(--border);background:#fafbfc;display:flex;gap:10px;justify-content:flex-end;">
+                <button type="button" onclick="closeImportModal();openTambahModal()" style="padding:10px 20px;font-size:13px;font-weight:500;font-family:'Inter',sans-serif;background:#fff;border:1.5px solid var(--border);border-radius:10px;color:var(--text-secondary);cursor:pointer;transition:all 0.15s;" onmouseover="this.style.borderColor='var(--primary)';this.style.color='var(--primary)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-secondary)'">
+                    <i class="fas fa-arrow-left" style="margin-right:4px;"></i> Kembali
+                </button>
+                <button type="submit" style="padding:10px 22px;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;background:linear-gradient(135deg,var(--primary),#2548a8);color:#fff;border:none;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 12px rgba(30,58,138,0.3);transition:all 0.15s;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <i class="fas fa-file-import"></i> Import Sekarang
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{{-- ═══ MODAL TAMBAH MANUAL ═══ --}}
+<div id="manualModalOverlay" style="display:none;position:fixed;inset:0;z-index:1060;background:rgba(10,20,50,0.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;box-sizing:border-box;">
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;border-radius:20px;box-shadow:0 32px 64px rgba(0,0,0,0.18);animation:exportModalIn 0.25s cubic-bezier(0.34,1.56,0.64,1) forwards;">
+            {{-- Header --}}
+            <div style="background:linear-gradient(135deg,var(--primary),#2548a8);padding:22px 24px 20px;display:flex;align-items:center;justify-content:space-between;">
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <div style="width:38px;height:38px;background:rgba(255,255,255,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div>
+                        <div style="font-size:16px;font-weight:700;color:#fff;">Tambah Peserta Manual</div>
+                        <div style="font-size:12px;color:rgba(255,255,255,0.65);margin-top:2px;">Isi data peserta secara langsung</div>
+                    </div>
+                </div>
+                <button type="button" onclick="closeManualModal()" style="width:32px;height:32px;background:rgba(255,255,255,0.15);border:none;border-radius:8px;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            {{-- Form --}}
+            <form action="{{ route('admin.manajemen.store') }}" method="POST">
+                @csrf
+                <div style="padding:24px;display:flex;flex-direction:column;gap:14px;">
+
+                    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--primary);padding-bottom:6px;border-bottom:2px solid var(--primary-lighter);">
+                        <i class="fas fa-id-card" style="margin-right:5px;"></i> Identitas Peserta
+                    </div>
+
+                    <div>
+                        <label style="display:block;font-size:12.5px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">Nama Lengkap <span style="color:#ef4444;">*</span></label>
+                        <input type="text" name="nama" placeholder="Masukkan nama lengkap" required style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13.5px;font-family:'Inter',sans-serif;color:var(--text-primary);outline:none;transition:border-color 0.15s;box-sizing:border-box;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'">
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                        <div>
+                            <label style="display:block;font-size:12.5px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">Tingkat Pendidikan <span style="color:#ef4444;">*</span></label>
+                            <select name="tingkat_pendidikan" required style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13.5px;font-family:'Inter',sans-serif;color:var(--text-primary);outline:none;transition:border-color 0.15s;box-sizing:border-box;background:#fff;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'">
+                                <option value="" disabled selected>— Pilih —</option>
+                                <option value="SMA/SMK">SMA/SMK</option>
+                                <option value="D3">D3</option>
+                                <option value="D4">D4</option>
+                                <option value="S1">S1</option>
+                                <option value="S2">S2</option>
+                                <option value="S3">S3</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display:block;font-size:12.5px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">NIM / NIS <span style="color:#94a3b8;font-weight:400;">(opsional)</span></label>
+                            <input type="text" name="nim_nis" placeholder="Nomor induk" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13.5px;font-family:'Inter',sans-serif;color:var(--text-primary);outline:none;transition:border-color 0.15s;box-sizing:border-box;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'">
+                        </div>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                        <div>
+                            <label style="display:block;font-size:12.5px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">Institusi <span style="color:#ef4444;">*</span></label>
+                            <input type="text" name="nama_institusi" placeholder="Nama universitas/sekolah" required style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13.5px;font-family:'Inter',sans-serif;color:var(--text-primary);outline:none;transition:border-color 0.15s;box-sizing:border-box;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'">
+                        </div>
+                        <div>
+                            <label style="display:block;font-size:12.5px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">Jurusan <span style="color:#ef4444;">*</span></label>
+                            <input type="text" name="jurusan" placeholder="Program studi / jurusan" required style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13.5px;font-family:'Inter',sans-serif;color:var(--text-primary);outline:none;transition:border-color 0.15s;box-sizing:border-box;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'">
+                        </div>
+                    </div>
+
+                    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--primary);padding-bottom:6px;border-bottom:2px solid var(--primary-lighter);margin-top:2px;">
+                        <i class="fas fa-address-book" style="margin-right:5px;"></i> Kontak
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                        <div>
+                            <label style="display:block;font-size:12.5px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">Email Pribadi <span style="color:#ef4444;">*</span></label>
+                            <input type="email" name="email" placeholder="email@gmail.com" required style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13.5px;font-family:'Inter',sans-serif;color:var(--text-primary);outline:none;transition:border-color 0.15s;box-sizing:border-box;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'">
+                        </div>
+                        <div>
+                            <label style="display:block;font-size:12.5px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">No. WhatsApp <span style="color:#ef4444;">*</span></label>
+                            <input type="tel" name="nomor_telp" placeholder="08xxxxxxxxxx" required style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13.5px;font-family:'Inter',sans-serif;color:var(--text-primary);outline:none;transition:border-color 0.15s;box-sizing:border-box;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label style="display:block;font-size:12.5px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">Email Institusi <span style="color:#94a3b8;font-weight:400;">(opsional)</span></label>
+                        <input type="email" name="email_institusi" placeholder="email@mahasiswa.ui.ac.id" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13.5px;font-family:'Inter',sans-serif;color:var(--text-primary);outline:none;transition:border-color 0.15s;box-sizing:border-box;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'">
+                    </div>
+
+                    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--primary);padding-bottom:6px;border-bottom:2px solid var(--primary-lighter);margin-top:2px;">
+                        <i class="fas fa-building" style="margin-right:5px;"></i> Penempatan & Periode
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                        <div>
+                            <label style="display:block;font-size:12.5px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">Tim Kerja Pilihan 1 <span style="color:#ef4444;">*</span></label>
+                            <select name="id_tim_kerja_1" required style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text-primary);outline:none;transition:border-color 0.15s;box-sizing:border-box;background:#fff;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'">
+                                <option value="" disabled selected>— Pilih Tim Kerja —</option>
+                                @foreach($timKerja as $tim)
+                                <option value="{{ $tim->id }}">{{ $tim->nama_tim }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display:block;font-size:12.5px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">Tim Kerja Pilihan 2 <span style="color:#94a3b8;font-weight:400;">(opsional)</span></label>
+                            <select name="id_tim_kerja_2" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text-primary);outline:none;transition:border-color 0.15s;box-sizing:border-box;background:#fff;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'">
+                                <option value="">— Tidak Ada —</option>
+                                @foreach($timKerja as $tim)
+                                <option value="{{ $tim->id }}">{{ $tim->nama_tim }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                        <div>
+                            <label style="display:block;font-size:12.5px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">Tanggal Mulai <span style="color:#ef4444;">*</span></label>
+                            <input type="date" name="tanggal_mulai" required style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13.5px;font-family:'Inter',sans-serif;color:var(--text-primary);outline:none;transition:border-color 0.15s;box-sizing:border-box;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'">
+                        </div>
+                        <div>
+                            <label style="display:block;font-size:12.5px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">Tanggal Selesai <span style="color:#ef4444;">*</span></label>
+                            <input type="date" name="tanggal_selesai" required style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13.5px;font-family:'Inter',sans-serif;color:var(--text-primary);outline:none;transition:border-color 0.15s;box-sizing:border-box;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label style="display:block;font-size:12.5px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">Status <span style="color:#ef4444;">*</span></label>
+                        <select name="status" required style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13.5px;font-family:'Inter',sans-serif;color:var(--text-primary);outline:none;transition:border-color 0.15s;box-sizing:border-box;background:#fff;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'">
+                            <option value="" disabled selected>— Pilih Status —</option>
+                            <option value="Belum Aktif">Belum Aktif</option>
+                            <option value="Aktif">Aktif</option>
+                            <option value="Selesai">Selesai</option>
+                            <option value="Anulir">Anulir</option>
+                            <option value="Ditolak">Ditolak</option>
+                        </select>
+                    </div>
+
+                </div>
+                {{-- Footer --}}
+                <div style="padding:16px 24px;border-top:1px solid var(--border);background:#fafbfc;display:flex;gap:10px;justify-content:flex-end;">
+                    <button type="button" onclick="closeManualModal();openTambahModal()" style="padding:10px 20px;font-size:13px;font-weight:500;font-family:'Inter',sans-serif;background:#fff;border:1.5px solid var(--border);border-radius:10px;color:var(--text-secondary);cursor:pointer;transition:all 0.15s;" onmouseover="this.style.borderColor='var(--primary)';this.style.color='var(--primary)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-secondary)'">
+                        <i class="fas fa-arrow-left" style="margin-right:4px;"></i> Kembali
+                    </button>
+                    <button type="submit" style="padding:10px 22px;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;background:linear-gradient(135deg,var(--primary),#2548a8);color:#fff;border:none;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 12px rgba(30,58,138,0.3);transition:all 0.15s;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <i class="fas fa-save"></i> Simpan Data
+                    </button>
+                </div>
+            </form>
+        </div>
+</div>
 
 @push('styles')
 <style>
@@ -718,6 +1019,61 @@
     function closeExportModal() {
         document.getElementById('exportModalOverlay').style.display = 'none';
     }
+
+    // Modal Tambah Data (Pilih Metode)
+    function openTambahModal() {
+        document.getElementById('tambahModalOverlay').style.display = 'block';
+    }
+    function closeTambahModal() {
+        document.getElementById('tambahModalOverlay').style.display = 'none';
+    }
+
+    // Modal Import CSV
+    function openImportModal() {
+        document.getElementById('importModalOverlay').style.display = 'block';
+    }
+    function closeImportModal() {
+        document.getElementById('importModalOverlay').style.display = 'none';
+    }
+
+    // Modal Tambah Manual
+    function openManualModal() {
+        const overlay = document.getElementById('manualModalOverlay');
+        overlay.style.display = 'flex';
+    }
+    function closeManualModal() {
+        document.getElementById('manualModalOverlay').style.display = 'none';
+    }
+
+    // Handle file import drop
+    function handleImportDrop(e) {
+        e.preventDefault();
+        const file = e.dataTransfer.files[0];
+        if (file) {
+            document.getElementById('importFileName').textContent = file.name;
+            document.getElementById('importDropZone').style.borderColor = 'var(--primary)';
+            document.getElementById('importDropZone').style.background = '#eff6ff';
+        }
+    }
+    function handleImportFile(input) {
+        if (input.files[0]) {
+            document.getElementById('importFileName').textContent = input.files[0].name;
+            document.getElementById('importDropZone').style.borderColor = 'var(--primary)';
+            document.getElementById('importDropZone').style.background = '#eff6ff';
+        }
+    }
+
+    // Close modals on overlay click (ESC key)
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeTambahModal();
+            closeImportModal();
+            closeManualModal();
+        }
+    });
+    document.getElementById('tambahModalOverlay').addEventListener('click', function(e) { if(e.target===this) closeTambahModal(); });
+    document.getElementById('importModalOverlay').addEventListener('click', function(e) { if(e.target===this) closeImportModal(); });
+    document.getElementById('manualModalOverlay').addEventListener('click', function(e) { if(e.target===this) closeManualModal(); });
     function toggleExportFields() {
         const val = document.getElementById('exportRentang').value;
         const triwulanWrap = document.getElementById('exportTriwulanWrapper');
@@ -911,6 +1267,26 @@
             },
             error: function(xhr) {
                 alert(xhr.responseJSON?.error || 'Terjadi kesalahan.');
+            }
+        });
+    }
+
+    // Delete action
+    function confirmDelete() {
+        const nama = window._currentPesertaNama;
+        if (!confirm(`Apakah Anda yakin ingin menghapus data peserta "${nama}" secara permanen?\nSemua data dan file terkait di database akan terhapus selamanya.`)) return;
+
+        $.ajax({
+            url: `/admin/manajemen/${window._currentPesertaId}`,
+            type: 'DELETE',
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            success: function(res) {
+                alert(res.message);
+                closeModal();
+                location.reload();
+            },
+            error: function(xhr) {
+                alert(xhr.responseJSON?.error || 'Terjadi kesalahan saat menghapus data.');
             }
         });
     }
