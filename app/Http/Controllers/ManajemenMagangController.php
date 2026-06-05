@@ -301,90 +301,221 @@ class ManajemenMagangController extends Controller
 
     public function downloadTemplate()
     {
-        $fileName = 'template_import_peserta.xls';
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Template Import');
 
-        $html = '<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<style>
-    th { background: #1e3a8a; color: #ffffff; font-family: Calibri, Arial, sans-serif; font-size: 11pt; font-weight: bold; padding: 8px 12px; border: 1px solid #1e40af; text-align: left; }
-    td { font-family: Calibri, Arial, sans-serif; font-size: 11pt; padding: 8px 12px; border: 1px solid #cbd5e1; }
-    .text-column { mso-number-format: "\@"; }
-    .info-label { color: #64748b; font-weight: bold; font-size: 10pt; font-family: Calibri, Arial, sans-serif; border: none; padding: 3px 6px; }
-    .info-value { font-size: 10pt; font-family: Calibri, Arial, sans-serif; border: none; padding: 3px 6px; }
-</style>
-</head><body style="margin:20px">
+        // Hide gridlines for a cleaner look (like the report)
+        $sheet->setShowGridlines(false);
 
-<p style="font-size:16pt;font-weight:bold;color:#1e3a8a;margin:0">TEMPLATE IMPORT DATA PESERTA MAGANG</p>
-<p style="font-size:10pt;color:#475569;margin:4px 0 16px">Pusat Data dan Teknologi Informasi (PUSDATIN) &ndash; Kementerian Pekerjaan Umum</p>
+        // ─── Column Widths (manual, matching report proportions) ───
+        $columnWidths = [
+            'A' => 5,    // No
+            'B' => 32,   // Nama Lengkap
+            'C' => 30,   // Institusi
+            'D' => 28,   // Jurusan
+            'E' => 32,   // Tim Kerja Penempatan
+            'F' => 14,   // Status
+            'G' => 14,   // Tgl Mulai
+            'H' => 14,   // Tgl Selesai
+            'I' => 28,   // Email
+            'J' => 20,   // No. Telp / WhatsApp
+        ];
+        foreach ($columnWidths as $col => $width) {
+            $sheet->getColumnDimension($col)->setWidth($width);
+        }
 
-<table border="0" cellspacing="0" cellpadding="0" style="margin-bottom:20px;border:none;">
-    <tr>
-        <td class="info-label">Keterangan</td>
-        <td class="info-value">: Template Pengisian Massal (Import)</td>
-        <td class="info-label" style="padding-left:40px;">Format Tanggal</td>
-        <td class="info-value">: YYYY-MM-DD (contoh: 2026-06-01)</td>
-    </tr>
-    <tr>
-        <td class="info-label">Pilihan Status</td>
-        <td class="info-value">: Belum Aktif, Aktif, Selesai, Anulir, Ditolak</td>
-        <td class="info-label" style="padding-left:40px;">Tim Kerja</td>
-        <td class="info-value">: BDI, MTI, TU, atau Nama Tim Kerja Lengkap (contoh: Tim Kerja Sistem Informasi)</td>
-    </tr>
-</table>
+        // ─── Row 1: Title (merged across all columns) ───
+        $sheet->mergeCells('A1:J1');
+        $sheet->setCellValue('A1', 'TEMPLATE IMPORT DATA PESERTA MAGANG');
+        $sheet->getStyle('A1')->getFont()->setName('Calibri')->setSize(16)->setBold(true);
+        $sheet->getStyle('A1')->getFont()->getColor()->setRGB('1e3a8a');
+        $sheet->getStyle('A1')->getAlignment()
+            ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT)
+            ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+        $sheet->getRowDimension(1)->setRowHeight(28);
 
-<table id="participant-table" cellspacing="0" cellpadding="0" style="border-collapse:collapse;width:100%">
-    <thead>
-        <tr>
-            <th>No</th>
-            <th>Nama Lengkap</th>
-            <th>Institusi / Asal Kampus</th>
-            <th>Jurusan</th>
-            <th>Tim Kerja Penempatan</th>
-            <th>Status</th>
-            <th>Tgl Mulai</th>
-            <th>Tgl Selesai</th>
-            <th>Email</th>
-            <th>No. Telp / WhatsApp</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>1</td>
-            <td>Muhammad Ghafiqi Radiyansyah</td>
-            <td>Institut Teknologi Bandung</td>
-            <td>Teknik Geodesi dan Geomatika</td>
-            <td>BDI</td>
-            <td>Selesai</td>
-            <td class="text-column">2024-01-08</td>
-            <td class="text-column">2024-02-02</td>
-            <td>ghafiqi@gmail.com</td>
-            <td class="text-column">-</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Mutyayasa Adji Nugroho</td>
-            <td>Universitas Bina Nusantara</td>
-            <td>Computer Science</td>
-            <td>MTI</td>
-            <td>Selesai</td>
-            <td class="text-column">2024-01-01</td>
-            <td class="text-column">2025-02-28</td>
-            <td>adji@gmail.com</td>
-            <td class="text-column">081234567890</td>
-        </tr>
-    </tbody>
-</table>
-</body></html>';
+        // ─── Row 2: Subtitle (merged) ───
+        $sheet->mergeCells('A2:J2');
+        $sheet->setCellValue('A2', 'Pusat Data dan Teknologi Informasi (PUSDATIN) – Kementerian Pekerjaan Umum');
+        $sheet->getStyle('A2')->getFont()->setName('Calibri')->setSize(10);
+        $sheet->getStyle('A2')->getFont()->getColor()->setRGB('333333');
+        $sheet->getRowDimension(2)->setRowHeight(18);
 
-        return response($html, 200, [
-            'Content-type' => 'application/vnd.ms-excel',
-            'Content-Disposition' => "attachment; filename=\"$fileName\"",
-            'Pragma' => 'no-cache',
-            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
-            'Expires' => '0',
-        ]);
+        // ─── Rows 3-4: Metadata info block (styled like report) ───
+        $metaData = [
+            ['A3' => 'Keterangan',      'C3' => ': Template Pengisian Massal (Import)',  'E3' => 'Pilihan Status', 'G3' => ': Belum Aktif, Aktif, Selesai, Anulir, Ditolak'],
+            ['A4' => 'Format Tanggal',   'C4' => ': YYYY-MM-DD (contoh: 2026-06-01)',    'E4' => 'Tim Kerja',      'G4' => ': BDI, MTI, TU, atau Nama Tim Kerja Lengkap'],
+        ];
+
+        // Merge cells for metadata values so they have room
+        $sheet->mergeCells('C3:D3');
+        $sheet->mergeCells('G3:J3');
+        $sheet->mergeCells('C4:D4');
+        $sheet->mergeCells('G4:J4');
+
+        foreach ($metaData as $rowData) {
+            foreach ($rowData as $cell => $value) {
+                $sheet->setCellValue($cell, $value);
+            }
+        }
+
+        // Style metadata labels (bold, slate gray)
+        foreach (['A3', 'A4', 'E3', 'E4'] as $cell) {
+            $sheet->getStyle($cell)->getFont()->setName('Calibri')->setSize(10)->setBold(true);
+            $sheet->getStyle($cell)->getFont()->getColor()->setRGB('2d2d2d');
+            $sheet->getStyle($cell)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+        }
+        // Style metadata values
+        foreach (['C3', 'C4', 'G3', 'G4'] as $cell) {
+            $sheet->getStyle($cell)->getFont()->setName('Calibri')->setSize(10);
+            $sheet->getStyle($cell)->getFont()->getColor()->setRGB('000000');
+            $sheet->getStyle($cell)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+        }
+        $sheet->getRowDimension(3)->setRowHeight(18);
+        $sheet->getRowDimension(4)->setRowHeight(18);
+
+        // ─── Row 6: Table Headers (dark blue, matching report exactly) ───
+        $headerRow = 6;
+        $headers = [
+            'No', 'Nama Lengkap', 'Institusi / Asal Kampus', 'Jurusan',
+            'Tim Kerja Penempatan', 'Status', 'Tgl Mulai', 'Tgl Selesai',
+            'Email', 'No. Telp / WhatsApp'
+        ];
+
+        $alignments = [
+            'A' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, // No
+            'B' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,   // Nama Lengkap
+            'C' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,   // Institusi
+            'D' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,   // Jurusan
+            'E' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,   // Tim Kerja Penempatan
+            'F' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, // Status
+            'G' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, // Tgl Mulai
+            'H' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, // Tgl Selesai
+            'I' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,   // Email
+            'J' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,   // No. Telp
+        ];
+
+        // Apply header styles as a range for consistency
+        $headerRange = "A{$headerRow}:J{$headerRow}";
+        $headerStyle = $sheet->getStyle($headerRange);
+        $headerStyle->getFont()->setName('Calibri')->setSize(10)->setBold(true);
+        $headerStyle->getFont()->getColor()->setRGB('ffffff');
+        $headerStyle->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setRGB('1e3a8a');
+        $headerStyle->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN)->getColor()->setRGB('1e40af');
+        $headerStyle->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)->setWrapText(true);
+
+        $col = 'A';
+        foreach ($headers as $header) {
+            $cell = $col . $headerRow;
+            $sheet->setCellValue($cell, $header);
+            $horizAlign = $alignments[$col] ?? \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT;
+            $sheet->getStyle($cell)->getAlignment()->setHorizontal($horizAlign);
+            $col++;
+        }
+        $sheet->getRowDimension($headerRow)->setRowHeight(28);
+
+        // ─── Sample Data Rows ───
+        $data = [
+            [
+                '1', 'Muhammad Ghafiqi Radiyansyah', 'Institut Teknologi Bandung', 'Teknik Geodesi dan Geomatika',
+                'BDI', 'Selesai', '2024-01-08', '2024-02-02', 'ghafiqi@gmail.com', '081234567890'
+            ],
+            [
+                '2', 'Mutyayasa Adji Nugroho', 'Universitas Bina Nusantara', 'Computer Science',
+                'MTI', 'Selesai', '2024-01-01', '2025-02-28', 'adji@gmail.com', '081234567890'
+            ]
+        ];
+
+        $rowNum = $headerRow + 1; // Start at row 7
+        foreach ($data as $index => $row) {
+            $col = 'A';
+            $bgRow = ($index % 2 === 0) ? 'ffffff' : 'f8fafc'; // Zebra striping
+
+            foreach ($row as $val) {
+                $cell = $col . $rowNum;
+                $sheet->setCellValueExplicit($cell, $val, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+
+                $style = $sheet->getStyle($cell);
+
+                // Font styling
+                $isBold = ($col === 'B' || $col === 'F');
+                $fontColor = '000000'; // Black for all data columns
+
+                if ($col === 'F') {
+                    // Status column stays blue/colored
+                    $fontColor = match ($val) {
+                        'Aktif' => '15803d',
+                        'Selesai' => '1d4ed8',
+                        'Belum Aktif' => '92400e',
+                        'Anulir', 'Ditolak' => 'dc2626',
+                        default => '1d4ed8',
+                    };
+                }
+
+                $style->getFont()->setName('Calibri')->setSize(10)->setBold($isBold);
+                $style->getFont()->getColor()->setRGB($fontColor);
+
+                // Row striping background
+                $style->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setRGB($bgRow);
+
+                // Borders (light, matching report)
+                $style->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN)->getColor()->setRGB('e2e8f0');
+
+                // Alignment
+                $horizAlign = $alignments[$col] ?? \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT;
+                $style->getAlignment()->setHorizontal($horizAlign)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                $style->getNumberFormat()->setFormatCode('@');
+
+                $col++;
+            }
+            $sheet->getRowDimension($rowNum)->setRowHeight(22);
+            $rowNum++;
+        }
+
+        // ─── Footer note row (like report's footer) ───
+        $footerRow = $rowNum + 1;
+        $sheet->mergeCells("A{$footerRow}:J{$footerRow}");
+        $sheet->setCellValue("A{$footerRow}", '* Hapus baris contoh di atas sebelum mengimpor data Anda. Isi data mulai dari baris ke-7. Kolom wajib: Nama Lengkap, Institusi, Jurusan, Tgl Mulai, Tgl Selesai.');
+        $sheet->getStyle("A{$footerRow}")->getFont()->setName('Calibri')->setSize(9)->setItalic(true);
+        $sheet->getStyle("A{$footerRow}")->getFont()->getColor()->setRGB('94a3b8');
+        $sheet->getStyle("A{$footerRow}")->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)->setWrapText(true);
+        $sheet->getRowDimension($footerRow)->setRowHeight(20);
+
+        // Second footer line with format hints
+        $footerRow2 = $footerRow + 1;
+        $sheet->mergeCells("A{$footerRow2}:J{$footerRow2}");
+        $sheet->setCellValue("A{$footerRow2}", '  Format Tanggal: YYYY-MM-DD (contoh: 2026-06-01).  Pilihan Status: Belum Aktif, Aktif, Selesai, Anulir, Ditolak.  Tim Kerja: BDI, MTI, TU, atau Nama Tim Kerja Lengkap.');
+        $sheet->getStyle("A{$footerRow2}")->getFont()->setName('Calibri')->setSize(9)->setItalic(true);
+        $sheet->getStyle("A{$footerRow2}")->getFont()->getColor()->setRGB('94a3b8');
+        $sheet->getStyle("A{$footerRow2}")->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)->setWrapText(true);
+        $sheet->getRowDimension($footerRow2)->setRowHeight(20);
+
+        // ─── Freeze panes (header stays visible when scrolling) ───
+        $sheet->freezePane('A' . ($headerRow + 1));
+
+        // ─── Print setup ───
+        $sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
+        $sheet->getPageSetup()->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_A4);
+        $sheet->getPageSetup()->setFitToWidth(1);
+        $sheet->getPageSetup()->setFitToHeight(0);
+        $sheet->getPageMargins()->setTop(0.5)->setRight(0.3)->setBottom(0.5)->setLeft(0.3);
+
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
+
+        return response()->stream(
+            function () use ($writer) {
+                $writer->save('php://output');
+            },
+            200,
+            [
+                'Content-Type' => 'application/vnd.ms-excel',
+                'Content-Disposition' => 'attachment; filename="template_import_peserta.xls"',
+                'Pragma' => 'no-cache',
+                'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+                'Expires' => '0',
+            ]
+        );
     }
 
     public function import(Request $request)
@@ -394,40 +525,79 @@ class ManajemenMagangController extends Controller
         $file = $request->file('csv_file');
         $path = $file->getRealPath();
         $content = file_get_contents($path);
-        $isHtml = str_contains($content, '<html') || str_contains($content, '<table');
+
+        // Deteksi jika file XLS disimpan sebagai Halaman Web Multi-Sheet (berupa frameset eksternal yang tidak memiliki data tabel di dalamnya)
+        if (str_contains($content, 'Excel Workbook Frameset') || (str_contains($content, 'Excel.Sheet') && str_contains($content, '<frameset'))) {
+            return back()->withErrors('File yang Anda unggah disimpan oleh Excel sebagai Halaman Web Multi-Sheet (sehingga data aslinya tersimpan di folder terpisah yang tidak ikut terunggah). Silakan buka kembali file ini di Excel, lalu pilih "Save As" dan simpan dengan tipe "Excel Workbook (*.xlsx)" atau "Excel 97-2003 Workbook (*.xls)" sebelum diunggah kembali.');
+        }
+
+        $isZip = str_starts_with($content, "PK\x03\x04");
+        $isOle = str_starts_with($content, "\xD0\xCF\x11\xE0\xA1\xB1\x1A\xE1");
+        $isBinary = $isZip || $isOle;
+
+        $isHtml = !$isBinary && (str_contains($content, '<html') || str_contains($content, '<table') || str_contains($content, '<Workbook'));
+        $tmpPath = null;
+        $loadPath = $path;
+
+        if ($isHtml) {
+            // Bersihkan deklarasi DOCTYPE secara aman (termasuk internal subset) untuk menghindari security check XXE PHPSpreadsheet.
+            // Jangan bersihkan deklarasi XML karena XML reader PHPSpreadsheet membutuhkannya untuk identifikasi file XML Spreadsheet 2003.
+            $cleanContent = preg_replace('/<!DOCTYPE\s+[^\[>]*(\[[^\]]*\])?[^>]*>/is', '', $content);
+            $tmpPath = tempnam(sys_get_temp_dir(), 'import_xls_html');
+            file_put_contents($tmpPath, $cleanContent);
+            $loadPath = $tmpPath;
+        }
 
         $rows = [];
-        if ($isHtml) {
-            $dom = new \DOMDocument();
-            libxml_use_internal_errors(true);
-            $dom->loadHTML($content);
-            $table = $dom->getElementById('participant-table') ?: $dom->getElementsByTagName('table')->item(0);
-            foreach ($table->getElementsByTagName('tr') as $tr) {
-                $row = [];
-                foreach ($tr->getElementsByTagName('td') as $cell) $row[] = trim($cell->nodeValue);
-                foreach ($tr->getElementsByTagName('th') as $cell) $row[] = trim($cell->nodeValue);
-                if (!empty(array_filter($row))) $rows[] = $row;
+        try {
+            // Buat reader berdasarkan tipe file secara otomatis
+            $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile($loadPath);
+            // Redam warning parsing HTML (seperti tag kustom Microsoft Excel) agar tidak memicu exception di Laravel
+            if ($reader instanceof \PhpOffice\PhpSpreadsheet\Reader\Html) {
+                $reader->setSuppressLoadWarnings(true);
             }
-        } else {
-            if (($handle = fopen($path, 'r')) !== false) {
-                $delimiter = str_contains(fgets($handle), ';') ? ';' : ',';
-                rewind($handle);
-                while (($data = fgetcsv($handle, 1000, $delimiter)) !== false) $rows[] = $data;
-                fclose($handle);
+            $spreadsheet = $reader->load($loadPath);
+            $worksheet = $spreadsheet->getActiveSheet();
+            
+            foreach ($worksheet->getRowIterator() as $row) {
+                $cellIterator = $row->getCellIterator();
+                $cellIterator->setIterateOnlyExistingCells(FALSE); // Ambil semua sel termasuk yang kosong
+                $rowData = [];
+                foreach ($cellIterator as $cell) {
+                    $rowData[] = $cell->getFormattedValue();
+                }
+                $rows[] = $rowData;
             }
+        } catch (\Exception $e) {
+            if ($tmpPath && file_exists($tmpPath)) unlink($tmpPath);
+            return back()->withErrors('Gagal membaca file: ' . $e->getMessage() . ' Silakan gunakan template yang disediakan atau pastikan format file sesuai.');
         }
+
+        if ($tmpPath && file_exists($tmpPath)) {
+            unlink($tmpPath);
+        }
+
+        \Illuminate\Support\Facades\Log::info('Import debug rows parsed', [
+            'rows_count' => count($rows),
+            'first_3_rows' => array_slice($rows, 0, 3),
+        ]);
 
         $headerRowIndex = -1;
         foreach ($rows as $index => $row) {
-            $normalizedRow = array_map(fn($c) => strtolower(trim($c)), $row);
+            $normalizedRow = array_map(fn($c) => $this->normalizeHeader($c), $row);
             if (in_array('nama mahasiswa', $normalizedRow) || in_array('nama lengkap', $normalizedRow) || in_array('nama', $normalizedRow)) {
                 $headerRowIndex = $index; break;
             }
         }
 
+        \Illuminate\Support\Facades\Log::info('Import debug header check', [
+            'headerRowIndex' => $headerRowIndex,
+            'headerRow' => $headerRowIndex !== -1 ? $rows[$headerRowIndex] : null,
+        ]);
+
         if ($headerRowIndex === -1) return back()->withErrors('Format file tidak sesuai.');
 
-        $header = array_map(fn($h) => strtolower(trim(preg_replace('/[\x{FEFF}\x{FFFE}]/u', '', $h))), $rows[$headerRowIndex]);
+        $normalizedHeader = array_map(fn($h) => $this->normalizeHeader($h), $rows[$headerRowIndex]);
         $expectedHeaders = [
             'nama' => ['nama lengkap', 'nama mahasiswa', 'nama'],
             'tingkat_pendidikan' => ['tingkat pendidikan', 'pendidikan'],
@@ -441,13 +611,44 @@ class ManajemenMagangController extends Controller
             'bidang' => ['bidang'],
             'tanggal_mulai' => ['tgl mulai', 'tanggal_mulai', 'tanggal mulai'],
             'tanggal_selesai' => ['tgl selesai', 'tanggal selesai', 'tanggal_selesai'],
-            'status' => ['status', 'status magang']
+            'status' => ['status', 'status magang', 'status peserta', 'keterangan status', 'keterangan']
         ];
 
         $headerMap = [];
         foreach ($expectedHeaders as $key => $aliases) {
             $headerMap[$key] = -1;
-            foreach ($aliases as $alias) if (($idx = array_search($alias, $header)) !== false) { $headerMap[$key] = $idx; break; }
+            foreach ($aliases as $alias) {
+                $normAlias = $this->normalizeHeader($alias);
+                $idx = array_search($normAlias, $normalizedHeader);
+                if ($idx !== false) {
+                    $headerMap[$key] = $idx;
+                    break;
+                }
+            }
+        }
+
+        \Illuminate\Support\Facades\Log::info('Import debug headerMap', [
+            'headerMap' => $headerMap,
+        ]);
+
+        // Validasi kolom wajib agar tidak memicu error database mentah
+        $requiredKeys = [
+            'nama' => 'Nama Lengkap / Nama',
+            'nama_institusi' => 'Institusi / Asal Kampus',
+            'jurusan' => 'Jurusan',
+            'tanggal_mulai' => 'Tgl Mulai',
+            'tanggal_selesai' => 'Tgl Selesai'
+        ];
+        
+        $missingHeaders = [];
+        foreach ($requiredKeys as $key => $label) {
+            if ($headerMap[$key] === -1) {
+                $missingHeaders[] = $label;
+            }
+        }
+        
+        if (!empty($missingHeaders)) {
+            return back()->withErrors('Gagal import. Kolom wajib berikut tidak ditemukan di dalam file: ' . implode(', ', $missingHeaders));
         }
 
         $map = $this->getPenempatanMap();
@@ -471,8 +672,19 @@ class ManajemenMagangController extends Controller
                 $idTimKerja1 = $this->resolveTimKerjaId(!empty($val['tim_kerja']) ? $val['tim_kerja'] : $val['bidang'], $map, $timKerjaCache) ?: (TimKerja::first()->id ?? 1);
                 $idTimKerja2 = TimKerja::where('id', '!=', $idTimKerja1)->inRandomOrder()->first()->id ?? $idTimKerja1;
 
-                $dMulai = \Carbon\Carbon::parse($val['tanggal_mulai']);
-                $dSelesai = \Carbon\Carbon::parse($val['tanggal_selesai']);
+                try {
+                    $dMulai = \Carbon\Carbon::parse($val['tanggal_mulai']);
+                } catch (\Exception $e) {
+                    \Illuminate\Support\Facades\DB::rollBack();
+                    return back()->withErrors("Baris ke-" . ($i + 1) . ": Format tanggal mulai tidak valid ('" . $val['tanggal_mulai'] . "'). Gunakan format YYYY-MM-DD.");
+                }
+
+                try {
+                    $dSelesai = \Carbon\Carbon::parse($val['tanggal_selesai']);
+                } catch (\Exception $e) {
+                    \Illuminate\Support\Facades\DB::rollBack();
+                    return back()->withErrors("Baris ke-" . ($i + 1) . ": Format tanggal selesai tidak valid ('" . $val['tanggal_selesai'] . "'). Gunakan format YYYY-MM-DD.");
+                }
 
                 $tingkat = $val['tingkat_pendidikan'];
                 if (empty($tingkat)) {
@@ -485,14 +697,49 @@ class ManajemenMagangController extends Controller
                 }
 
                 $statusMapping = [
-                    'belum aktif' => 'Belum Aktif',
-                    'aktif'       => 'Aktif',
-                    'selesai'     => 'Selesai',
-                    'anulir'      => 'Anulir',
-                    'ditolak'     => 'Ditolak',
+                    'belum aktif'  => 'Belum Aktif',
+                    'belumaktif'   => 'Belum Aktif',
+                    'pending'      => 'Belum Aktif',
+                    'aktif'        => 'Aktif',
+                    'active'       => 'Aktif',
+                    'selesai'      => 'Selesai',
+                    'done'         => 'Selesai',
+                    'lulus'        => 'Selesai',
+                    'anulir'       => 'Anulir',
+                    'batal'        => 'Anulir',
+                    'dibatalkan'   => 'Anulir',
+                    'cancel'       => 'Anulir',
+                    'ditolak'      => 'Ditolak',
+                    'tolak'        => 'Ditolak',
+                    'rejected'     => 'Ditolak',
                 ];
-                $rawStatus = strtolower(trim($val['status'] ?? ''));
-                $statusMagang = $statusMapping[$rawStatus] ?? 'Belum Aktif';
+                // Hapus karakter tersembunyi (BOM, non-breaking space, dll) lalu lowercase + trim
+                $rawStatus = strtolower(trim(preg_replace('/[\x{FEFF}\x{FFFE}\x{00A0}]/u', '', $val['status'] ?? '')));
+                // Hapus juga spasi ganda di dalam string
+                $rawStatus = preg_replace('/\s+/', ' ', $rawStatus);
+                $statusMagang = $statusMapping[$rawStatus] ?? null;
+                // Jika status tidak dikenali, coba cari partial match (misal 'belum' -> 'Belum Aktif')
+                if ($statusMagang === null) {
+                    if (str_contains($rawStatus, 'belum')) $statusMagang = 'Belum Aktif';
+                    elseif (str_contains($rawStatus, 'selesai') || str_contains($rawStatus, 'done')) $statusMagang = 'Selesai';
+                    elseif (str_contains($rawStatus, 'anulir') || str_contains($rawStatus, 'batal')) $statusMagang = 'Anulir';
+                    elseif (str_contains($rawStatus, 'tolak') || str_contains($rawStatus, 'reject')) $statusMagang = 'Ditolak';
+                    elseif (str_contains($rawStatus, 'aktif') || str_contains($rawStatus, 'active')) $statusMagang = 'Aktif';
+                    else $statusMagang = 'Belum Hacky default'; // default jika status kosong atau tidak dikenali
+                }
+
+                // fallback to Belum Aktif if still null
+                if ($statusMagang === 'Belum Hacky default') {
+                    $statusMagang = 'Belum Aktif';
+                }
+
+                \Illuminate\Support\Facades\Log::info('Import debug insert row', [
+                    'nama' => $val['nama'],
+                    'tanggal_mulai' => $val['tanggal_mulai'],
+                    'raw_status_val' => $val['status'],
+                    'raw_status_processed' => $rawStatus,
+                    'status_magang_mapped' => $statusMagang,
+                ]);
 
                 PesertaMagang::create([
                     'nama' => $val['nama'], 'tingkat_pendidikan' => $tingkat, 'nim_nis' => $val['nim_nis'] ?: null,
@@ -504,7 +751,7 @@ class ManajemenMagangController extends Controller
                 $insertedCount++;
             }
             \Illuminate\Support\Facades\DB::commit();
-            return redirect()->route('admin.manajemen.index')->with('success', "Berhasil import $insertedCount data.");
+            return redirect()->route('admin.manajemen.index')->with('success', "Berhasil mengimpor $insertedCount data peserta magang. (Catatan: Peserta dengan status 'Belum Aktif' yang tanggal mulainya hari ini atau di masa lalu otomatis diaktifkan oleh sistem).");
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\DB::rollBack();
             return back()->withErrors('Error: ' . $e->getMessage());
@@ -562,6 +809,14 @@ class ManajemenMagangController extends Controller
         $digits = preg_replace('/[^0-9]/', '', $raw);
         if (!str_starts_with($digits, '0') && strlen($digits) >= 10) $digits = '0' . $digits;
         return $digits ?: '08000000000';
+    }
+
+    private function normalizeHeader(string $str): string {
+        $str = strtolower($str);
+        $str = preg_replace('/[\x{FEFF}\x{FFFE}\x{00A0}]/u', '', $str);
+        $str = preg_replace('/[^a-z0-9]/', ' ', $str);
+        $str = preg_replace('/\s+/', ' ', $str);
+        return trim($str);
     }
 
     public function destroy($id)
