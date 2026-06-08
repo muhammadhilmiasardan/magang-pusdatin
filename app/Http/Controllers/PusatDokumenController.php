@@ -41,10 +41,13 @@ class PusatDokumenController extends Controller
 
     private function buildSkData($peserta, Request $request)
     {
-        $logoPath = base_path('logo_pu.png');
         $logoBase64 = '';
-        if (file_exists($logoPath)) {
-            $logoBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath));
+        $logoPaths = [public_path('logo_pu.png'), base_path('logo_pu.png')];
+        foreach ($logoPaths as $logoPath) {
+            if (file_exists($logoPath) && filesize($logoPath) > 0) {
+                $logoBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath));
+                break;
+            }
         }
 
         $sebutan_peserta = (strtolower($peserta->tingkat_pendidikan) == 'smk' || strtolower($peserta->tingkat_pendidikan) == 'slta') ? 'Siswa/i' : 'Mahasiswa/i';
@@ -171,10 +174,13 @@ class PusatDokumenController extends Controller
 
     private function buildEvaluasiData($peserta)
     {
-        $logoPath = base_path('logo_pu.png');
         $logoBase64 = '';
-        if (file_exists($logoPath)) {
-            $logoBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath));
+        $logoPaths = [public_path('logo_pu.png'), base_path('logo_pu.png')];
+        foreach ($logoPaths as $logoPath) {
+            if (file_exists($logoPath) && filesize($logoPath) > 0) {
+                $logoBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath));
+                break;
+            }
         }
 
         $tim_kerja = '';

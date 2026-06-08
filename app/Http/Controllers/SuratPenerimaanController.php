@@ -91,9 +91,14 @@ class SuratPenerimaanController extends Controller
         $tanggalSelesai = Carbon::parse($peserta->tanggal_selesai);
 
         // Convert logo to base64 for reliable display in both browser and DOMPDF
-        $logoPath = base_path('logo_pu.png');
-        $logoData = file_exists($logoPath) ? base64_encode(file_get_contents($logoPath)) : '';
-        $logoBase64 = 'data:image/png;base64,' . $logoData;
+        $logoBase64 = '';
+        $logoPaths = [public_path('logo_pu.png'), base_path('logo_pu.png')];
+        foreach ($logoPaths as $logoPath) {
+            if (file_exists($logoPath) && filesize($logoPath) > 0) {
+                $logoBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath));
+                break;
+            }
+        }
 
         return [
             'peserta'           => $peserta,

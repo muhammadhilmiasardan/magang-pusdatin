@@ -221,7 +221,7 @@
             Kepala Pusat Data dan Teknologi Informasi
         </div>
         <div class="ttd-nama" style="font-weight: normal; color: #000;">
-            Komang Sri Hartini
+            Setia Dewi Prihapsari
         </div>
     </div>
 

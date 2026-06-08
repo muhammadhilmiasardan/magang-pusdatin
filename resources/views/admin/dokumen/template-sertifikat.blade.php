@@ -305,7 +305,7 @@
     </div>
 
     {{-- ═══ NAMA PENANDATANGAN ═══ --}}
-    <div class="cert-ttd-nama">Komang Sri Hartini</div>
+    <div class="cert-ttd-nama">Setia Dewi Prihapsari</div>
 
 </div>
 @if(!$is_pdf)
