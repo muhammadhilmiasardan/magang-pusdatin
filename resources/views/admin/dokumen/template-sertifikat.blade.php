@@ -301,7 +301,7 @@
     {{-- ═══ TTD JABATAN ═══ --}}
     <div class="cert-ttd">
         Jakarta, {{ $tanggal_terbit }}<br>
-        Kepala Pusat Data dan Teknologi Informasi,
+        Plt.Kepala Pusat Data dan Teknologi Informasi,
     </div>
 
     {{-- ═══ NAMA PENANDATANGAN ═══ --}}

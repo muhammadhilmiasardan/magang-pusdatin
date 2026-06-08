@@ -1290,7 +1290,7 @@
             @endif
             <div>
                 <div class="nav-brand-text">PUSDATIN</div>
-                <div class="nav-brand-sub">Kementerian Pekerjaan Umum</div>
+                <div class="nav-brand-sub">Pusat Data dan Teknologi Informasi</div>
             </div>
         </a>
         <div class="nav-actions">
