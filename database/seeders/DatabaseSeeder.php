@@ -17,10 +17,10 @@ class DatabaseSeeder extends Seeder
     {
         // Buat akun admin default
         User::firstOrCreate(
-            ['email' => 'admin@gmail.com'],
+            ['email' => 'pusdatin.magang@pu.go.id'],
             [
-                'name' => 'Admin',
-                'password' => bcrypt('adminmagang'),
+                'name' => 'PUSDATIN Magang',
+                'password' => bcrypt('kepegpusdatin05&'),
             ]
         );
 
