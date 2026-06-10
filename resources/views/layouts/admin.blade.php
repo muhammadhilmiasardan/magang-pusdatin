@@ -771,6 +771,19 @@
                     <a href="{{ route('admin.dokumen.index') }}" class="{{ request()->is('admin/dokumen*') ? 'active' : '' }}">
                         <i class="fas fa-file-lines"></i>
                         <span>Pusat Dokumen</span>
+                        @php
+                            $dokumenPendingCount = \App\Models\PesertaMagang::where('status_magang', 'Aktif')
+                                ->whereDate('tanggal_selesai', '<=', \Carbon\Carbon::today())
+                                ->where(function($q) {
+                                    $q->where('is_sk_sent', 0)
+                                      ->orWhere('is_evaluasi_sent', 0)
+                                      ->orWhere('is_sertifikat_sent', 0);
+                                })
+                                ->count();
+                        @endphp
+                        @if($dokumenPendingCount > 0)
+                            <span class="nav-badge">{{ $dokumenPendingCount }}</span>
+                        @endif
                     </a>
                 </li>
                 <li>
