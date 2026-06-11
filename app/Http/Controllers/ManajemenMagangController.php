@@ -319,14 +319,15 @@ class ManajemenMagangController extends Controller
             'G' => 14,   // Tgl Mulai
             'H' => 14,   // Tgl Selesai
             'I' => 28,   // Email
-            'J' => 20,   // No. Telp / WhatsApp
+            'J' => 28,   // Email Institusi
+            'K' => 20,   // No. Telp / WhatsApp
         ];
         foreach ($columnWidths as $col => $width) {
             $sheet->getColumnDimension($col)->setWidth($width);
         }
 
         // ─── Row 1: Title (merged across all columns) ───
-        $sheet->mergeCells('A1:J1');
+        $sheet->mergeCells('A1:K1');
         $sheet->setCellValue('A1', 'TEMPLATE IMPORT DATA PESERTA MAGANG');
         $sheet->getStyle('A1')->getFont()->setName('Calibri')->setSize(16)->setBold(true);
         $sheet->getStyle('A1')->getFont()->getColor()->setRGB('1e3a8a');
@@ -336,7 +337,7 @@ class ManajemenMagangController extends Controller
         $sheet->getRowDimension(1)->setRowHeight(28);
 
         // ─── Row 2: Subtitle (merged) ───
-        $sheet->mergeCells('A2:J2');
+        $sheet->mergeCells('A2:K2');
         $sheet->setCellValue('A2', 'Pusat Data dan Teknologi Informasi (PUSDATIN) – Kementerian Pekerjaan Umum');
         $sheet->getStyle('A2')->getFont()->setName('Calibri')->setSize(10);
         $sheet->getStyle('A2')->getFont()->getColor()->setRGB('333333');
@@ -350,9 +351,9 @@ class ManajemenMagangController extends Controller
 
         // Merge cells for metadata values so they have room
         $sheet->mergeCells('C3:D3');
-        $sheet->mergeCells('G3:J3');
+        $sheet->mergeCells('G3:K3');
         $sheet->mergeCells('C4:D4');
-        $sheet->mergeCells('G4:J4');
+        $sheet->mergeCells('G4:K4');
 
         foreach ($metaData as $rowData) {
             foreach ($rowData as $cell => $value) {
@@ -380,7 +381,7 @@ class ManajemenMagangController extends Controller
         $headers = [
             'No', 'Nama Lengkap', 'Institusi / Asal Kampus', 'Jurusan',
             'Tim Kerja Penempatan', 'Status', 'Tgl Mulai', 'Tgl Selesai',
-            'Email', 'No. Telp / WhatsApp'
+            'Email', 'Email Institusi', 'No. Telp / WhatsApp'
         ];
 
         $alignments = [
@@ -393,11 +394,12 @@ class ManajemenMagangController extends Controller
             'G' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, // Tgl Mulai
             'H' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, // Tgl Selesai
             'I' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,   // Email
-            'J' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,   // No. Telp
+            'J' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,   // Email Institusi
+            'K' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,   // No. Telp
         ];
 
         // Apply header styles as a range for consistency
-        $headerRange = "A{$headerRow}:J{$headerRow}";
+        $headerRange = "A{$headerRow}:K{$headerRow}";
         $headerStyle = $sheet->getStyle($headerRange);
         $headerStyle->getFont()->setName('Calibri')->setSize(10)->setBold(true);
         $headerStyle->getFont()->getColor()->setRGB('ffffff');
@@ -419,11 +421,11 @@ class ManajemenMagangController extends Controller
         $data = [
             [
                 '1', 'Muhammad Ghafiqi Radiyansyah', 'Institut Teknologi Bandung', 'Teknik Geodesi dan Geomatika',
-                'BDI', 'Selesai', '2024-01-08', '2024-02-02', 'ghafiqi@gmail.com', '081234567890'
+                'BDI', 'Selesai', '2024-01-08', '2024-02-02', 'ghafiqi@gmail.com', 'akademik@itb.ac.id', '081234567890'
             ],
             [
                 '2', 'Mutyayasa Adji Nugroho', 'Universitas Bina Nusantara', 'Computer Science',
-                'MTI', 'Selesai', '2024-01-01', '2025-02-28', 'adji@gmail.com', '081234567890'
+                'MTI', 'Selesai', '2024-01-01', '2025-02-28', 'adji@gmail.com', 'kampus@binus.ac.id', '081234567890'
             ]
         ];
 
@@ -475,8 +477,8 @@ class ManajemenMagangController extends Controller
 
         // ─── Footer note row (like report's footer) ───
         $footerRow = $rowNum + 1;
-        $sheet->mergeCells("A{$footerRow}:J{$footerRow}");
-        $sheet->setCellValue("A{$footerRow}", '* Hapus baris contoh di atas sebelum mengimpor data Anda. Isi data mulai dari baris ke-7. Kolom wajib: Nama Lengkap, Institusi, Jurusan, Tgl Mulai, Tgl Selesai.');
+        $sheet->mergeCells("A{$footerRow}:K{$footerRow}");
+        $sheet->setCellValue("A{$footerRow}", '* Hapus baris contoh di atas sebelum mengimpor data Anda. Isi data mulai dari baris ke-7. Kolom wajib: Nama Lengkap, Institusi, Jurusan, Tgl Mulai, Tgl Selesai. Email Institusi bersifat opsional.');
         $sheet->getStyle("A{$footerRow}")->getFont()->setName('Calibri')->setSize(9)->setItalic(true);
         $sheet->getStyle("A{$footerRow}")->getFont()->getColor()->setRGB('94a3b8');
         $sheet->getStyle("A{$footerRow}")->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)->setWrapText(true);
@@ -484,7 +486,7 @@ class ManajemenMagangController extends Controller
 
         // Second footer line with format hints
         $footerRow2 = $footerRow + 1;
-        $sheet->mergeCells("A{$footerRow2}:J{$footerRow2}");
+        $sheet->mergeCells("A{$footerRow2}:K{$footerRow2}");
         $sheet->setCellValue("A{$footerRow2}", '  Format Tanggal: YYYY-MM-DD (contoh: 2026-06-01).  Pilihan Status: Belum Aktif, Aktif, Selesai, Anulir, Ditolak.  Tim Kerja: BDI, MTI, TU, atau Nama Tim Kerja Lengkap.');
         $sheet->getStyle("A{$footerRow2}")->getFont()->setName('Calibri')->setSize(9)->setItalic(true);
         $sheet->getStyle("A{$footerRow2}")->getFont()->getColor()->setRGB('94a3b8');

@@ -1573,10 +1573,10 @@
                 <div class="cta-inner">
                     <h2 class="reveal-up">Wujudkan Potensimu Bersama Kami</h2>
                     <p class="reveal-up" style="transition-delay: 0.1s">Jadilah bagian dari inovasi teknologi infrastruktur Indonesia. Daftarkan dirimu sekarang dan dapatkan
-                        pengalaman berharga di PUSDATIN Kementerian PUPR.</p>
+                        pengalaman berharga di PUSDATIN Kementerian PU.</p>
                     <a href="{{ route('pendaftaran.create') }}" class="btn-nav btn-nav-accent reveal-up"
                         style="font-size:16px;padding:16px 32px; transition-delay: 0.2s">
-                        <i class="fas fa-rocket"></i> Menuju Form Pendaftaran
+                        <i class="fas fa-rocket"></i> Form Pendaftaran
                     </a>
                 </div>
             </section>
@@ -1585,7 +1585,7 @@
             <footer>
                 <div class="footer-links">
                     <a href="https://pusdatin.pu.go.id" target="_blank" class="reveal-up" style="transition-delay: 0.3s"><i class="fas fa-globe"></i> pusdatin.pu.go.id</a>
-                    <a href="mailto:info@pusdatin.pu.go.id" class="reveal-up" style="transition-delay: 0.4s"><i class="fas fa-envelope"></i> info@pusdatin.pu.go.id</a>
+                    <a href="mailto:pusdatin.magang@pu.go.id" class="reveal-up" style="transition-delay: 0.4s"><i class="fas fa-envelope"></i> pusdatin.magang@pu.go.id</a>
                     <a href="{{ auth()->check() ? route('admin.dashboard.index') : route('login') }}" class="reveal-up" style="transition-delay: 0.5s"><i class="fas fa-sign-in-alt"></i> {{ auth()->check() ? 'Dashboard Admin' : 'Login Admin' }}</a>
                 </div>
                 <div class="reveal-up" style="transition-delay: 0.6s">© {{ date('Y') }} PUSDATIN Kementerian Pekerjaan Umum · Sistem Manajemen Magang</div>
