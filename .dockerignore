@@ -31,8 +31,6 @@ storage/framework/views/*
 storage/pail
 
 # Test & Debug
-tests
-phpunit.xml
 .phpunit.cache
 .phpunit.result.cache
 
