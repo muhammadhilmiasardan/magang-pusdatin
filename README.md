@@ -532,7 +532,6 @@ Proyek ini dikembangkan dalam rangka program magang di **Pusat Data dan Teknolog
 
 ---
 
-## 📄 Lisensi
 
 ## 📄 Lisensi
 
