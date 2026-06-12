@@ -1,0 +1,24 @@
+stages:
+  - build
+  - test
+
+variables:
+  DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+
+build-image:
+  stage: build
+  image: docker:24.0.5
+  services:
+    - docker:24.0.5-dind
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $DOCKER_IMAGE_NAME .
+    - docker push $DOCKER_IMAGE_NAME
+
+test-laravel:
+  stage: test
+  image: $DOCKER_IMAGE_NAME
+  script:
+    - cp .env.example .env
+    - php artisan key:generate
+    - php artisan test
