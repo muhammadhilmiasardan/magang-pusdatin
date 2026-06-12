@@ -1,0 +1,24 @@
+stages:
+  - build
+  - test
+
+variables:
+  # Image lokal saja — tidak push ke registry manapun
+  DOCKER_IMAGE_NAME: magang-pusdatin:$CI_COMMIT_SHORT_SHA
+
+build-image:
+  stage: build
+  tags:
+    - magang-pusdatin
+  script:
+    - docker build -t $DOCKER_IMAGE_NAME .
+
+test-laravel:
+  stage: test
+  tags:
+    - magang-pusdatin
+  script:
+    - docker run --rm $DOCKER_IMAGE_NAME sh -c "cp .env.example .env && php artisan key:generate && php artisan test"
+  after_script:
+    # Bersihkan image setelah test selesai
+    - docker rmi $DOCKER_IMAGE_NAME 2>$null || true
