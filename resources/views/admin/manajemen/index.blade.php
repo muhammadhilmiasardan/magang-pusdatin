@@ -65,6 +65,21 @@
 
         {{-- Action Controls --}}
         <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+
+            {{-- Filter Institusi --}}
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <label style="font-size: 11.5px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">
+                    <i class="fas fa-university" style="margin-right: 4px;"></i> Institusi
+                </label>
+                <div style="position: relative;">
+                    <select id="globalInstitusiFilter" style="padding: 6px 32px 6px 10px; border-radius: 6px; border: 1.5px solid #cbd5e1; background: #fff; font-size: 12px; color: var(--text-primary); outline: none; cursor: pointer; appearance: auto; font-family: 'Inter', sans-serif; transition: border-color 0.15s;" onchange="filterAndSort()" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='#cbd5e1'">
+                        <option value="semua">Semua Institusi</option>
+                        <option value="universitas">Universitas</option>
+                        <option value="smk">SMK / SMA</option>
+                    </select>
+                </div>
+            </div>
+
             {{-- Sort Dropdown --}}
             <div style="display: flex; align-items: center; gap: 10px;">
                 <label style="font-size: 11.5px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;"><i class="fas fa-sort-amount-down" style="margin-right: 4px;"></i> Urutkan</label>
@@ -105,9 +120,22 @@
                     </thead>
                     <tbody>
                         @foreach($tab['data'] as $item)
+                        @php
+                            $tipe = 'universitas';
+                            $tp = strtolower($item->tingkat_pendidikan ?? '');
+                            $nm = strtolower($item->nama_institusi ?? '');
+                            if (str_contains($tp, 'sma') || str_contains($tp, 'smk')
+                                || str_contains($tp, 'slta')
+                                || str_contains($nm, 'smk') || str_contains($nm, 'sma')
+                                || str_contains($nm, 'sekolah menengah')) {
+                                $tipe = 'smk';
+                            }
+                        @endphp
                         <tr class="manajemen-row" 
                             data-name="{{ strtolower($item->nama) }}" 
                             data-institusi="{{ strtolower($item->nama_institusi) }}" 
+                            data-institusi-nama="{{ $item->nama_institusi }}"
+                            data-tipe-institusi="{{ $tipe }}"
                             data-date="{{ \Carbon\Carbon::parse($item->tanggal_selesai)->timestamp }}">
                             <td>
                                 <a href="#" class="link-name view-detail" data-id="{{ $item->id }}">
@@ -919,6 +947,41 @@
         to   { opacity: 1; transform: translateY(0); }
     }
 
+    /* Institusi Group Header Row */
+    .institusi-group-header td {
+        padding: 0 !important;
+        border: none !important;
+        background: transparent !important;
+    }
+    .institusi-group-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px 6px;
+        margin-top: 10px;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--primary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border-top: 2px solid var(--primary-lighter);
+    }
+    .institusi-group-label i {
+        font-size: 11px;
+        opacity: 0.8;
+    }
+    .institusi-group-count {
+        margin-left: auto;
+        background: var(--primary-lighter);
+        color: var(--primary);
+        font-size: 11px;
+        font-weight: 600;
+        padding: 2px 9px;
+        border-radius: 999px;
+        letter-spacing: 0;
+        text-transform: none;
+    }
+
     /* Pill-style status checkbox */
     .export-status-pill {
         display: inline-flex;
@@ -1108,53 +1171,104 @@
         if (e.key === 'Escape') closeModal();
     });
 
-    // Fitur Search dan Sort Client-Side
-    const globalSearchInput = document.getElementById('globalSearchInput');
-    const globalSortSelect = document.getElementById('globalSortSelect');
+    // Fitur Search, Sort, dan Filter Institusi Client-Side
+    const globalSearchInput    = document.getElementById('globalSearchInput');
+    const globalSortSelect     = document.getElementById('globalSortSelect');
+    const globalInstitusiFilter = document.getElementById('globalInstitusiFilter');
 
     function filterAndSort() {
-        const searchTerm = globalSearchInput.value.toLowerCase();
-        const sortValue = globalSortSelect.value;
-        
+        const searchTerm      = globalSearchInput ? globalSearchInput.value.toLowerCase() : '';
+        const sortValue       = globalSortSelect ? globalSortSelect.value : 'name_asc';
+        const institusiFilter = globalInstitusiFilter ? globalInstitusiFilter.value : 'semua';
+        const isGrouping      = (institusiFilter === 'universitas' || institusiFilter === 'smk');
+
         document.querySelectorAll('.table-clean tbody').forEach(tbody => {
+            // Hapus group header rows yang sudah ada sebelumnya
+            tbody.querySelectorAll('.institusi-group-header').forEach(h => h.remove());
+
             let rows = Array.from(tbody.querySelectorAll('.manajemen-row'));
-            
-            // 1. Filter
+
+            // 1. Filter berdasarkan search + filter institusi
             rows.forEach(row => {
-                const name = row.getAttribute('data-name');
-                const institusi = row.getAttribute('data-institusi');
-                
-                if (name.includes(searchTerm) || institusi.includes(searchTerm)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
+                const name    = row.getAttribute('data-name') || '';
+                const inst    = row.getAttribute('data-institusi') || '';
+                const tipe    = row.getAttribute('data-tipe-institusi') || 'universitas';
+
+                const matchSearch    = name.includes(searchTerm) || inst.includes(searchTerm);
+                const matchInstitusi = institusiFilter === 'semua' || tipe === institusiFilter;
+
+                row.style.display = (matchSearch && matchInstitusi) ? '' : 'none';
             });
-            
+
+            // Rows yang visible setelah filter
+            let visibleRows = rows.filter(r => r.style.display !== 'none');
+
             // 2. Sort
-            rows.sort((a, b) => {
-                const nameA = a.getAttribute('data-name');
-                const nameB = b.getAttribute('data-name');
+            visibleRows.sort((a, b) => {
+                const nameA = a.getAttribute('data-name') || '';
+                const nameB = b.getAttribute('data-name') || '';
+                const instA = a.getAttribute('data-institusi') || '';
+                const instB = b.getAttribute('data-institusi') || '';
                 const dateA = parseInt(a.getAttribute('data-date')) || 0;
                 const dateB = parseInt(b.getAttribute('data-date')) || 0;
-                
-                if (sortValue === 'name_asc') return nameA.localeCompare(nameB);
-                if (sortValue === 'name_desc') return nameB.localeCompare(nameA);
-                if (sortValue === 'date_nearest') return dateA - dateB;
+
+                // Saat grouping aktif, urutkan dulu berdasarkan nama institusi (asc),
+                // baru dalam institusi yang sama urutkan sesuai pilihan sort
+                if (isGrouping) {
+                    const instCompare = instA.localeCompare(instB);
+                    if (instCompare !== 0) return instCompare;
+                }
+
+                if (sortValue === 'name_asc')      return nameA.localeCompare(nameB);
+                if (sortValue === 'name_desc')     return nameB.localeCompare(nameA);
+                if (sortValue === 'date_nearest')  return dateA - dateB;
                 if (sortValue === 'date_farthest') return dateB - dateA;
                 return 0;
             });
-            
-            // 3. Re-append ke DOM sesuai urutan
-            rows.forEach(row => tbody.appendChild(row));
+
+            // 3. Re-append rows sesuai urutan, sisipkan group headers jika grouping
+            if (isGrouping) {
+                let lastInstitusi = null;
+                visibleRows.forEach(row => {
+                    const instNama = row.getAttribute('data-institusi-nama') || row.getAttribute('data-institusi') || '-';
+                    const instKey  = row.getAttribute('data-institusi') || '';
+
+                    if (instKey !== lastInstitusi) {
+                        lastInstitusi = instKey;
+                        // Hitung berapa banyak peserta dari institusi ini dalam visibleRows
+                        const count = visibleRows.filter(r => (r.getAttribute('data-institusi') || '') === instKey).length;
+
+                        const groupTr = document.createElement('tr');
+                        groupTr.className = 'institusi-group-header';
+                        const colSpan = row.querySelectorAll('td').length || 5;
+                        groupTr.innerHTML = `
+                            <td colspan="${colSpan}">
+                                <div class="institusi-group-label">
+                                    <i class="fas fa-university"></i>
+                                    <span>${instNama}</span>
+                                    <span class="institusi-group-count">${count} peserta</span>
+                                </div>
+                            </td>`;
+                        tbody.appendChild(groupTr);
+                    }
+                    tbody.appendChild(row);
+                });
+            } else {
+                // Tanpa grouping – append urut biasa
+                // Hidden rows tetap ada di DOM, visible rows diurutkan
+                const hiddenRows = rows.filter(r => r.style.display === 'none');
+                visibleRows.forEach(row => tbody.appendChild(row));
+                hiddenRows.forEach(row => tbody.appendChild(row));
+            }
         });
     }
 
-    if (globalSearchInput) globalSearchInput.addEventListener('input', filterAndSort);
-    if (globalSortSelect) globalSortSelect.addEventListener('change', filterAndSort);
-    
+    if (globalSearchInput)     globalSearchInput.addEventListener('input', filterAndSort);
+    if (globalSortSelect)      globalSortSelect.addEventListener('change', filterAndSort);
+    if (globalInstitusiFilter) globalInstitusiFilter.addEventListener('change', filterAndSort);
+
     // Inisialisasi awal agar urut
-    if (globalSortSelect) filterAndSort();
+    filterAndSort();
 
     $(document).ready(function() {
         $('.view-detail').click(function(e) {

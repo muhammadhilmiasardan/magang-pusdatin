@@ -94,9 +94,9 @@
     /* ─── LOGO BWK (kanan atas) ─── */
     .logo-bwk {
         position: absolute;
-        top: 0.8cm;
+        top: 1.1cm;
         right: 1.0cm;
-        width: 3.5cm; /* Diperbesar dari 2.8cm */
+        width: 2.8cm;
         height: auto;
         z-index: 10;
     }
@@ -244,7 +244,6 @@
         font-family: 'Times New Roman', Times, serif;
         font-size: 12.5pt;
         font-weight: normal;
-        text-decoration: underline;
         z-index: 10;
     }
 </style>
@@ -301,7 +300,7 @@
     {{-- ═══ TTD JABATAN ═══ --}}
     <div class="cert-ttd">
         Jakarta, {{ $tanggal_terbit }}<br>
-        Plt.Kepala Pusat Data dan Teknologi Informasi,
+        Plt. Kepala Pusat Data dan Teknologi Informasi,
     </div>
 
     {{-- ═══ NAMA PENANDATANGAN ═══ --}}

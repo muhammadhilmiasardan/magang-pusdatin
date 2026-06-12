@@ -217,8 +217,8 @@
 
     {{-- ═══ TTD ═══ --}}
     <div class="ttd-block clearfix">
-        <div class="ttd-jabatan">
-           Plt.Kepala Pusat Data dan Teknologi Informasi
+        <div class="ttd-jabatan" style="white-space: nowrap;">
+           Plt. Kepala Pusat Data dan Teknologi Informasi,
         </div>
         <div class="ttd-nama" style="font-weight: normal; color: #000;">
             Setia Dewi Prihapsari
