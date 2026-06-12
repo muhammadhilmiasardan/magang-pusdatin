@@ -17,6 +17,12 @@ test-laravel:
   tags:
     - magang-pusdatin
   script:
-    - docker run --rm $DOCKER_IMAGE_NAME sh -c "cp .env.example .env && php artisan key:generate && php artisan test"
+    - >
+      docker run --rm
+      -e APP_ENV=testing
+      -e DB_CONNECTION=sqlite
+      -e DB_DATABASE=":memory:"
+      $DOCKER_IMAGE_NAME
+      bash -c "composer install --no-interaction --quiet && cp .env.example .env && php artisan key:generate --quiet && php artisan test"
   after_script:
-    - docker rmi $DOCKER_IMAGE_NAME 2>$null || true
+    - docker rmi $DOCKER_IMAGE_NAME
