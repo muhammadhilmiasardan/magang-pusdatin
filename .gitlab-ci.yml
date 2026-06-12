@@ -3,9 +3,9 @@ stages:
   - test
 
 variables:
-  # Image lokal saja — tidak push ke registry manapun
   DOCKER_IMAGE_NAME: magang-pusdatin:$CI_COMMIT_SHORT_SHA
 
+# ─── Build production image ───────────────────────────────────
 build-image:
   stage: build
   tags:
@@ -13,12 +13,20 @@ build-image:
   script:
     - docker build -t $DOCKER_IMAGE_NAME .
 
+# ─── Run Laravel tests inside Docker ──────────────────────────
+# Composer & PHP tersedia di image, tinggal install dev deps
+# DB pakai SQLite in-memory agar tidak perlu database eksternal
 test-laravel:
   stage: test
   tags:
     - magang-pusdatin
   script:
-    - docker run --rm $DOCKER_IMAGE_NAME sh -c "cp .env.example .env && php artisan key:generate && php artisan test"
+    - >
+      docker run --rm
+      -e APP_ENV=testing
+      -e DB_CONNECTION=sqlite
+      -e DB_DATABASE=":memory:"
+      $DOCKER_IMAGE_NAME
+      bash -c "composer install --no-interaction --quiet && cp .env.example .env && php artisan key:generate --quiet && php artisan test"
   after_script:
-    # Bersihkan image setelah test selesai
-    - docker rmi $DOCKER_IMAGE_NAME 2>$null || true
+    - docker rmi $DOCKER_IMAGE_NAME
