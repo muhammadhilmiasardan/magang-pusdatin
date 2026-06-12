@@ -534,4 +534,15 @@ Proyek ini dikembangkan dalam rangka program magang di **Pusat Data dan Teknolog
 
 ## 📄 Lisensi
 
-Proyek ini dikembangkan untuk keperluan internal PUSDATIN Kementerian Pekerjaan Umum.
+## 📄 Lisensi
+
+Proyek **Portal Magang PUSDATIN** ini dikembangkan untuk keperluan internal Pusat Data dan Teknologi Informasi (PUSDATIN), Sekretariat Jenderal, Kementerian Pekerjaan Umum.
+
+Hak cipta atas pengembangan sistem ini dimiliki oleh tim pengembang dalam rangka program magang mahasiswa dari **Universitas Negeri Semarang (UNNES)**. Berikut adalah para pengembang yang berkontribusi dalam proyek ini:
+
+* **Eza Aditya Nugroho**
+* **Muhammad Hilmi Asardan**
+* **Muhammad Raissa Akhdiyan**
+* **Muhammad Hasan Faedloni**
+
+Seluruh kode sumber dan aset yang terkandung dalam repositori ini ditujukan untuk penggunaan, pemeliharaan, dan pengembangan lebih lanjut oleh unit kerja terkait di PUSDATIN Kementerian Pekerjaan Umum.
