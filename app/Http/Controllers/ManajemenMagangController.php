@@ -215,6 +215,7 @@ class ManajemenMagangController extends Controller
                         <td style="border:1px solid #e2e8f0;white-space:nowrap">%s</td>
                         <td style="border:1px solid #e2e8f0;white-space:nowrap">%s</td>
                         <td style="border:1px solid #e2e8f0">%s</td>
+                        <td style="border:1px solid #e2e8f0">%s</td>
                         <td style="border:1px solid #e2e8f0;white-space:nowrap">%s</td>
                     </tr>',
                     $bgRow,
@@ -228,6 +229,7 @@ class ManajemenMagangController extends Controller
                     $mulai,
                     $selesai,
                     htmlspecialchars($row->email ?? '-'),
+                    htmlspecialchars($row->email_institusi ?? '-'),
                     htmlspecialchars($row->nomor_telp ?? '-')
                 );
             }
@@ -274,6 +276,7 @@ class ManajemenMagangController extends Controller
             <th style="padding:8px 10px;border:1px solid #1e40af;text-align:center;font-size:10pt;white-space:nowrap">Tgl Mulai</th>
             <th style="padding:8px 10px;border:1px solid #1e40af;text-align:center;font-size:10pt;white-space:nowrap">Tgl Selesai</th>
             <th style="padding:8px 10px;border:1px solid #1e40af;text-align:left;font-size:10pt">Email</th>
+            <th style="padding:8px 10px;border:1px solid #1e40af;text-align:left;font-size:10pt">Email Institusi</th>
             <th style="padding:8px 10px;border:1px solid #1e40af;text-align:left;font-size:10pt;white-space:nowrap">No. Telp / WhatsApp</th>
         </tr>
     </thead>
@@ -281,7 +284,7 @@ class ManajemenMagangController extends Controller
         ' . $rows . '
         <tr style="background:#eff6ff">
             <td colspan="5" style="text-align:right;font-weight:bold;font-size:10pt;padding:8px 12px;border:1.5px solid #93c5fd">TOTAL PESERTA :</td>
-            <td colspan="5" style="font-weight:bold;font-size:10pt;padding:8px 10px;border:1.5px solid #93c5fd">' . $peserta->count() . ' orang &nbsp;&mdash;&nbsp; ' . $summaryStr . '</td>
+            <td colspan="6" style="font-weight:bold;font-size:10pt;padding:8px 10px;border:1.5px solid #93c5fd">' . $peserta->count() . ' orang &nbsp;&mdash;&nbsp; ' . $summaryStr . '</td>
         </tr>
     </tbody>
 </table>
