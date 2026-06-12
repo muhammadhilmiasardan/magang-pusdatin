@@ -678,17 +678,17 @@ class ManajemenMagangController extends Controller
                 $idTimKerja2 = TimKerja::where('id', '!=', $idTimKerja1)->inRandomOrder()->first()->id ?? $idTimKerja1;
 
                 try {
-                    $dMulai = \Carbon\Carbon::parse($val['tanggal_mulai']);
+                    $dMulai = $this->parseFlexibleDate($val['tanggal_mulai']);
                 } catch (\Exception $e) {
                     \Illuminate\Support\Facades\DB::rollBack();
-                    return back()->withErrors("Baris ke-" . ($i + 1) . ": Format tanggal mulai tidak valid ('" . $val['tanggal_mulai'] . "'). Gunakan format YYYY-MM-DD.");
+                    return back()->withErrors("Baris ke-" . ($i + 1) . ": Format tanggal mulai tidak valid ('" . $val['tanggal_mulai'] . "'). Gunakan format YYYY-MM-DD atau format Indonesia (contoh: 30 Agt 2024).");
                 }
 
                 try {
-                    $dSelesai = \Carbon\Carbon::parse($val['tanggal_selesai']);
+                    $dSelesai = $this->parseFlexibleDate($val['tanggal_selesai']);
                 } catch (\Exception $e) {
                     \Illuminate\Support\Facades\DB::rollBack();
-                    return back()->withErrors("Baris ke-" . ($i + 1) . ": Format tanggal selesai tidak valid ('" . $val['tanggal_selesai'] . "'). Gunakan format YYYY-MM-DD.");
+                    return back()->withErrors("Baris ke-" . ($i + 1) . ": Format tanggal selesai tidak valid ('" . $val['tanggal_selesai'] . "'). Gunakan format YYYY-MM-DD atau format Indonesia (contoh: 30 Agt 2024).");
                 }
 
                 $tingkat = $val['tingkat_pendidikan'];
@@ -807,6 +807,59 @@ class ManajemenMagangController extends Controller
         }
 
         return null;
+    }
+
+    /**
+     * Parse tanggal dari berbagai format:
+     * - YYYY-MM-DD (standar)
+     * - D MMM YYYY dalam Indonesia, misal: 30 Agt 2024 (format dari Unduh Laporan)
+     * - D MMMM YYYY dalam Indonesia, misal: 30 Agustus 2024
+     */
+    private function parseFlexibleDate(string $raw): \Carbon\Carbon
+    {
+        $raw = trim($raw);
+
+        if (empty($raw) || $raw === '-') {
+            throw new \Exception("Tanggal kosong.");
+        }
+
+        // Mapping bulan Indonesia (pendek & panjang) → English
+        $idMonths = [
+            'jan' => 'January',  'feb' => 'February', 'mar' => 'March',
+            'apr' => 'April',    'mei' => 'May',       'jun' => 'June',
+            'jul' => 'July',     'agt' => 'August',    'sep' => 'September',
+            'okt' => 'October',  'nov' => 'November',  'des' => 'December',
+            'januari'  => 'January',  'februari' => 'February', 'maret'    => 'March',
+            'juni'     => 'June',     'juli'     => 'July',     'agustus'  => 'August',
+            'oktober'  => 'October',  'desember' => 'December',
+        ];
+
+        // Coba parse langsung dulu (handle YYYY-MM-DD, d/m/Y, dll)
+        try {
+            $date = \Carbon\Carbon::parse($raw);
+            if ($date->year >= 1900 && $date->year <= 2100) {
+                return $date;
+            }
+        } catch (\Exception $e) { /* lanjut ke translasi */ }
+
+        // Terjemahkan nama bulan Indonesia ke English, lalu parse ulang
+        $pattern   = '/\b(' . implode('|', array_keys($idMonths)) . ')\b/i';
+        $translated = preg_replace_callback(
+            $pattern,
+            fn($m) => $idMonths[strtolower($m[1])],
+            $raw
+        );
+
+        if ($translated !== $raw) {
+            try {
+                $date = \Carbon\Carbon::parse($translated);
+                if ($date->year >= 1900 && $date->year <= 2100) {
+                    return $date;
+                }
+            } catch (\Exception $e) { /* fall through */ }
+        }
+
+        throw new \Exception("Format tanggal tidak dikenal: '$raw'.");
     }
 
     private function normalizePhone(string $raw): string {
