@@ -513,19 +513,6 @@ Perubahan pada file berikut langsung tercermin di container tanpa rebuild:
 
 ---
 
-## 📸 Screenshot
-
-> _Tambahkan screenshot aplikasi di sini untuk memberikan gambaran visual kepada pengunjung repo._
->
-> Contoh:
-> ```
-> ![Landing Page](docs/screenshots/landing.png)
-> ![Dashboard Admin](docs/screenshots/dashboard.png)
-> ![Preview Sertifikat](docs/screenshots/sertifikat.png)
-> ```
-
----
-
 ## 👥 Kontributor
 
 Proyek ini dikembangkan dalam rangka program magang di **Pusat Data dan Teknologi Informasi (PUSDATIN)**, Sekretariat Jenderal, Kementerian Pekerjaan Umum.
