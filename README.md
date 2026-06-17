@@ -513,25 +513,22 @@ Perubahan pada file berikut langsung tercermin di container tanpa rebuild:
 
 ---
 
-## 📸 Screenshot
-
-> _Tambahkan screenshot aplikasi di sini untuk memberikan gambaran visual kepada pengunjung repo._
->
-> Contoh:
-> ```
-> ![Landing Page](docs/screenshots/landing.png)
-> ![Dashboard Admin](docs/screenshots/dashboard.png)
-> ![Preview Sertifikat](docs/screenshots/sertifikat.png)
-> ```
-
----
-
 ## 👥 Kontributor
 
 Proyek ini dikembangkan dalam rangka program magang di **Pusat Data dan Teknologi Informasi (PUSDATIN)**, Sekretariat Jenderal, Kementerian Pekerjaan Umum.
 
 ---
 
+
 ## 📄 Lisensi
 
-Proyek ini dikembangkan untuk keperluan internal PUSDATIN Kementerian Pekerjaan Umum.
+Proyek **Portal Magang PUSDATIN** ini dikembangkan untuk keperluan internal Pusat Data dan Teknologi Informasi (PUSDATIN), Sekretariat Jenderal, Kementerian Pekerjaan Umum.
+
+Hak cipta atas pengembangan sistem ini dimiliki oleh tim pengembang dalam rangka program magang mahasiswa dari **Universitas Negeri Semarang (UNNES)**. Berikut adalah para pengembang yang berkontribusi dalam proyek ini:
+
+* **Eza Aditya Nugroho**
+* **Muhammad Hilmi Asardan**
+* **Muhammad Raissa Akhdiyan**
+* **Muhammad Hasan Faedloni**
+
+Seluruh kode sumber dan aset yang terkandung dalam repositori ini ditujukan untuk penggunaan, pemeliharaan, dan pengembangan lebih lanjut oleh unit kerja terkait di PUSDATIN Kementerian Pekerjaan Umum.
