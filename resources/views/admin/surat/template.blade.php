@@ -84,7 +84,7 @@
     }
 
     .tabel-peserta th {
-        font-weight: bold;
+        font-weight: normal;
     }
 
     /* ── TTD ── */
@@ -169,7 +169,7 @@
             PUSDATIN berkenan memberikan izin kepada {{ strtolower($sebutan_peserta) }} yang tertera dibawah ini untuk 
             melakukan Praktik Kerja Lapangan/Magang pada {{ $tim_ditempatkan ? $tim_ditempatkan->nama_tim : '-' }}, 
             {{ $tim_ditempatkan ? $tim_ditempatkan->bidang : '-' }}, Pusdatin Kementerian Pekerjaan Umum 
-            terhitung tanggal {{ $tanggal_mulai_fmt }} s.d. {{ $tanggal_selesai_fmt }} dengan data sebagai berikut :
+            terhitung tanggal <strong>{{ $tanggal_mulai_fmt }} s.d. {{ $tanggal_selesai_fmt }}</strong> dengan data sebagai berikut :
         </li>
     </ol>
 

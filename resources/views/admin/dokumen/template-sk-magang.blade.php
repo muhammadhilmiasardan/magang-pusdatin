@@ -105,7 +105,6 @@
 
     .ttd-nama {
         color: #000;
-        text-decoration: underline;
     }
 
     .ttd-nip {
@@ -199,7 +198,7 @@
 
     <div class="content-section">
         <p class="paragraph">
-            Adalah {{ $sebutan_peserta }} {{ $peserta->nama_institusi }} yang melaksanakan Magang/Praktek Kerja Lapangan (PKL) di {{ $tim_kerja }}, Pusat Data dan Teknologi Informasi, Sekretariat Jenderal, Kementerian Pekerjaan Umum. Yang bersangkutan melaksanakan kegiatan Magang/Praktek Kerja Lapangan (PKL) mulai dari tanggal {{ $tanggal_mulai }} s.d. {{ $tanggal_selesai }}.
+            Adalah {{ $sebutan_peserta }} {{ $peserta->nama_institusi }} yang melaksanakan Magang/Praktek Kerja Lapangan (PKL) di {{ $tim_kerja }}, Pusat Data dan Teknologi Informasi, Sekretariat Jenderal, Kementerian Pekerjaan Umum. Yang bersangkutan melaksanakan kegiatan Magang/Praktek Kerja Lapangan (PKL) mulai dari tanggal <strong>{{ $tanggal_mulai }} s.d. {{ $tanggal_selesai }}</strong>.
         </p>
         <p class="paragraph">
             Demikian surat keterangan ini dibuat untuk digunakan sebagaimana mestinya.
@@ -216,9 +215,6 @@
         </div>
         <div class="ttd-nama">
             Priscka Maharani Hardi
-        </div>
-        <div class="ttd-nip">
-            NIP. 198410082010122003
         </div>
     </div>
 

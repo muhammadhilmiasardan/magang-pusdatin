@@ -23,7 +23,7 @@
     </div>
     <ul style="margin:0;padding-left:32px;font-size:13px;color:#7f1d1d;">
         @foreach($errors->all() as $error)
-        <li>{{ $error }}</li>
+        <li>{{ $error }}</li> 
         @endforeach
     </ul>
 </div>

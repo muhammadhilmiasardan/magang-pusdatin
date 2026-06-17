@@ -132,7 +132,6 @@
     }
     .ttd-nama {
         color: #000;
-        text-decoration: underline;
     }
 </style>
 </head>
@@ -215,12 +214,12 @@
     {{-- ═══ TABLE NILAI ═══ --}}
     <table class="nilai-table">
         <tr>
-            <th colspan="2" style="text-align: left; padding-left: 10px;">A. INTEGRITAS & SIKAP</th>
+            <th colspan="2" style="text-align: left; padding-left: 10px;">A.  INTEGRITAS &amp; SIKAP</th>
             <th class="col-nilai">Nilai (8.5 s.d 10)</th>
         </tr>
         <tr>
             <td class="col-no">1</td>
-            <td>Kedisiplinan & Ketepatan Waktu</td>
+            <td>Kedisiplinan &amp; Ketepatan Waktu</td>
             <td class="col-nilai">{{ $nilai[0] }}</td>
         </tr>
         <tr>
@@ -235,11 +234,12 @@
         </tr>
         <tr>
             <td class="col-no">4</td>
-            <td>Etika & Sopan Santun</td>
+            <td>Etika &amp; Sopan Santun</td>
             <td class="col-nilai">{{ $nilai[3] }}</td>
         </tr>
         <tr>
-            <td colspan="3" style="background: #f0f0f0;"></td>
+            <th colspan="2" style="text-align: left; padding-left: 10px;">B.  KEMAMPUAN KERJA</th>
+            <th class="col-nilai"></th>
         </tr>
         <tr>
             <td class="col-no">5</td>
@@ -257,7 +257,8 @@
             <td class="col-nilai">{{ $nilai[6] }}</td>
         </tr>
         <tr>
-            <td colspan="3" style="background: #f0f0f0;"></td>
+            <th colspan="2" style="text-align: left; padding-left: 10px;">C.  ADAPTASI &amp; KERJASAMA</th>
+            <th class="col-nilai"></th>
         </tr>
         <tr>
             <td class="col-no">8</td>
@@ -275,8 +276,8 @@
             <td class="col-nilai">{{ $nilai[9] }}</td>
         </tr>
         <tr>
-            <td colspan="2" style="text-align: center; font-weight: bold;">Total Nilai</td>
-            <td class="col-nilai" style="font-weight: bold;">{{ number_format($total_nilai, 1) }}</td>
+            <td colspan="2" style="text-align: center;">Total Nilai</td>
+            <td class="col-nilai">{{ number_format($total_nilai, 1) }}</td>
         </tr>
     </table>
 
@@ -290,7 +291,6 @@
                     <div>Pembimbing Lapangan,</div>
                     <div class="ttd-space"></div>
                     <div class="ttd-nama">{{ $ketua_tim }}</div>
-                    <div>NIP. {{ $nip_ketua_tim }}</div>
                 </td>
                 <td>
                     <div style="margin-bottom: 5px;">Jakarta, {{ $tanggal_terbit }}</div>
@@ -298,7 +298,6 @@
                     <div>Kepala Subbagian Tata Usaha,</div>
                     <div class="ttd-space"></div>
                     <div class="ttd-nama">Priscka Maharani Hardi</div>
-                    <div>NIP. 198410082010122003</div>
                 </td>
             </tr>
         </table>

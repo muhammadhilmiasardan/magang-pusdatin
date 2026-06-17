@@ -189,7 +189,10 @@ class PusatDokumenController extends Controller
 
         if ($peserta->timKerja1) {
             $tim_kerja = $peserta->timKerja1->nama_tim;
-            $ketua_tim = $peserta->timKerja1->ketua_tim ?? '-';
+            $rawNama   = $peserta->timKerja1->ketua_tim ?? '-';
+            // Strip gelar: hapus semua yang ada tanda koma + gelar, dan gelar di depan
+            $ketua_tim = preg_replace('/,\s*[A-Za-z][A-Za-z.\s]*$/', '', $rawNama);
+            $ketua_tim = trim($ketua_tim);
             $nip_ketua_tim = $peserta->timKerja1->nip_ketua_tim ?? '-';
         }
 
